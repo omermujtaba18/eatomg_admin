@@ -2,21 +2,33 @@
 
 namespace App\Controllers;
 
-use App\Models\AddOnModel;
+use App\Models\AddOnGroupModel;
 use App\Models\CategoryModel;
 use App\Models\ItemModel;
-use App\Models\ModifierModel;
+use App\Models\ModifierGroupModel;
+use App\Models\ItemModifierModel;
+use App\Models\ItemAddonModel;
 use CodeIgniter\Controller;
 use CodeIgniter\I18n\Time;
 
 class Item extends Controller
 {
 
-    var $db = null;
+    var $db, $time, $title, $addonGroup,
+        $category, $item, $modifierGroup,
+        $itemModifier, $itemAddon = null;
 
     public function __construct()
     {
         $this->db = db_connect();
+        $this->time = new Time('now', 'America/Chicago', 'en_US');
+        $this->addonGroup = new AddOnGroupModel();
+        $this->category = new CategoryModel();
+        $this->item = new ItemModel();
+        $this->modifierGroup = new ModifierGroupModel();
+        $this->itemModifier = new ItemModifierModel();
+        $this->itemAddon = new ItemAddonModel();
+        $this->title = 'items';
     }
 
     public function index()
@@ -27,9 +39,13 @@ class Item extends Controller
         $query = $builder->get();
 
         $data = [
-            'title' => 'items',
+            'title' => $this->title,
             'items'  => $query->getResult(),
-            'time' => new Time('now', 'America/Chicago', 'en_US')
+            'time' => $this->time,
+            'itemModifier' => $this->itemModifier,
+            'itemAddon' => $this->itemAddon,
+            'modifierGroup' => $this->modifierGroup,
+            'addonGroup' => $this->addonGroup
         ];
 
         echo view('templates/header', $data);
@@ -38,39 +54,48 @@ class Item extends Controller
         echo view('templates/footer');
     }
 
-    public function view($id = null)
-    {
-        echo "Item: view " . $id;
-    }
-
     public function create()
     {
-        $category = new CategoryModel();
-        $modifier = new ModifierModel();
-        $addon = new AddOnModel();
-
-        if ($this->request->getVar()) {
-            $item = new ItemModel();
-            $item->save([
-                'item_name' => $this->request->getVar('name'),
-                'item_desc' => $this->request->getVar('desc'),
-                'item_price' => $this->request->getVar('price'),
-                'category_id' => $this->request->getVar('category'),
-                'item_status' => $this->request->getVar('status'),
-                'modifier_id' => !is_null($this->request->getVar('modifier')) ? implode(",", $this->request->getVar('modifier')) : '',
-                'addon_id' => !is_null($this->request->getVar('addon')) ? implode(",", $this->request->getVar('addon')) : '',
+        if ($this->request->getPost()) {
+            $saveId = $this->item->insert([
+                'item_name' => $this->request->getPost('name'),
+                'item_desc' => $this->request->getPost('desc'),
+                'item_price' => $this->request->getPost('price'),
+                'category_id' => $this->request->getPost('category'),
+                'item_status' => $this->request->getPost('status'),
+                'item_slug' => str_replace(" ", "-", trim(strtolower($this->request->getPost('name'))))
             ]);
+
+            $item_modifiers = !empty($this->request->getPost("modifier")) ? $this->request->getPost("modifier") : NULL;
+            $item_addons = !empty($this->request->getPost("addon")) ? $this->request->getPost("addon") : NULL;
+
+            if ($item_modifiers) {
+                foreach ($item_modifiers as $modifier_group_id) {
+                    $this->itemModifier->save([
+                        'item_id' => $saveId,
+                        'modifier_group_id' => substr($modifier_group_id, 0)
+                    ]);
+                }
+            }
+
+            if ($item_addons) {
+                foreach ($item_addons as $addon_group_id) {
+                    $this->itemAddon->save([
+                        'item_id' => $saveId,
+                        'addon_group_id' => substr($addon_group_id, 0)
+                    ]);
+                }
+            }
 
             return redirect()->to('/item');
         }
 
-
         $data = [
-            'title' => 'items',
-            'time' => new Time('now', 'America/Chicago', 'en_US'),
-            'category' => $category->findAll(),
-            'modifiers' => $modifier->findAll(),
-            'addons' => $addon->findAll()
+            'title' => $this->title,
+            'time' => $this->time,
+            'category' => $this->category->findAll(),
+            'modifiers' => $this->modifierGroup->findAll(),
+            'addons' => $this->addonGroup->findAll(),
         ];
 
         echo view('templates/header', $data);
@@ -81,39 +106,52 @@ class Item extends Controller
 
     public function update($id = null)
     {
-        $item = new ItemModel();
-        $category = new CategoryModel();
-        $modifier = new ModifierModel();
-        $addon = new AddOnModel();
+        if ($this->request->getPost()) {
+            $this->item->save([
+                'item_id' => $id,
+                'item_name' => $this->request->getPost('name'),
+                'item_desc' => $this->request->getPost('desc'),
+                'item_price' => $this->request->getPost('price'),
+                'category_id' => $this->request->getPost('category'),
+                'item_status' => $this->request->getPost('status'),
+                'item_slug' => str_replace(" ", "-", trim(strtolower($this->request->getPost('name'))))
+            ]);
 
-        if ($this->request->getVar()) {
+            $this->itemModifier->where('item_id', $id)->delete();
+            $this->itemAddon->where('item_id', $id)->delete();
 
-            $modifier_name = '';
-            if ($this->request->getVar('modifier')) {
-                $modifier_name = implode(",", $this->request->getVar('modifier'));
+            $item_modifiers = !empty($this->request->getPost("modifier")) ? $this->request->getPost("modifier") : NULL;
+            $item_addons = !empty($this->request->getPost("addon")) ? $this->request->getPost("addon") : NULL;
+
+            if ($item_modifiers) {
+                foreach ($item_modifiers as $modifier_group_id) {
+                    $this->itemModifier->save([
+                        'item_id' => $id,
+                        'modifier_group_id' => substr($modifier_group_id, 0)
+                    ]);
+                }
             }
 
-            $data = [
-                'item_name' => $this->request->getVar('name'),
-                'item_desc' => $this->request->getVar('desc'),
-                'item_price' => $this->request->getVar('price'),
-                'category_id' => $this->request->getVar('category'),
-                'item_status' => $this->request->getVar('status'),
-                'modifier_id' => !is_null($this->request->getVar('modifier')) ? implode(",", $this->request->getVar('modifier')) : '',
-                'addon_id' => !is_null($this->request->getVar('addon')) ? implode(",", $this->request->getVar('addon')) : '',
-            ];
-            $item->update($id, $data);
-
+            if ($item_addons) {
+                foreach ($item_addons as $addon_group_id) {
+                    $this->itemAddon->save([
+                        'item_id' => $id,
+                        'addon_group_id' => substr($addon_group_id, 0)
+                    ]);
+                }
+            }
             return redirect()->to('/item');
         }
 
         $data = [
-            'title' => 'items',
-            'time' => new Time('now', 'America/Chicago', 'en_US'),
-            'item' => $item->find($id),
-            'category' => $category->findAll(),
-            'modifiers' => $modifier->findAll(),
-            'addons' => $addon->findAll()
+            'title' => $this->title,
+            'time' => $this->time,
+            'item' => $this->item->find($id),
+            'category' => $this->category->findAll(),
+            'modifiers' => $this->modifierGroup->findAll(),
+            'addons' => $this->addonGroup->findAll(),
+            'itemModifier' => $this->itemModifier,
+            'itemAddon' => $this->itemAddon
         ];
 
         echo view('templates/header', $data);
@@ -124,8 +162,9 @@ class Item extends Controller
 
     public function delete($id = null)
     {
-        $item = new ItemModel();
-        $item->delete($id);
+        $this->item->delete($id);
+        $this->itemModifier->where('item_id', $id)->delete();
+        $this->itemAddon->where('item_id', $id)->delete();
         return redirect()->to('/item');
     }
 

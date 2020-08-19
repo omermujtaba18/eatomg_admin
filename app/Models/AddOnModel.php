@@ -10,9 +10,8 @@ class AddOnModel extends Model
     protected $primaryKey = 'addon_id';
     protected $returnType     = 'array';
     protected $allowedFields = [
-        'addon_name',
-        'addon_instruct',
         'addon_item',
-        'addon_price'
+        'addon_price',
+        'addon_group_id',
     ];
 }

@@ -29,7 +29,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php print_r($users); ?>
                                         <?php if (!empty($users)) : ?>
 
                                             <?php foreach ($users as $user) : ?>

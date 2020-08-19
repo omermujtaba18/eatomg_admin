@@ -25,18 +25,18 @@
                                     <input class="form-control form-control-solid col-6" type="text" placeholder="e.g Pick a protein" name="instruction" value="<?= isset($modifier['modifier_group_instruct']) ? $modifier['modifier_group_instruct'] : ''; ?>" required>
                                 </div>
                                 <div class="row mb-2">
-                                    <div class="col-3 ">Item</div>
-                                    <div class="col-3">Price</div>
+                                    <div class="col-4">Item</div>
+                                    <div class="col-2">Price</div>
                                 </div>
 
                                 <?php if (isset($modifier)) {
                                     foreach ($modifierItems as $item) : ?>
                                         <div>
                                             <div class="row" id="item">
-                                                <div class="form-group col-3">
+                                                <div class="form-group col-4">
                                                     <input class="form-control form-control-solid" type="text" placeholder="" name="item[]" value="<?= isset($item['modifier_item']) ? $item['modifier_item'] : ''; ?>" required>
                                                 </div>
-                                                <div class="form-group col-3">
+                                                <div class="form-group col-2">
                                                     <input class="form-control form-control-solid" type="number" placeholder="" name="price[]" value="<?= isset($item['modifier_price']) ? $item['modifier_price'] : ''; ?>" required>
                                                 </div>
                                                 <div class="form-group col-3">
@@ -49,10 +49,10 @@
                                 <?php } else { ?>
                                     <div>
                                         <div class="row" id="item">
-                                            <div class="form-group col-3">
+                                            <div class="form-group col-4">
                                                 <input class="form-control form-control-solid" type="text" placeholder="" name="item[]" required>
                                             </div>
-                                            <div class="form-group col-3">
+                                            <div class="form-group col-2">
                                                 <input class="form-control form-control-solid" type="number" placeholder="" name="price[]" required>
                                             </div>
                                             <div class="form-group col-3">

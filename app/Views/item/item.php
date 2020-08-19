@@ -25,7 +25,7 @@
                                             <th>Category</th>
                                             <th>Type</th>
                                             <th>Modifier</th>
-                                            <th>Add On</th>
+                                            <th>Addon</th>
                                             <th>Price</th>
                                             <th style="min-width: 5em;">Actions</th>
                                         </tr>
@@ -38,13 +38,31 @@
 
                                                 <tr>
                                                     <td>
-                                                        <?= esc($item->item_status) == '1' ? '<span class="badge p-2 badge-pill badge-success">Active</span>' : '<span class="badge p-2 badge-pill badge-warning">Disabled</span>' ?>
+                                                        <?= esc($item->item_status) == '1' ? '<span class="badge badge-pill badge-success">Active</span>' : '<span class="badge p-2 badge-pill badge-warning">Disabled</span>' ?>
                                                     </td>
                                                     <td><?= esc($item->item_name); ?></td>
                                                     <td><?= esc($item->category_name); ?></td>
                                                     <td><?= esc(ucfirst($item->category_type)); ?></td>
-                                                    <td><?= esc($item->modifier_id); ?></td>
-                                                    <td><?= esc($item->addon_id); ?></td>
+                                                    <td>
+                                                        <?php
+                                                        $item_modifiers = $itemModifier->where('item_id', $item->item_id)->findAll();
+
+                                                        foreach ($item_modifiers as $key => $value) {
+                                                            $modifier = $modifierGroup->where('modifier_group_id', $item_modifiers[$key]['modifier_group_id'])->first();
+                                                            echo ("<span class='badge badge-pill badge-success'>" . $modifier['modifier_group_instruct'] . "</span><br>");
+                                                        }
+                                                        ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php
+                                                        $item_addons = $itemAddon->where('item_id', $item->item_id)->findAll();
+
+                                                        foreach ($item_addons as $key => $value) {
+                                                            $addon = $addonGroup->where('addon_group_id', $item_addons[$key]['addon_group_id'])->first();
+                                                            echo ("<span class='badge badge-pill badge-success'>" . $addon['addon_group_instruct'] . "</span><br>");
+                                                        }
+                                                        ?>
+                                                    </td>
                                                     <td><?= esc('$' . $item->item_price); ?></td>
                                                     <td>
                                                         <a class="btn btn-icon btn-sm btn-yellow ml-2 text-white" href="item/update/<?= esc($item->item_id); ?>">

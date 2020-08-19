@@ -3,23 +3,29 @@
 namespace App\Controllers;
 
 use App\Models\AddOnModel;
+use App\Models\AddOnGroupModel;
 use CodeIgniter\Controller;
 use CodeIgniter\I18n\Time;
 
 class AddOn extends Controller
 {
+    var $time, $addon, $addonGroup, $title = null;
 
     public function __construct()
     {
+        $this->time = new Time('now', 'America/Chicago', 'en_US');
+        $this->addon = new AddOnModel();
+        $this->addonGroup = new AddOnGroupModel();
+        $this->title = 'Addon';
     }
 
     public function index()
     {
-        $addOnModel = new AddOnModel();
         $data = [
-            'title' => 'Add-On',
-            'time' => new Time('now', 'America/Chicago', 'en_US'),
-            'addons' => $addOnModel->findAll()
+            'title' => $this->title,
+            'time' => $this->time,
+            'addons' => $this->addonGroup->findAll(),
+            'addonModel' => $this->addon
         ];
 
         echo view('templates/header', $data);
@@ -30,23 +36,31 @@ class AddOn extends Controller
 
     public function create()
     {
-        if ($this->request->getVar()) {
-            $addOnModel = new AddOnModel();
+        if ($this->request->getPost()) {
 
-            $addOnModel->save([
-                'addon_name' => $this->request->getVar('name'),
-                'addon_instruct' => trim($this->request->getVar('instruction')),
-                'addon_item' => trim($this->request->getVar('items')),
-                'addon_price' => trim($this->request->getVar('price')),
+            $saveId = $this->addonGroup->insert([
+                'addon_group_name' => $this->request->getPost('name'),
+                'addon_group_instruct' => trim($this->request->getPost('instruction')),
             ]);
+
+            $items = $this->request->getPost("item");
+            $prices = $this->request->getPost("price");
+
+            foreach ($items as $key => $value) {
+                $this->addon->save([
+                    'addon_item' => $items[$key],
+                    'addon_price' => $prices[$key],
+                    'addon_group_id' => $saveId
+                ]);
+            }
 
             return redirect()->to('/addon');
         }
 
 
         $data = [
-            'title' => 'Add-On',
-            'time' => new Time('now', 'America/Chicago', 'en_US')
+            'title' => $this->title,
+            'time' => $this->time
         ];
 
         echo view('templates/header', $data);
@@ -57,24 +71,34 @@ class AddOn extends Controller
 
     public function update($id = null)
     {
-        $addOnModel = new AddOnModel();
+        if ($this->request->getPost()) {
+            $this->addonGroup->save([
+                'addon_group_id' => $id,
+                'addon_group_name' => $this->request->getPost('name'),
+                'addon_group_instruct' => trim($this->request->getPost('instruction')),
+            ]);
 
-        if ($this->request->getVar()) {
-            $data = [
-                'addon_name' => $this->request->getVar('name'),
-                'addon_instruct' => trim($this->request->getVar('instruction')),
-                'addon_item' => trim($this->request->getVar('items')),
-                'addon_price' => trim($this->request->getVar('price')),
-            ];
-            $addOnModel->update($id, $data);
+            $items = $this->request->getPost("item");
+            $prices = $this->request->getPost("price");
 
-            return redirect()->to('/modifier');
+            $this->addon->where('addon_group_id', $id)->delete();
+
+            foreach ($items as $key => $value) {
+                $this->addon->save([
+                    'addon_item' => $items[$key],
+                    'addon_price' => $prices[$key],
+                    'addon_group_id' => $id
+                ]);
+            }
+
+            return redirect()->to('/addon');
         }
 
         $data = [
-            'title' => 'Add-On',
-            'time' => new Time('now', 'America/Chicago', 'en_US'),
-            'addon' => $addOnModel->find($id)
+            'title' => $this->title,
+            'time' => $this->time,
+            'addon' => $this->addonGroup->find($id),
+            'addonItems' => $this->addon->where('addon_group_id', $id)->findAll()
         ];
 
         echo view('templates/header', $data);
@@ -88,10 +112,5 @@ class AddOn extends Controller
         $addOnModel = new AddOnModel();
         $addOnModel->delete($id);
         return redirect()->to('/addon');
-    }
-
-    public function test()
-    {
-        $CI_ENV = $_SERVER['CI_ENVIRONMENT'];
     }
 }

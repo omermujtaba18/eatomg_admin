@@ -4,7 +4,6 @@
             <div class="d-flex justify-content-between align-items-sm-center flex-column flex-sm-row mb-4">
                 <div class="mr-4 mb-3 mb-sm-0">
                     <h1 class="mb-0">Menu <?= esc(ucfirst($title)); ?></h1>
-                    <div class="small"><span class="font-weight-500 text-primary"></div>
                     <div class="small"><span class="font-weight-500 text-primary"><?= $time->toLocalizedString('EEEE') ?></span> &middot; <?= $time->toLocalizedString('MMMM d, yyyy') ?> &middot; <?= $time->toLocalizedString('hh:mm aaa') ?></div>
                 </div>
             </div>
@@ -15,9 +14,10 @@
                             <a class="btn btn-primary btn-sm" href="/item">Back</a>
                         </div>
 
+
                         <div class="card-body">
                             <form class="col-7" method="post">
-                                <h2>Item Info</h2>
+                                <h2>Item Details</h2>
                                 <hr>
                                 <div class="form-group">
                                     <label for="name">Name</label>
@@ -46,29 +46,57 @@
                                         <option value="0" <?= isset($item['item_status']) && $item['item_status'] == "0" ? 'selected' : ''; ?>>Disable</option>
                                     </select>
                                 </div>
+                                <div class="form-group mb-0">
+                                    <label>Image</label>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-file mb-3">
+                                        <input type="file" class="custom-file-input" id="image" name="image">
+                                        <label class="custom-file-label form-control-solid" for="image">Choose file...</label>
+                                    </div>
+                                </div>
+
                                 <h2 class="mt-5">Modifiers</h2>
                                 <hr>
                                 <div class="form-group">
                                     <?php foreach ($modifiers as $modifier) : ?>
+                                        <?php
+                                        if (isset($itemModifier)) {
+                                            $data = [
+                                                'item_id' => $item['item_id'],
+                                                'modifier_group_id' => $modifier['modifier_group_id']
+                                            ];
+                                            $item_modifier = $itemModifier->where($data)->first();
+                                        }
+
+                                        ?>
                                         <div class="custom-control custom-checkbox custom-control-solid">
-                                            <input class="custom-control-input" type="checkbox" id="<?= $modifier['modifier_id']; ?>" name="modifier[]" value="<?= $modifier['modifier_id']; ?>" <?= isset($item['modifier_id']) && in_array($modifier['modifier_id'], explode(',', $item['modifier_id'])) ? 'checked' : '' ?>>
-                                            <label class="custom-control-label" for="<?= $modifier['modifier_id']; ?>"><?= $modifier['modifier_instruct'] ?></label>
-                                            <small class="form-text text-muted"><?= $modifier['modifier_item'] ?></small>
+                                            <input class="custom-control-input" type="checkbox" id="M<?= $modifier['modifier_group_id']; ?>" name="modifier[]" value="<?= $modifier['modifier_group_id']; ?>" <?php echo (!empty($item_modifier) ? 'checked' : '') ?>>
+                                            <label class="custom-control-label" for="M<?= $modifier['modifier_group_id']; ?>"><?= $modifier['modifier_group_instruct'] ?></label>
                                         </div>
                                     <?php endforeach; ?>
                                 </div>
-                                <h2 class="mt-5">AddOns</h2>
+                                <h2 class="mt-5">Addon</h2>
                                 <hr>
                                 <div class="form-group">
                                     <?php foreach ($addons as $addon) : ?>
+                                        <?php
+                                        if (isset($itemAddon)) {
+                                            $data = [
+                                                'item_id' => $item['item_id'],
+                                                'addon_group_id' => $addon['addon_group_id']
+                                            ];
+                                            $item_addon = $itemAddon->where($data)->first();
+                                        }
+
+                                        ?>
                                         <div class="custom-control custom-checkbox custom-control-solid">
-                                            <input class="custom-control-input" type="checkbox" id="<?= $addon['addon_id']; ?>" name="addon[]" value="<?= $addon['addon_id']; ?>" <?= isset($item['addon_id']) && in_array($addon['addon_id'], explode(',', $item['addon_id'])) ? 'checked' : '' ?>>
-                                            <label class="custom-control-label" for="<?= $addon['addon_id']; ?>"><?= $addon['addon_instruct'] ?></label>
-                                            <small class="form-text text-muted"><?= $addon['addon_item'] ?></small>
+                                            <input class="custom-control-input" type="checkbox" id="A<?= $addon['addon_group_id']; ?>" name="addon[]" value="<?= $addon['addon_group_id']; ?>" <?php echo (!empty($item_addon) ? 'checked' : '') ?>>
+                                            <label class="custom-control-label" for="A<?= $addon['addon_group_id']; ?>"><?= $addon['addon_group_instruct'] ?></label>
                                         </div>
                                     <?php endforeach; ?>
                                 </div>
-                                <hr>
+                                <hr class="mt-5">
                                 <div class="form-group">
                                     <button class="btn btn-primary" type="submit"><?= isset($item) ? 'Update item' : 'Create item' ?></button>
                                 </div>
@@ -81,3 +109,10 @@
             </div>
     </main>
 </div>
+
+<script>
+    $('input[type="file"]').change(function(e) {
+        var fileName = e.target.files[0].name;
+        $('.custom-file-label').html(fileName);
+    });
+</script>

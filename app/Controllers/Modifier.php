@@ -9,19 +9,20 @@ use CodeIgniter\I18n\Time;
 
 class Modifier extends Controller
 {
-    var $time, $modifier, $modifierGroup = null;
+    var $time, $title, $modifier, $modifierGroup = null;
 
     public function __construct()
     {
         $this->time = new Time('now', 'America/Chicago', 'en_US');
         $this->modifier = new ModifierModel();
         $this->modifierGroup = new ModifierGroupModel();
+        $this->title = 'modifiers';
     }
 
     public function index()
     {
         $data = [
-            'title' => 'modifiers',
+            'title' => $this->title,
             'time' => $this->time,
             'modifiers' => $this->modifierGroup->findAll(),
             'modifierModel' => $this->modifier
@@ -37,7 +38,7 @@ class Modifier extends Controller
     {
         if ($this->request->getPost()) {
 
-            $saveId = $this->modifierGroup->save([
+            $saveId = $this->modifierGroup->insert([
                 'modifier_group_name' => $this->request->getPost('name'),
                 'modifier_group_instruct' => trim($this->request->getPost('instruction')),
             ]);
@@ -57,7 +58,7 @@ class Modifier extends Controller
         }
 
         $data = [
-            'title' => 'modifier',
+            'title' => $this->title,
             'time' => $this->time,
         ];
 
@@ -70,7 +71,7 @@ class Modifier extends Controller
     public function update($id = null)
     {
         if ($this->request->getVar()) {
-            $saveId = $this->modifierGroup->save([
+            $this->modifierGroup->save([
                 'modifier_group_id' => $id,
                 'modifier_group_name' => $this->request->getPost('name'),
                 'modifier_group_instruct' => trim($this->request->getPost('instruction')),
@@ -85,7 +86,7 @@ class Modifier extends Controller
                 $this->modifier->save([
                     'modifier_item' => $items[$key],
                     'modifier_price' => $prices[$key],
-                    'modifier_group_id' => $saveId
+                    'modifier_group_id' => $id
                 ]);
             }
 
@@ -93,7 +94,7 @@ class Modifier extends Controller
         }
 
         $data = [
-            'title' => 'modifier',
+            'title' => $this->title,
             'time' => $this->time,
             'modifier' => $this->modifierGroup->find($id),
             'modifierItems' => $this->modifier->where('modifier_group_id', $id)->findAll()

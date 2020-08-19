@@ -43,7 +43,7 @@
                     </a>
                     <a class="nav-link <?= $title == 'addon' ? 'active' : ''; ?>" href="/addon">
                         <div class="nav-link-icon"><i data-feather="plus-square"></i></div>
-                        Add-Ons
+                        Addon
                     </a>
                     <a class="nav-link <?= $title == 'customers' ? 'active' : ''; ?>" href="/customer">
                         <div class="nav-link-icon"><i data-feather="users"></i></div>

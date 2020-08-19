@@ -48,7 +48,7 @@
                                                         $modifierItems = $modifierModel->where('modifier_group_id', $modifier['modifier_group_id'])->findAll();
                                                         ?>
                                                         <?php foreach ($modifierItems as $item) : ?>
-                                                            <span class="badge badge-pill badge-success"> <?= $item['modifier_item']; ?></span>
+                                                            <span class="badge badge-pill badge-success"> <?= $item['modifier_item'] . ($item['modifier_price'] > 0 ? ' - $' . number_format($item['modifier_price'], 2, '.', '') : '') ?></span><br>
                                                         <?php endforeach; ?>
                                                     <td>
 

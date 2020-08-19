@@ -10,27 +10,28 @@ use CodeIgniter\I18n\Time;
 class User extends Controller
 {
 
-    var $db = null;
+    var $db, $title, $time, $user = null;
 
     public function __construct()
     {
         $this->db = db_connect();
+        $this->title = 'Users';
+        $this->time = new Time('now', 'America/Chicago', 'en_US');
+        $this->user = new UserModel();
     }
 
     public function index()
     {
-
         $builder = $this->db->table('users');
         $builder->select('*');
         $builder->join('restaurants', 'restaurants.rest_id = users.user_rest');
         $query = $builder->get();
 
         $data = [
-            'title' => 'users',
+            'title' => $this->title,
             'users'  => $query->getResult(),
-            'time' => new Time('now', 'America/Chicago', 'en_US')
+            'time' => $this->time
         ];
-
 
         echo view('templates/header', $data);
         echo view('templates/nav', $data);
@@ -38,29 +39,13 @@ class User extends Controller
         echo view('templates/footer');
     }
 
-    public function view($id = null)
-    {
-        $user = new UserModel();
-        $data['user'] = $user->getUser($id);
-
-        if (empty($data['user'])) {
-            throw new \CodeIgniter\Exceptions\PageNotFoundException('Cannot find the user item: ' . $id);
-        }
-
-        // echo view('templates/header', $data);
-        // echo view('news/view', $data);
-        // echo view('templates/footer', $data);
-    }
-
     public function create()
     {
         if ($this->request->getVar()) {
-            $user = new UserModel();
-
-            $user->save([
+            $this->user->insert([
                 'user_name' => $this->request->getVar('name'),
                 'user_email' => $this->request->getVar('email'),
-                'user_password' => $this->request->getVar('password'),
+                'user_password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
                 'user_role' => $this->request->getVar('role'),
                 'user_rest' => $this->request->getVar('branch')
             ]);
@@ -68,10 +53,9 @@ class User extends Controller
             return redirect()->to('/user');
         }
 
-
         $data = [
-            'title' => 'users',
-            'time' => new Time('now', 'America/Chicago', 'en_US')
+            'title' => $this->title,
+            'time' => $this->time
         ];
 
         echo view('templates/header', $data);
@@ -82,25 +66,23 @@ class User extends Controller
 
     public function update($id = null)
     {
-        $user = new UserModel();
-
         if ($this->request->getVar()) {
             $data = [
                 'user_name' => $this->request->getVar('name'),
                 'user_email' => $this->request->getVar('email'),
-                'user_password' => $this->request->getVar('password'),
+                'user_password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
                 'user_role' => $this->request->getVar('role'),
                 'user_rest' => $this->request->getVar('branch')
             ];
-            $user->update($id, $data);
+            $this->user->update($id, $data);
 
             return redirect()->to('/user');
         }
 
         $data = [
-            'title' => 'users',
-            'time' => new Time('now', 'America/Chicago', 'en_US'),
-            'user' => $user->find($id)
+            'title' => $this->title,
+            'time' => $this->time,
+            'user' => $this->user->find($id)
         ];
 
         echo view('templates/header', $data);
@@ -111,8 +93,7 @@ class User extends Controller
 
     public function delete($id = null)
     {
-        $user = new UserModel();
-        $user->delete($id);
+        $this->user->delete($id);
         return redirect()->to('/user');
     }
 
@@ -126,7 +107,6 @@ class User extends Controller
     public function login()
     {
         $session = session();
-        $userModel = new UserModel();
         $err = ['msg' => 'Error: Invalid email or password, Try again!'];
         $sessionVal = ['user_name', 'user_rest', 'user_role'];
 
@@ -135,13 +115,12 @@ class User extends Controller
         }
 
         if ($this->request->getVar('email') && $this->request->getVar('password')) {
-            $user = $userModel->where([
+            $user = $this->user->where([
                 'user_email' => $this->request->getVar('email'),
-                'user_password' => $this->request->getVar('password')
             ])
                 ->first();
 
-            if (!$user) {
+            if (!password_verify($this->request->getVar('password'), $user['user_password'])) {
                 return view('user/user_login', $err);
             }
 
