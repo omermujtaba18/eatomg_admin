@@ -11,19 +11,17 @@
                 <div class="col-lg-12">
                     <div class="card card-header-actions mb-4">
                         <div class="card-header"><?= esc(ucfirst($title)); ?>
-                            <a class="btn btn-primary btn-sm" href="/order/create">Add a new order</a>
                         </div>
                         <div class="card-body">
                             <div class="datatable table-responsive">
-                                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered table-hover" id="dataTableOrder" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>Order#</th>
-                                            <th>Customer</th>
+                                            <th>Customer Name</th>
+                                            <th>Placed At</th>
+                                            <th>Pickup At</th>
                                             <th>Restaurant</th>
-                                            <th>Ordered On</th>
-                                            <th>Delivered On</th>
-                                            <th>Total</th>
                                             <th>Status</th>
                                             <th>Action</th>
                                         </tr>
@@ -32,15 +30,17 @@
 
                                         <?php if (!empty($orders)) : ?>
 
-                                            <?php foreach ($orders as $order) : ?>
+                                            <?php foreach ($orders as $order) :
+                                                $placed_at = new DateTime($order->placed_at);
+                                                $deliver_at = new DateTime($order->deliver_at);
 
+                                            ?>
                                                 <tr>
                                                     <td><?= esc($order->order_num); ?></td>
                                                     <td><?= esc($order->cus_name); ?></td>
+                                                    <td><?= esc($placed_at->format('h:i A')); ?></td>
+                                                    <td><?= esc($deliver_at->format('h:i A')); ?></td>
                                                     <td><?= esc($order->rest_name); ?></td>
-                                                    <td><?= esc($order->order_placed_time); ?></td>
-                                                    <td><?= esc($order->order_delivery_time); ?></td>
-                                                    <td><?= esc($order->order_total); ?></td>
                                                     <td>
                                                         <?php if ($order->order_status == "Pending") : ?>
                                                             <div class="badge badge-warning badge-pill"><?= esc($order->order_status); ?></div>

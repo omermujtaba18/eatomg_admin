@@ -49,6 +49,10 @@
                         <div class="nav-link-icon"><i data-feather="users"></i></div>
                         Customers
                     </a>
+                    <a class="nav-link <?= $title == 'promotion' ? 'active' : ''; ?>" href="/promotion">
+                        <div class="nav-link-icon"><i data-feather="dollar-sign"></i></div>
+                        Promotion
+                    </a>
                     <!-- <div class="sidenav-menu-heading">RESTAURANT</div>
                         <a class="nav-link collapsed" href="javascript:void(0);" data-toggle="collapse"
                             data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">

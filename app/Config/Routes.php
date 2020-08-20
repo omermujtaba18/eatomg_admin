@@ -32,6 +32,11 @@ $routes->setAutoRoute(false);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 
+$routes->add('promotion/(:alpha)/(:num)', 'Promotion::$1/$2');
+$routes->match(['get', 'post'], 'promotion/create', 'Promotion::create');
+$routes->get('promotion/(:num)', 'Promotion::view/$1');
+$routes->get('promotion', 'Promotion::index');
+
 $routes->add('modifier/(:alpha)/(:num)', 'Modifier::$1/$2');
 $routes->match(['get', 'post'], 'modifier/create', 'Modifier::create');
 $routes->get('modifier/(:num)', 'Modifier::view/$1');

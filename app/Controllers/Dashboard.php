@@ -58,13 +58,13 @@ class Dashboard extends Controller
 
         if (!is_null($val)) {
             for ($i = 1; $i < 13; $i++) {
-                $query = $this->db->query('SELECT SUM(order_total) as s FROM eatomg.orders WHERE rest_id = ' . $val . ' AND YEAR(order_placed_time) = 2020 AND MONTH(order_placed_time) = ' . $i);
+                $query = $this->db->query('SELECT SUM(order_total) as s FROM eatomg.orders WHERE rest_id = ' . $val . ' AND YEAR(placed_at) = 2020 AND MONTH(placed_at) = ' . $i);
                 $row = $query->getFirstRow();
                 array_push($monthlyDataArray, round($row->s, 2));
             }
         } else {
             for ($i = 1; $i < 13; $i++) {
-                $query = $this->db->query('SELECT SUM(order_total) as s FROM eatomg.orders WHERE YEAR(order_placed_time) = 2020 AND MONTH(order_placed_time) = ' . $i);
+                $query = $this->db->query('SELECT SUM(order_total) as s FROM eatomg.orders WHERE YEAR(placed_at) = 2020 AND MONTH(placed_at) = ' . $i);
                 $row = $query->getFirstRow();
                 array_push($monthlyDataArray, round($row->s, 2));
             }
@@ -113,7 +113,8 @@ class Dashboard extends Controller
     public function getTimingData()
     {
         $labels = [
-            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
+            '12AM', '1AM', '2AM', '3AM', '4AM', '5AM', '6AM', '7AM', '8AM', '9AM', '10AM', '11AM',
+            '12PM', '1PM', '2PM', '3PM', '4PM', '5PM', '6PM', '7PM', '8PM', '9PM', '10PM', '11PM'
         ];
         $data = array_fill(0, 24, 0);
 
@@ -124,9 +125,9 @@ class Dashboard extends Controller
         $tommorow = $time->setTime(0, 0, 0);
 
         $query = "SELECT 
-        HOUR(order_placed_time) 'hr', COUNT(DISTINCT order_id) 'count'
+        HOUR(placed_at) 'hr', COUNT(DISTINCT order_id) 'count'
         FROM eatomg.orders
-        WHERE order_placed_time BETWEEN '$today' AND '$tommorow'
+        WHERE placed_at BETWEEN '$today' AND '$tommorow'
         GROUP BY hr;";
 
         $query = $this->db->query($query);
@@ -136,6 +137,9 @@ class Dashboard extends Controller
             $data[intval($val->hr)] = $val->count;
         }
         $max = max($data);
+        $labels = array_slice($labels, 8, 23);
+        $data = array_slice($data, 8, 23);
+
         $data = [$labels, $data, $max];
         echo json_encode($data);
     }

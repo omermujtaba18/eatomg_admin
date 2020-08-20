@@ -62,7 +62,15 @@ var myBarChart = new Chart(ctx, {
                     drawBorder: false
                 },
                 ticks: {
-                    maxTicksLimit: 6
+                    maxTicksLimit: 6,
+                    callback: function (label) {
+                        if (/\s/.test(label)) {
+                            return label.split(" ");
+                        } else {
+                            return label;
+                        }
+                    }
+
                 },
                 maxBarThickness: 25
             }],

@@ -5,18 +5,25 @@ namespace App\Controllers;
 use App\Models\CategoryModel;
 use App\Models\CustomerModel;
 use App\Models\OrderModel;
+use App\Models\OrderItemModifierModel;
+use App\Models\OrderItemAddonModel;
+
 use CodeIgniter\Controller;
 use CodeIgniter\I18n\Time;
 
 class Order extends Controller
 {
 
-    var $db = null;
+    var $db, $order_item_modifier, $order_item_addon, $order = null;
 
     public function __construct()
     {
         $this->db = db_connect();
+        $this->order_item_modifier = new OrderItemModifierModel();
+        $this->order_item_addon = new OrderItemAddonModel();
+        $this->order = new OrderModel();
     }
+
 
     public function index()
     {
@@ -40,26 +47,51 @@ class Order extends Controller
 
     public function view($id = null)
     {
-        $info = $this->db->table('orders');
-        $info->select('*');
-        $info->where('order_num', $id);
-        $info->join('restaurants', 'restaurants.rest_id = orders.rest_id');
-        $info->join('customers', 'customers.cus_id = orders.cus_id');
-        $queryInfo = $info->get();
+        $order = $this->db->table('orders');
+        $order = $order->select('*')->where('order_num', $id)
+            ->join('restaurants', 'restaurants.rest_id = orders.rest_id')
+            ->join('customers', 'customers.cus_id = orders.cus_id')->get();
+        $order = $order->getResult('array')[0];
+        unset($order['cus_email'], $order['cus_password'],
+        $order['cus_dob'], $order['has_register'],
+        $order['rest_location'], $order['rest_id'],
+        $order['is_complete'], $order['order_payment_type'],
+        $order['cus_country'], $order['cus_zip']);
 
-        $orderItems = $this->db->table('order_items');
-        $orderItems->select('*');
-        $orderItems->where('order_num', $id);
-        $orderItems->join('items', 'items.item_id = order_items.item_id');
-        $queryOrderItems = $orderItems->get();
+        $data['order'] = $order;
 
-        $data = [
-            'title' => 'orders',
-            'time' => new Time('now', 'America/Chicago', 'en_US'),
-            'id' => $id,
-            'info' => $queryInfo->getResult(),
-            'items' => $queryOrderItems->getResult()
-        ];
+
+        $items = $this->db->table('order_items');
+        $items = $items->select('order_items.order_item_id,order_items.order_item_quantity,items.item_name,items.item_price')
+            ->where('order_id', $order['order_id'])
+            ->join('items', 'items.item_id = order_items.item_id')->get();
+        $items = $items->getResult('array');
+
+        $data['items'] = $items;
+
+        $items_modified = [];
+        foreach ($items as $item) {
+            $modifier = $this->db->table('order_item_modifiers');
+            $modifier = $modifier->select('modifiers.modifier_item,modifiers.modifier_price')->where('order_item_id', $item['order_item_id'])
+                ->join('modifier_group', 'modifier_group.modifier_group_id = order_item_modifiers.modifier_group_id')
+                ->join('modifiers', 'modifiers.modifier_id = order_item_modifiers.modifier_id')->get();
+            $modifier = $modifier->getResult('array');
+            $item['modifier'] = $modifier;
+
+            $addon = $this->db->table('order_item_addons');
+            $addon = $addon->select('addon.addon_item,addon.addon_price')->where('order_item_id', $item['order_item_id'])
+                ->join('addon_group', 'addon_group.addon_group_id = order_item_addons.addon_group_id')
+                ->join('addon', 'addon.addon_id = order_item_addons.addon_id')->get();
+            $addon = $addon->getResult('array');
+            $item['addon'] = $addon;
+
+            array_push($items_modified, $item);
+        }
+
+        $data['items'] = $items_modified;
+        $data['title'] = 'orders';
+        $data['time'] = new Time('now', 'America/Chicago', 'en_US');
+        $data['id'] = $id;
 
         echo view('templates/header', $data);
         echo view('templates/nav', $data);
@@ -70,18 +102,23 @@ class Order extends Controller
 
     public function edit($id = null)
     {
-        $order = new OrderModel();
-        if ($this->request->getVar('status')) {
-            $data = [
-                'order_status' => $this->request->getVar('status'),
-            ];
-            $order->update($id, $data);
+        $request = $this->request->getGet();
 
-            return redirect()->to('/order/view/' . $this->request->getVar('num'));
+        if (!empty($id) && !empty($request['status'])) {
+            $data = [
+                'order_id' => $id,
+                'order_status' => $request['status'],
+            ];
+            if ($request['status'] == "Delivered") {
+                $data['is_complete'] = 1;
+            }
+            $this->order->save($data);
+            return redirect()->to('/order/view/' . $request['num']);
         }
         return redirect()->to('/order');
     }
 
+    //Useless method
     public function create()
     {
         $customerModel = new CustomerModel();
