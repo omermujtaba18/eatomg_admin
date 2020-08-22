@@ -81,6 +81,26 @@ $routes->get('dashboard/getTimingData', 'Dashboard::getTimingData');
 $routes->get('dashboard/(:any)', 'Dashboard::view/$1');
 $routes->get('dashboard', 'Dashboard::index');
 
+$routes->add('inventory/category/(:alpha)/(:num)', 'InventoryCategory::$1/$2');
+$routes->match(['get', 'post'], 'inventory/category/create', 'InventoryCategory::create');
+$routes->get('inventory/category/(:num)', 'InventoryCategory::view/$1');
+$routes->get('inventory/category/', 'InventoryCategory::index');
+
+$routes->add('inventory/distributor/(:alpha)/(:num)', 'InventoryDistributor::$1/$2');
+$routes->match(['get', 'post'], 'inventory/distributor/create', 'InventoryDistributor::create');
+$routes->get('inventory/distributor/(:num)', 'InventoryDistributor::view/$1');
+$routes->get('inventory/distributor/', 'InventoryDistributor::index');
+
+$routes->add('inventory/(:alpha)/(:num)', 'Inventory::$1/$2');
+$routes->match(['get', 'post'], 'inventory/create', 'Inventory::create');
+$routes->get('inventory/(:num)', 'Inventory::view/$1');
+$routes->get('inventory/', 'Inventory::index');
+
+$routes->add('inventory/recipe/(:alpha)/(:num)', 'Recipe::$1/$2');
+$routes->match(['get', 'post'], 'inventory/recipe/create', 'Recipe::create');
+$routes->get('inventory/recipe/(:num)', 'Recipe::view/$1');
+$routes->get('inventory/recipe/', 'Recipe::index');
+
 $routes->get('/', 'User::login');
 
 /**

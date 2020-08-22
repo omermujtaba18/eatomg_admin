@@ -4,7 +4,6 @@
             <div class="d-flex justify-content-between align-items-sm-center flex-column flex-sm-row mb-4">
                 <div class="mr-4 mb-3 mb-sm-0">
                     <h1 class="mb-0"><?= esc(ucfirst($title)); ?></h1>
-                    <div class="small"><span class="font-weight-500 text-primary"></div>
                     <div class="small"><span class="font-weight-500 text-primary"><?= $time->toLocalizedString('EEEE') ?></span> &middot; <?= $time->toLocalizedString('MMMM d, yyyy') ?> &middot; <?= $time->toLocalizedString('hh:mm aaa') ?></div>
                 </div>
                 <!-- <div class="dropdown">
@@ -140,89 +139,5 @@
                     </div>
                 </div>
             </div>
-
-            <!-- <div class="row">
-                <div class="col-lg-12">
-                    <div class="card mb-4">
-                        <div class="card-header">Recent Orders</div>
-                        <div class="card-body">
-                            <div class="datatable table-responsive">
-                                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>Order ID</th>
-                                            <th>Customer Name</th>
-                                            <th>Restaurant</th>
-                                            <th>Placed On</th>
-                                            <th>Deliver At</th>
-                                            <th>Amount</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>12345678</td>
-                                            <td>Garrett Winters</td>
-                                            <td>North Eve.</td>
-                                            <td>26/06/2020 12:58 PM</td>
-                                            <td>26/06/2020 12:58 PM</td>
-                                            <td>$100</td>
-                                            <td>
-                                                <div class="badge badge-green badge-pill">Delivered</div>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-datatable btn-icon btn-transparent-dark mr-2"><i data-feather="more-vertical"></i></button><button class="btn btn-datatable btn-icon btn-transparent-dark"><i data-feather="trash-2"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>12345678</td>
-                                            <td>Shawn Pollock</td>
-                                            <td>North Eve.</td>
-                                            <td>26/06/2020 12:58 PM</td>
-                                            <td>26/06/2020 12:58 PM</td>
-                                            <td>$100</td>
-                                            <td>
-                                                <div class="badge badge-warning badge-pill">Pending</div>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-datatable btn-icon btn-transparent-dark mr-2"><i data-feather="more-vertical"></i></button><button class="btn btn-datatable btn-icon btn-transparent-dark"><i data-feather="trash-2"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>12345678</td>
-                                            <td>Steve Landers</td>
-                                            <td>North Eve.</td>
-                                            <td>26/06/2020 12:58 PM</td>
-                                            <td>26/06/2020 12:58 PM</td>
-                                            <td>$100</td>
-                                            <td>
-                                                <div class="badge badge-secondary">Preparing</div>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-datatable btn-icon btn-transparent-dark mr-2"><i data-feather="more-vertical"></i></button><button class="btn btn-datatable btn-icon btn-transparent-dark"><i data-feather="trash-2"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>12345678</td>
-                                            <td>Britney Paul</td>
-                                            <td>Evanston</td>
-                                            <td>26/06/2020 12:58 PM</td>
-                                            <td>26/06/2020 12:58 PM</td>
-                                            <td>$100</td>
-                                            <td>
-                                                <div class="badge badge-danger badge-pill">Cancelled</div>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-datatable btn-icon btn-transparent-dark mr-2"><i data-feather="more-vertical"></i></button><button class="btn btn-datatable btn-icon btn-transparent-dark"><i data-feather="trash-2"></i></button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
     </main>
 </div>

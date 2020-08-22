@@ -10,7 +10,7 @@ use CodeIgniter\I18n\Time;
 class User extends Controller
 {
 
-    var $db, $title, $time, $user = null;
+    var $db, $title, $time, $user, $session = null;
 
     public function __construct()
     {
@@ -18,6 +18,7 @@ class User extends Controller
         $this->title = 'Users';
         $this->time = new Time('now', 'America/Chicago', 'en_US');
         $this->user = new UserModel();
+        $this->session = session();
     }
 
     public function index()
@@ -99,18 +100,14 @@ class User extends Controller
 
     public function logout()
     {
-        $session = session();
-        $session->destroy();
+        $this->session->destroy();
         return redirect()->to('/user/login');
     }
 
     public function login()
     {
-        $session = session();
         $err = ['msg' => 'Error: Invalid email or password, Try again!'];
-        $sessionVal = ['user_name', 'user_rest', 'user_role'];
-
-        if ($session->has('user_name') && $session->has('user_rest')) {
+        if ($this->session->has('user_name') && $this->session->has('user_rest')) {
             return redirect()->to('/dashboard');
         }
 
@@ -124,10 +121,7 @@ class User extends Controller
                 return view('user/user_login', $err);
             }
 
-            $session->set($sessionVal[0], $user['user_name']);
-            $session->set($sessionVal[1], $user['user_rest']);
-            $session->set($sessionVal[2], $user['user_role']);
-
+            $this->session->set($user);
             return redirect()->to('/dashboard');
         }
         echo view('user/user_login');
