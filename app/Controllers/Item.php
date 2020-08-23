@@ -61,10 +61,19 @@ class Item extends Controller
                 'item_name' => $this->request->getPost('name'),
                 'item_desc' => $this->request->getPost('desc'),
                 'item_price' => $this->request->getPost('price'),
-                'category_id' => $this->request->getPost('category'),
+                'category_id' => '1',
                 'item_status' => $this->request->getPost('status'),
                 'item_slug' => str_replace(" ", "-", trim(strtolower($this->request->getPost('name'))))
             ]);
+
+            $file = $this->request->getFile('image');
+            if (!empty($file)) {
+                $fileName = $file->getRandomName();
+                $move = $file->move(ROOTPATH . 'public/assets/uploads/', $fileName);
+                if ($move) {
+                    $this->item->save(['item_id' => $saveId, 'item_pic' => base_url() . '/assets/uploads/' . $fileName]);
+                }
+            }
 
             $item_modifiers = !empty($this->request->getPost("modifier")) ? $this->request->getPost("modifier") : NULL;
             $item_addons = !empty($this->request->getPost("addon")) ? $this->request->getPost("addon") : NULL;
@@ -89,6 +98,7 @@ class Item extends Controller
 
             return redirect()->to('/item');
         }
+
 
         $data = [
             'title' => $this->title,
@@ -116,6 +126,15 @@ class Item extends Controller
                 'item_status' => $this->request->getPost('status'),
                 'item_slug' => str_replace(" ", "-", trim(strtolower($this->request->getPost('name'))))
             ]);
+
+            $file = $this->request->getFile('image');
+            if (!empty($file)) {
+                $fileName = $file->getRandomName();
+                $move = $file->move(ROOTPATH . 'public/assets/uploads/', $fileName);
+                if ($move) {
+                    $this->item->save(['item_id' => $id, 'item_pic' => base_url() . '/assets/uploads/' . $fileName]);
+                }
+            }
 
             $this->itemModifier->where('item_id', $id)->delete();
             $this->itemAddon->where('item_id', $id)->delete();

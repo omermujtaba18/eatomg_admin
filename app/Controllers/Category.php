@@ -56,11 +56,11 @@ class Category extends Controller
 
     public function update($id = null)
     {
-        if ($this->request->getVar()) {
+        if ($this->request->getPost()) {
             $data = [
-                'category_name' => $this->request->getVar('name'),
-                'category_desc' => $this->request->getVar('desc'),
-                'category_type' => $this->request->getVar('type')
+                'category_name' => $this->request->getPost('name'),
+                'category_desc' => $this->request->getPost('desc'),
+                'category_type' => $this->request->getPost('type')
             ];
             $this->category->update($id, $data);
 

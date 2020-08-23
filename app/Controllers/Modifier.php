@@ -70,7 +70,7 @@ class Modifier extends Controller
 
     public function update($id = null)
     {
-        if ($this->request->getVar()) {
+        if ($this->request->getPost()) {
             $this->modifierGroup->save([
                 'modifier_group_id' => $id,
                 'modifier_group_name' => $this->request->getPost('name'),

@@ -54,11 +54,11 @@ class InventoryCategory extends Controller
 
     public function update($id = null)
     {
-        if ($this->request->getVar()) {
+        if ($this->request->getPost()) {
             $this->inventory_category->save(
                 [
                     'inventory_category_id' => $id,
-                    'inventory_category_name' => $this->request->getVar('name')
+                    'inventory_category_name' => $this->request->getPost('name')
                 ]
             );
             return redirect()->to('/inventory/category');

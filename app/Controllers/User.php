@@ -42,13 +42,13 @@ class User extends Controller
 
     public function create()
     {
-        if ($this->request->getVar()) {
+        if ($this->request->getPost()) {
             $this->user->insert([
-                'user_name' => $this->request->getVar('name'),
-                'user_email' => $this->request->getVar('email'),
-                'user_password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
-                'user_role' => $this->request->getVar('role'),
-                'user_rest' => $this->request->getVar('branch')
+                'user_name' => $this->request->getPost('name'),
+                'user_email' => $this->request->getPost('email'),
+                'user_password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+                'user_role' => $this->request->getPost('role'),
+                'user_rest' => $this->request->getPost('branch')
             ]);
 
             return redirect()->to('/user');
@@ -67,13 +67,13 @@ class User extends Controller
 
     public function update($id = null)
     {
-        if ($this->request->getVar()) {
+        if ($this->request->getPost()) {
             $data = [
-                'user_name' => $this->request->getVar('name'),
-                'user_email' => $this->request->getVar('email'),
-                'user_password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
-                'user_role' => $this->request->getVar('role'),
-                'user_rest' => $this->request->getVar('branch')
+                'user_name' => $this->request->getPost('name'),
+                'user_email' => $this->request->getPost('email'),
+                'user_password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+                'user_role' => $this->request->getPost('role'),
+                'user_rest' => $this->request->getPost('branch')
             ];
             $this->user->update($id, $data);
 
@@ -111,13 +111,13 @@ class User extends Controller
             return redirect()->to('/dashboard');
         }
 
-        if ($this->request->getVar('email') && $this->request->getVar('password')) {
+        if ($this->request->getPost('email') && $this->request->getPost('password')) {
             $user = $this->user->where([
-                'user_email' => $this->request->getVar('email'),
+                'user_email' => $this->request->getPost('email'),
             ])
                 ->first();
 
-            if (!password_verify($this->request->getVar('password'), $user['user_password'])) {
+            if (!password_verify($this->request->getPost('password'), $user['user_password'])) {
                 return view('user/user_login', $err);
             }
 

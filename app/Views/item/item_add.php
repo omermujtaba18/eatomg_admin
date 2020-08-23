@@ -14,9 +14,8 @@
                             <a class="btn btn-primary btn-sm" href="/item">Back</a>
                         </div>
 
-
                         <div class="card-body">
-                            <form class="col-7" method="post">
+                            <form class="col-7" method="post" enctype="multipart/form-data">
                                 <h2>Item Details</h2>
                                 <hr>
                                 <div class="form-group">

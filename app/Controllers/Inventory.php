@@ -71,7 +71,7 @@ class Inventory extends Controller
 
     public function update($id = null)
     {
-        if ($this->request->getVar()) {
+        if ($this->request->getPost()) {
             $this->inventory->save([
                 'inventory_id' => $id,
                 'inventory_code' => $this->request->getPost('code'),

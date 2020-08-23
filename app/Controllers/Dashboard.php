@@ -26,10 +26,11 @@ class Dashboard extends Controller
         $query = $this->db->query('SELECT count(rest_id), rest_id FROM orders GROUP BY rest_id ORDER BY count(rest_id) DESC');
         $row = $query->getFirstRow();
 
-        $restT = $this->db->table('restaurants');
-        $restT->where('rest_id', $row->rest_id);
-        $restName = $restT->get()->getResult()[0]->rest_name;
-
+        if (!empty($row)) {
+            $restT = $this->db->table('restaurants');
+            $restT->where('rest_id', $row->rest_id);
+            $restName = $restT->get()->getResult()[0]->rest_name;
+        }
 
         $data = [
             'title' => 'overview',
@@ -37,7 +38,7 @@ class Dashboard extends Controller
             'total' => round($total->getResult()[0]->order_total, 2),
             'average' => round($average->getResult()[0]->order_total, 2),
             'totalOrders' => $orderT->countAll(),
-            'topRest' => $restName
+            'topRest' => !empty($restName) ? $restName : NULL
         ];
 
 
