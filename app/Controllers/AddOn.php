@@ -47,10 +47,21 @@ class AddOn extends Controller
             $prices = $this->request->getPost("price");
 
             foreach ($items as $key => $value) {
+                $file = $this->request->getFile('image.' . $key);
+                $path = "";
+                if (!empty($file) && $file->isValid()) {
+                    $fileName = $file->getRandomName();
+                    $move = $file->move(ROOTPATH . 'public/assets/uploads/', $fileName);
+                    if ($move) {
+                        $path = base_url() . '/assets/uploads/' . $fileName;
+                    }
+                }
+
                 $this->addon->save([
                     'addon_item' => $items[$key],
                     'addon_price' => $prices[$key],
-                    'addon_group_id' => $saveId
+                    'addon_group_id' => $saveId,
+                    'addon_pic' => $path
                 ]);
             }
 
@@ -84,10 +95,22 @@ class AddOn extends Controller
             $this->addon->where('addon_group_id', $id)->delete();
 
             foreach ($items as $key => $value) {
+
+                $file = $this->request->getFile('image.' . $key);
+                $path = "";
+                if (!empty($file) && $file->isValid()) {
+                    $fileName = $file->getRandomName();
+                    $move = $file->move(ROOTPATH . 'public/assets/uploads/', $fileName);
+                    if ($move) {
+                        $path = base_url() . '/assets/uploads/' . $fileName;
+                    }
+                }
+
                 $this->addon->save([
                     'addon_item' => $items[$key],
                     'addon_price' => $prices[$key],
-                    'addon_group_id' => $id
+                    'addon_group_id' => $id,
+                    'addon_pic' => $path
                 ]);
             }
 

@@ -39,7 +39,7 @@ class Promotion extends Controller
                 'promo_name' => $this->request->getPost('name'),
                 'promo_code' => trim($this->request->getPost('code')),
                 'promo_type' => trim($this->request->getPost('type')),
-                'promo_amount' => trim($this->request->getPost('amount')),
+                'promo_amount' => trim($this->request->getPost('type') == 'percent' ? ($this->request->getPost('amount') / 100) : $this->request->getPost('amount')),
                 'is_active' => trim($this->request->getPost('active')),
             ]);
 
@@ -65,7 +65,7 @@ class Promotion extends Controller
                 'promo_name' => $this->request->getPost('name'),
                 'promo_code' => trim($this->request->getPost('code')),
                 'promo_type' => trim($this->request->getPost('type')),
-                'promo_amount' => trim($this->request->getPost('amount')),
+                'promo_amount' => trim($this->request->getPost('type') == 'percent' ? ($this->request->getPost('amount') / 100) : $this->request->getPost('amount')),
                 'is_active' => trim($this->request->getPost('active')),
             ]);
 

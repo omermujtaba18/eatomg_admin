@@ -47,10 +47,21 @@ class Modifier extends Controller
             $prices = $this->request->getPost("price");
 
             foreach ($items as $key => $value) {
+                $file = $this->request->getFile('image.' . $key);
+                $path = "";
+                if (!empty($file) && $file->isValid()) {
+                    $fileName = $file->getRandomName();
+                    $move = $file->move(ROOTPATH . 'public/assets/uploads/', $fileName);
+                    if ($move) {
+                        $path = base_url() . '/assets/uploads/' . $fileName;
+                    }
+                }
+
                 $this->modifier->save([
                     'modifier_item' => $items[$key],
                     'modifier_price' => $prices[$key],
-                    'modifier_group_id' => $saveId
+                    'modifier_group_id' => $saveId,
+                    'modifier_pic' => $path
                 ]);
             }
 
@@ -71,6 +82,7 @@ class Modifier extends Controller
     public function update($id = null)
     {
         if ($this->request->getPost()) {
+
             $this->modifierGroup->save([
                 'modifier_group_id' => $id,
                 'modifier_group_name' => $this->request->getPost('name'),
@@ -83,10 +95,22 @@ class Modifier extends Controller
             $this->modifier->where('modifier_group_id', $id)->delete();
 
             foreach ($items as $key => $value) {
+
+                $file = $this->request->getFile('image.' . $key);
+                $path = "";
+                if (!empty($file) && $file->isValid()) {
+                    $fileName = $file->getRandomName();
+                    $move = $file->move(ROOTPATH . 'public/assets/uploads/', $fileName);
+                    if ($move) {
+                        $path = base_url() . '/assets/uploads/' . $fileName;
+                    }
+                }
+
                 $this->modifier->save([
                     'modifier_item' => $items[$key],
                     'modifier_price' => $prices[$key],
-                    'modifier_group_id' => $id
+                    'modifier_group_id' => $id,
+                    'modifier_pic' => $path
                 ]);
             }
 

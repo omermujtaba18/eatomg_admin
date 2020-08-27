@@ -27,14 +27,14 @@
                                 <div class="form-group">
                                     <label>Type</label>
                                     <select class="form-control form-control-solid col-6" name="type">
-                                        <option value="flat">Flat discount</option>
-                                        <option value="percent">Percent discount</option>
+                                        <option value="flat" <?= isset($promotion['promo_type']) && $promotion['promo_type'] == 'flat' ? 'selected' : ''; ?>>Flat discount</option>
+                                        <option value="percent" <?= isset($promotion['promo_type']) && $promotion['promo_type'] == 'percent' ? 'selected' : ''; ?>>Percent discount</option>
                                     </select>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="name">Amount ($ or %)</label>
-                                    <input class="form-control form-control-solid col-6" step="0.01" type="number" placeholder="" name="amount" value="<?= isset($promotion['promo_amount']) ? $promotion['promo_amount'] * 100 : ''; ?>" required>
+                                    <input class="form-control form-control-solid col-6" step="0.01" type="number" placeholder="" name="amount" value="<?= isset($promotion['promo_amount']) ?  ($promotion['promo_type'] == 'percent' ?  $promotion['promo_amount'] * 100 : $promotion['promo_amount']) : ''; ?>" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Active</label>
@@ -45,7 +45,7 @@
                                 </div>
                                 <hr class="mt-5">
                                 <div class="form-group">
-                                    <button class="btn btn-primary" type="submit"><?= isset($modifier) ? 'Update promotion' : 'Create promotion' ?></button>
+                                    <button class="btn btn-primary" type="submit"><?= isset($promotion) ? 'Update promotion' : 'Create promotion' ?></button>
                                 </div>
                             </form>
                         </div>

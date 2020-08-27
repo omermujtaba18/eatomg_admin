@@ -15,7 +15,7 @@
                         </div>
 
                         <div class="card-body">
-                            <form method="post">
+                            <form method="post" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <label for="name">Name</label>
                                     <input class="form-control form-control-solid col-6" type="text" placeholder="e.g step-1-plate" name="name" value="<?= isset($modifier['modifier_group_name']) ? $modifier['modifier_group_name'] : ''; ?>" required>
@@ -24,22 +24,34 @@
                                     <label for="name">Instruction</label>
                                     <input class="form-control form-control-solid col-6" type="text" placeholder="e.g Pick a protein" name="instruction" value="<?= isset($modifier['modifier_group_instruct']) ? $modifier['modifier_group_instruct'] : ''; ?>" required>
                                 </div>
-                                <div class="row mb-2">
-                                    <div class="col-4">Item</div>
+                                <div class="row mb-2 mt-5">
+                                    <div class="col-1"></div>
+                                    <div class="col-3">Item</div>
                                     <div class="col-2">Price</div>
+                                    <div class="col-4">Choose new image</div>
                                 </div>
 
                                 <?php if (isset($modifier)) {
-                                    foreach ($modifierItems as $item) : ?>
+                                    foreach ($modifierItems as $key => $value) : ?>
                                         <div>
-                                            <div class="row" id="item">
-                                                <div class="form-group col-4">
-                                                    <input class="form-control form-control-solid" type="text" placeholder="" name="item[]" value="<?= isset($item['modifier_item']) ? $item['modifier_item'] : ''; ?>" required>
-                                                </div>
-                                                <div class="form-group col-2">
-                                                    <input class="form-control form-control-solid" type="number" placeholder="" name="price[]" value="<?= isset($item['modifier_price']) ? $item['modifier_price'] : ''; ?>" required>
+                                            <div class="row my-5" id="item">
+                                                <div class="col-1">
+                                                    <img src="<?= $value['modifier_pic'] ?>" width=60 />
                                                 </div>
                                                 <div class="form-group col-3">
+                                                    <input class="form-control form-control-solid" type="text" placeholder="" name="item[]" value="<?= isset($value['modifier_item']) ? $value['modifier_item'] : ''; ?>" required>
+                                                </div>
+                                                <div class="form-group col-2">
+                                                    <input class="form-control form-control-solid" type="number" placeholder="" name="price[]" value="<?= isset($value['modifier_price']) ? $value['modifier_price'] : ''; ?>" required>
+                                                </div>
+                                                <div class="form-group col-4">
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input" name="image[]">
+                                                        <label class="custom-file-label form-control-solid">Choose file...</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group col-2">
                                                     <a class="btn btn-danger text-white btn-sm mt-1" onclick="deleteItem(this)">Delete</a>
                                                 </div>
                                             </div>
@@ -56,12 +68,18 @@
                                                 <input class="form-control form-control-solid" type="number" placeholder="" name="price[]" required>
                                             </div>
                                             <div class="form-group col-3">
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" id="image" name="image[]">
+                                                    <label class="custom-file-label form-control-solid" for="image">Choose file...</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-3">
                                                 <a class="btn btn-danger text-white btn-sm mt-1" onclick="deleteItem(this)">Delete</a>
                                             </div>
                                         </div>
                                     </div>
                                 <?php } ?>
-                                <a class="btn btn-primary text-white btn-sm" onclick="addItem(this)" id="test">+ Add more</a>
+                                <a class="btn btn-primary text-white btn-sm mt-5" onclick="addItem(this)" id="test">+ Add more</a>
 
                                 <hr class="mt-5">
                                 <div class="form-group">
@@ -85,4 +103,8 @@
         new_item = document.querySelector("#item").cloneNode(true)
         item_group = element.previousElementSibling.appendChild(new_item)
     }
+    $('input[type="file"]').change(function(e) {
+        var fileName = e.target.files[0].name;
+        e.target.parentElement.children[1].innerHTML = fileName;
+    });
 </script>

@@ -13,5 +13,6 @@ class AddOnModel extends Model
         'addon_item',
         'addon_price',
         'addon_group_id',
+        'addon_pic'
     ];
 }

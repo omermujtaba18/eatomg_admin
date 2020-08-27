@@ -12,6 +12,7 @@ class ModifierModel extends Model
     protected $allowedFields = [
         'modifier_item',
         'modifier_price',
-        'modifier_group_id'
+        'modifier_group_id',
+        'modifier_pic'
     ];
 }

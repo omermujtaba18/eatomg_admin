@@ -16,7 +16,7 @@
                         </div>
 
                         <div class="card-body">
-                            <form method="post">
+                            <form method="post" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <label for="name">Name</label>
                                     <input class="form-control form-control-solid col-6" id="name" type="text" placeholder="addon-plate" name="name" value="<?= isset($addon['addon_group_name']) ? $addon['addon_group_name'] : ''; ?>" required>
@@ -26,20 +26,31 @@
                                     <input class="form-control form-control-solid col-6" id="instruction" type="text" placeholder="Please select an addon" name="instruction" value="<?= isset($addon['addon_group_instruct']) ? $addon['addon_group_instruct'] : ''; ?>" required>
                                 </div>
 
-                                <div class="row mb-2">
-                                    <div class="col-4">Item</div>
-                                    <div class="col-2">Price ($)</div>
+                                <div class="row mb-2 mt-5">
+                                    <div class="col-1"></div>
+                                    <div class="col-3">Item</div>
+                                    <div class="col-2">Price</div>
+                                    <div class="col-4">Choose new image</div>
                                 </div>
 
                                 <?php if (isset($addon)) {
                                     foreach ($addonItems as $item) : ?>
                                         <div>
-                                            <div class="row" id="item">
-                                                <div class="form-group col-4">
+                                            <div class="row my-5" id="item">
+                                                <div class="col-1">
+                                                    <img src="<?= $value['addon_pic'] ?>" width=60 />
+                                                </div>
+                                                <div class="form-group col-3">
                                                     <input class="form-control form-control-solid" type="text" placeholder="" name="item[]" value="<?= isset($item['addon_item']) ? $item['addon_item'] : ''; ?>" required>
                                                 </div>
                                                 <div class="form-group col-2">
-                                                    <input class="form-control form-control-solid" type="number" placeholder="" name="price[]" value="<?= isset($item['addon_price']) ? number_format($item['addon_price'], 2, '.', '') : ''; ?>" required>
+                                                    <input class="form-control form-control-solid" type="number" step="0.01" placeholder="" name="price[]" value="<?= isset($item['addon_price']) ? number_format($item['addon_price'], 2, '.', '') : ''; ?>" required>
+                                                </div>
+                                                <div class="form-group col-4">
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input" name="image[]">
+                                                        <label class="custom-file-label form-control-solid">Choose file...</label>
+                                                    </div>
                                                 </div>
                                                 <div class="form-group col-3">
                                                     <a class="btn btn-danger text-white btn-sm mt-1" onclick="deleteItem(this)">Delete</a>
@@ -58,12 +69,18 @@
                                                 <input class="form-control form-control-solid" type="number" placeholder="" name="price[]" required>
                                             </div>
                                             <div class="form-group col-3">
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" id="image" name="image[]">
+                                                    <label class="custom-file-label form-control-solid" for="image">Choose file...</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-3">
                                                 <a class="btn btn-danger text-white btn-sm mt-1" onclick="deleteItem(this)">Delete</a>
                                             </div>
                                         </div>
                                     </div>
                                 <?php } ?>
-                                <a class="btn btn-primary text-white btn-sm" onclick="addItem(this)" id="test">+ Add more</a>
+                                <a class="btn btn-primary text-white btn-sm mt-5" onclick="addItem(this)" id="test">+ Add more</a>
 
                                 <hr>
                                 <div class="form-group">
@@ -87,4 +104,9 @@
         new_item = document.querySelector("#item").cloneNode(true)
         item_group = element.previousElementSibling.appendChild(new_item)
     }
+
+    $('input[type="file"]').change(function(e) {
+        var fileName = e.target.files[0].name;
+        e.target.parentElement.children[1].innerHTML = fileName;
+    });
 </script>

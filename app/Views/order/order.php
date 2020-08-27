@@ -14,7 +14,7 @@
                         </div>
                         <div class="card-body">
                             <div class="datatable table-responsive">
-                                <table class="table table-bordered table-hover" id="dataTableOrder" width="100%" cellspacing="0">
+                                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>Order#</th>
@@ -33,7 +33,6 @@
                                             <?php foreach ($orders as $order) :
                                                 $placed_at = new DateTime($order->placed_at);
                                                 $deliver_at = new DateTime($order->deliver_at);
-
                                             ?>
                                                 <tr>
                                                     <td><?= esc($order->order_num); ?></td>
