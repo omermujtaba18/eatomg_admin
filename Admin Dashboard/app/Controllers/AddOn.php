@@ -91,10 +91,16 @@ class AddOn extends Controller
 
             $items = $this->request->getPost("item");
             $prices = $this->request->getPost("price");
-
-            $this->addon->where('addon_group_id', $id)->delete();
+            $ids = $this->request->getPost("id");
 
             foreach ($items as $key => $value) {
+
+                $this->addon->save([
+                    'addon_id' => $ids[$key],
+                    'addon_item' => $items[$key],
+                    'addon_price' => $prices[$key],
+                    'addon_group_id' => $id,
+                ]);
 
                 $file = $this->request->getFile('image.' . $key);
                 $path = "";
@@ -103,15 +109,12 @@ class AddOn extends Controller
                     $move = $file->move(ROOTPATH . 'public/assets/uploads/', $fileName);
                     if ($move) {
                         $path = base_url() . '/assets/uploads/' . $fileName;
+                        $this->addon->save([
+                            'addon_id' => $ids[$key],
+                            'addon_pic' => $path
+                        ]);
                     }
                 }
-
-                $this->addon->save([
-                    'addon_item' => $items[$key],
-                    'addon_price' => $prices[$key],
-                    'addon_group_id' => $id,
-                    'addon_pic' => $path
-                ]);
             }
 
             return redirect()->to('/addon');

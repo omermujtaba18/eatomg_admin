@@ -39,6 +39,7 @@
                                             <div class="row my-5" id="item">
                                                 <div class="col-1">
                                                     <img src="<?= $value['addon_pic'] ?>" width=60 />
+                                                    <input type="hidden" name="id[]" value="<?= $value['addon_id']; ?>">
                                                 </div>
                                                 <div class="form-group col-3">
                                                     <input class="form-control form-control-solid" type="text" placeholder="" name="item[]" value="<?= isset($item['addon_item']) ? $item['addon_item'] : ''; ?>" required>
@@ -66,7 +67,7 @@
                                                 <input class="form-control form-control-solid" type="text" placeholder="" name="item[]" required>
                                             </div>
                                             <div class="form-group col-2">
-                                                <input class="form-control form-control-solid" type="number" placeholder="" name="price[]" required>
+                                                <input class="form-control form-control-solid" type="number" placeholder="" step="0.01" name="price[]" required>
                                             </div>
                                             <div class="form-group col-3">
                                                 <div class="custom-file">

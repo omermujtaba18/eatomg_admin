@@ -53,7 +53,8 @@ class Modifier extends Controller
                     $fileName = $file->getRandomName();
                     $move = $file->move(ROOTPATH . 'public/assets/uploads/', $fileName);
                     if ($move) {
-                        $path = base_url() . '/assets/uploads/' . $fileName;
+                        // $path = base_url() . '/assets/uploads/' . $fileName;
+                        $path =  '/assets/uploads/' . $fileName;
                     }
                 }
 
@@ -91,10 +92,16 @@ class Modifier extends Controller
 
             $items = $this->request->getPost("item");
             $prices = $this->request->getPost("price");
-
-            $this->modifier->where('modifier_group_id', $id)->delete();
+            $ids = $this->request->getPost("id");
 
             foreach ($items as $key => $value) {
+
+                $this->modifier->save([
+                    'modifier_id' => $ids[$key],
+                    'modifier_item' => $items[$key],
+                    'modifier_price' => $prices[$key],
+                    'modifier_group_id' => $id,
+                ]);
 
                 $file = $this->request->getFile('image.' . $key);
                 $path = "";
@@ -102,16 +109,13 @@ class Modifier extends Controller
                     $fileName = $file->getRandomName();
                     $move = $file->move(ROOTPATH . 'public/assets/uploads/', $fileName);
                     if ($move) {
-                        $path = base_url() . '/assets/uploads/' . $fileName;
+                        $path = '/assets/uploads/' . $fileName;
+                        $this->modifier->save([
+                            'modifier_id' => $ids[$key],
+                            'modifier_pic' => $path
+                        ]);
                     }
                 }
-
-                $this->modifier->save([
-                    'modifier_item' => $items[$key],
-                    'modifier_price' => $prices[$key],
-                    'modifier_group_id' => $id,
-                    'modifier_pic' => $path
-                ]);
             }
 
             return redirect()->to('/modifier');
