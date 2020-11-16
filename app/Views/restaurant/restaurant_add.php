@@ -16,10 +16,14 @@
                         </div>
 
                         <div class="card-body">
-                            <form class="col-6" method="post">
+                            <form class="col-6" method="post" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <label for="name">Name</label>
                                     <input class="form-control form-control-solid" type="text" placeholder="" name="name" value="<?= isset($restaurant['rest_name']) ? $restaurant['rest_name'] : ''; ?>" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="description">Description</label>
+                                    <input class="form-control form-control-solid" type="text" placeholder="" name="description" value="<?= isset($restaurant['rest_description']) ? $restaurant['rest_description'] : ''; ?>">
                                 </div>
                                 <div class="form-group">
                                     <label for="address">Address</label>
@@ -30,22 +34,36 @@
                                     <input class="form-control form-control-solid" type="text" placeholder="" name="phone" value="<?= isset($restaurant['rest_phone']) ? $restaurant['rest_phone'] : ''; ?>">
                                 </div>
                                 <div class="form-group">
-                                    <label for="takeout_url">URL</label>
+                                    <label for="takeout_url">Website URL</label>
                                     <input class="form-control form-control-solid" type="text" placeholder="" name="takeout_url" value="<?= isset($restaurant['url']) ? $restaurant['url'] : ''; ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="url_facebook">Facebook URL</label>
+                                    <input class="form-control form-control-solid" type="text" placeholder="" name="url_facebook" value="<?= isset($restaurant['url_facebook']) ? $restaurant['url_facebook'] : ''; ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="url_instagram">Instagram URL</label>
+                                    <input class="form-control form-control-solid" type="text" placeholder="" name="url_instagram" value="<?= isset($restaurant['url_instagram']) ? $restaurant['url_instagram'] : ''; ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="url_twitter">Twitter URL</label>
+                                    <input class="form-control form-control-solid" type="text" placeholder="" name="url_twitter" value="<?= isset($restaurant['url_twitter']) ? $restaurant['url_twitter'] : ''; ?>">
                                 </div>
                                 <div class="form-group">
                                     <label for="type">Type</label>
                                     <select class="form-control form-control-solid" id="type" name="type">
                                         <option value="takeout" <?= isset($restaurant['type']) && $restaurant['type'] == "takeout" ? 'selected' : ''; ?>>Takeout</option>
                                         <option value="catering" <?= isset($restaurant['type'])  && $restaurant['type'] == "catering"  ? 'selected' : ''; ?>>Catering</option>
-                                    </select> </div>
-                                <div class="form-group">
-                                    <label for="api_id">API ID</label>
-                                    <input class="form-control form-control-solid" type="text" placeholder="" name="api_id" value="<?= isset($restaurant['rest_api_id']) ? $restaurant['rest_api_id'] : ''; ?>">
+                                    </select>
+                                </div>
+                                <div class="form-group mb-0">
+                                    <label>Logo</label>
                                 </div>
                                 <div class="form-group">
-                                    <label for="api_key">API Key</label>
-                                    <input class="form-control form-control-solid" type="text" placeholder="" name="api_key" value="<?= isset($restaurant['rest_api_key']) ? $restaurant['rest_api_key'] : ''; ?>">
+                                    <div class="custom-file mb-3">
+                                        <input type="file" class="custom-file-input" id="logo" name="logo">
+                                        <label class="custom-file-label form-control-solid" for="logo">Choose file...</label>
+                                    </div>
                                 </div>
                                 <hr>
                                 <div class="form-group">
@@ -58,3 +76,9 @@
             </div>
     </main>
 </div>
+<script>
+    $('input[type="file"]').change(function(e) {
+        var fileName = e.target.files[0].name;
+        $('.custom-file-label').html(fileName);
+    });
+</script>

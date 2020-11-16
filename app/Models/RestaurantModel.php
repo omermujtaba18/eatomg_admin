@@ -12,10 +12,13 @@ class RestaurantModel extends Model
     protected $allowedFields = [
         'rest_name',
         'rest_address',
-        'rest_api_id',
-        'rest_api_key',
         'rest_phone',
+        'rest_description',
         'url',
-        'type'
+        'type',
+        'url_facebook',
+        'url_twitter',
+        'url_instagram',
+        'logo'
     ];
 }
