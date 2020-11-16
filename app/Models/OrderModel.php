@@ -23,6 +23,7 @@ class OrderModel extends Model
         'order_instruct',
         'rest_id',
         'is_complete',
-        'order_payment_type'
+        'order_payment_type',
+        'payment_id'
     ];
 }

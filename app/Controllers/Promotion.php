@@ -22,7 +22,8 @@ class Promotion extends Controller
         $data = [
             'title' => $this->title,
             'time' => $this->time,
-            'promotions' => $this->promotion->findAll(),
+            'promotions' => $this->promotion->where('rest_id', $this->request->getGet('rest_id'))->findAll(),
+            'rest_id' => $this->request->getGet('rest_id')
         ];
 
         echo view('templates/header', $data);
@@ -41,14 +42,17 @@ class Promotion extends Controller
                 'promo_type' => trim($this->request->getPost('type')),
                 'promo_amount' => trim($this->request->getPost('type') == 'percent' ? ($this->request->getPost('amount') / 100) : $this->request->getPost('amount')),
                 'is_active' => trim($this->request->getPost('active')),
+                'rest_id' => $this->request->getGet('rest_id')
             ]);
 
-            return redirect()->to('/promotion');
+            return redirect()->to('/promotion?rest_id=' . $this->request->getGet('rest_id'));
         }
 
         $data = [
             'title' => $this->title,
             'time' => $this->time,
+            'rest_id' => $this->request->getGet('rest_id')
+
         ];
 
         echo view('templates/header', $data);
@@ -69,13 +73,15 @@ class Promotion extends Controller
                 'is_active' => trim($this->request->getPost('active')),
             ]);
 
-            return redirect()->to('/promotion');
+            return redirect()->to('/promotion?rest_id=' . $this->request->getGet('rest_id'));
         }
 
         $data = [
             'title' => $this->title,
             'time' => $this->time,
             'promotion' => $this->promotion->find($id),
+            'rest_id' => $this->request->getGet('rest_id')
+
         ];
 
         echo view('templates/header', $data);
@@ -87,6 +93,6 @@ class Promotion extends Controller
     public function delete($id = null)
     {
         $this->promotion->where('promo_id', $id)->delete();
-        return redirect()->to('/promotion');
+        return redirect()->to('/promotion?rest_id=' . $this->request->getGet('rest_id'));
     }
 }

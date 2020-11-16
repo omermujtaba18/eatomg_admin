@@ -20,7 +20,7 @@
                 <div class="col-lg-12">
                     <div class="card card-header-actions mb-4">
                         <div class="card-header"><?= esc(ucfirst($title)); ?>
-                            <a class="btn btn-primary btn-sm" href="modifier/create">Add a new modifier</a>
+                            <a class="btn btn-primary btn-sm" href="/modifier/create?rest_id=<?= $rest_id ?>">Add a new modifier</a>
                         </div>
 
                         <div class="card-body">
@@ -52,9 +52,9 @@
                                                         <?php endforeach; ?>
                                                     <td>
 
-                                                        <a class="btn btn-icon btn-sm btn-yellow ml-2 text-white" href="modifier/update/<?= esc($modifier['modifier_group_id']); ?>">
+                                                        <a class="btn btn-icon btn-sm btn-yellow ml-2 text-white" href="/modifier/update/<?= esc($modifier['modifier_group_id']); ?>?rest_id=<?= $rest_id ?>">
                                                             <i data-feather="edit"></i></a>
-                                                        <a class="btn btn-icon btn-sm btn-red ml-2 text-white" href="modifier/delete/<?= esc($modifier['modifier_group_id']); ?>" onclick="return confirm('Are you sure you want to delete this item?');">
+                                                        <a class="btn btn-icon btn-sm btn-red ml-2 text-white" href="/modifier/delete/<?= esc($modifier['modifier_group_id']); ?>?rest_id=<?= $rest_id ?>" onclick="return confirm('Are you sure you want to delete this item?');">
                                                             <i data-feather="trash-2"></i></a>
                                                     </td>
                                                 </tr>

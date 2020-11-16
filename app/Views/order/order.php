@@ -1,3 +1,15 @@
+<?php
+
+$status = [
+    'Pending' => '<div class="badge badge-warning p-2 badge-pill">Pending</div>',
+    'Confirmed' => '<div class="badge badge-secondary p-2 badge-pill">Confirmed</div>',
+    'Ready' => '<div class="badge badge-primary p-2 badge-pill">Ready</div>',
+    'Delivered' => '<div class="badge badge-success p-2 badge-pill">Delivered</div>',
+    'Cancelled' => '<div class="badge badge-danger p-2 badge-pill">Cancelled</div>'
+]
+
+?>
+
 <div id="layoutSidenav_content">
     <main>
         <div class="container-fluid mt-5">
@@ -14,14 +26,14 @@
                         </div>
                         <div class="card-body">
                             <div class="datatable table-responsive">
-                                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered table-hover" id="dataTableOrder" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>Order#</th>
                                             <th>Customer Name</th>
                                             <th>Placed At</th>
-                                            <th>Pickup At</th>
-                                            <th>Restaurant</th>
+                                            <th>Deliver At</th>
+                                            <th>Total</th>
                                             <th>Status</th>
                                             <th>Action</th>
                                         </tr>
@@ -39,28 +51,13 @@
                                                     <td><?= esc($order->cus_name); ?></td>
                                                     <td><?= esc($placed_at->format('h:i A')); ?></td>
                                                     <td><?= esc($deliver_at->format('h:i A')); ?></td>
-                                                    <td><?= esc($order->rest_name); ?></td>
+                                                    <td><?= esc("$" . $order->order_total); ?></td>
                                                     <td>
-                                                        <?php if ($order->order_status == "Pending") : ?>
-                                                            <div class="badge badge-warning badge-pill"><?= esc($order->order_status); ?></div>
-                                                        <?php endif; ?>
-                                                        <?php if ($order->order_status == "Confirmed") : ?>
-                                                            <div class="badge badge-success badge-pill"><?= esc($order->order_status); ?></div>
-                                                        <?php endif; ?>
-                                                        <?php if ($order->order_status == "Ready") : ?>
-                                                            <div class="badge badge-primary badge-pill"><?= esc($order->order_status); ?></div>
-                                                        <?php endif; ?>
-                                                        <?php if ($order->order_status == "Delivered") : ?>
-                                                            <div class="badge badge-success badge-pill"><?= esc($order->order_status); ?></div>
-                                                        <?php endif; ?>
-                                                        <?php if ($order->order_status == "Cancelled") : ?>
-                                                            <div class="badge badge-danger badge-pill"><?= esc($order->order_status); ?></div>
-                                                        <?php endif; ?>
-
+                                                        <?= $status[$order->order_status]; ?>
                                                     </td>
                                                     <td>
 
-                                                        <a class="btn btn-icon btn-sm btn-yellow ml-2 text-white" href="order/view/<?= esc($order->order_num); ?>">
+                                                        <a class="btn btn-icon btn-sm btn-yellow ml-2 text-white" href="/order/view/<?= esc($order->order_num); ?>?rest_id=<?= $rest_id; ?>">
                                                             <i data-feather="eye"></i></a>
 
                                                     </td>

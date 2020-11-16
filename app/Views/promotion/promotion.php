@@ -19,7 +19,7 @@
                 <div class="col-lg-12">
                     <div class="card card-header-actions mb-4">
                         <div class="card-header"><?= esc(ucfirst($title)); ?>
-                            <a class="btn btn-primary btn-sm" href="promotion/create">Add a new promotion</a>
+                            <a class="btn btn-primary btn-sm" href="/promotion/create?rest_id=<?= $rest_id; ?>">Add a new promotion</a>
                         </div>
 
                         <div class="card-body">
@@ -42,15 +42,15 @@
                                             <?php foreach ($promotions as $promotion) : ?>
 
                                                 <tr>
-                                                    <td><?= esc($promotion['is_active']) == '1' ? '<span class="badge badge-pill badge-success">Active</span>' : '<span class="badge p-2 badge-pill badge-warning">Disabled</span>' ?></td>
+                                                    <td><?= esc($promotion['is_active']) == '1' ? '<span class="badge badge-pill badge-success">Active</span>' : '<span class="badge badge-pill badge-warning">Disabled</span>' ?></td>
                                                     <td><?= esc($promotion['promo_name']); ?></td>
                                                     <td><?= esc($promotion['promo_code']); ?></td>
                                                     <td><?= esc($promotion['promo_type']); ?></td>
                                                     <td><?= esc($promotion['promo_type'] == 'flat' ? '$' . $promotion['promo_amount'] : $promotion['promo_amount'] * 100 . ' %'); ?></td>
                                                     <td>
-                                                        <a class="btn btn-icon btn-sm btn-yellow ml-2 text-white" href="promotion/update/<?= esc($promotion['promo_id']); ?>">
+                                                        <a class="btn btn-icon btn-sm btn-yellow ml-2 text-white" href="/promotion/update/<?= esc($promotion['promo_id']); ?>?rest_id=<?= $rest_id; ?>">
                                                             <i data-feather="edit"></i></a>
-                                                        <a class="btn btn-icon btn-sm btn-red ml-2 text-white" href="promotion/delete/<?= esc($promotion['promo_id']); ?>" onclick="return confirm('Are you sure you want to delete this item?');">
+                                                        <a class="btn btn-icon btn-sm btn-red ml-2 text-white" href="/promotion/delete/<?= esc($promotion['promo_id']); ?>?rest_id=<?= $rest_id; ?>" onclick="return confirm('Are you sure you want to delete this item?');">
                                                             <i data-feather="trash-2"></i></a>
                                                     </td>
                                                 </tr>

@@ -32,18 +32,16 @@
                                 <div class="form-group">
                                     <label for="role">Role</label>
                                     <select class="form-control form-control-solid" id="role" name="role">
-                                        <option value="Employee" <?= isset($user['user_role']) && $user['user_role'] == "Employee" ? 'selected' : ''; ?>>Employee</option>
-                                        <option value="Branch Manager" <?= isset($user['user_role']) && $user['user_role'] == "Branch Manager" ? 'selected' : ''; ?>>Branch Manager</option>
-                                        <option value="Administrator" <?= isset($user['user_role']) && $user['user_role'] == "Administrator" ? 'selected' : ''; ?>>Administrator</option>
+                                        <option value="E" <?= isset($user['user_role']) && $user['user_role'] == "E" ? 'selected' : ''; ?>>Employee</option>
+                                        <option value="BM" <?= isset($user['user_role']) && $user['user_role'] == "BM" ? 'selected' : ''; ?>>Branch Manager</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="branch">Branch</label>
                                     <select class="form-control form-control-solid" id="branch" name="branch">
-                                        <option value="1" <?= isset($user['user_rest']) && $user['user_rest'] == "1" ? 'selected' : ''; ?>>North Eve</option>
-                                        <option value="2" <?= isset($user['user_rest']) && $user['user_rest'] == "2" ? 'selected' : ''; ?>>Evanston</option>
-                                        <option value="3" <?= isset($user['user_rest']) && $user['user_rest'] == "3" ? 'selected' : ''; ?>>West Illinois St</option>
-                                        <option value="4" <?= isset($user['user_rest']) && $user['user_rest'] == "4" ? 'selected' : ''; ?>>Van Buren</option>
+                                        <?php foreach ($restaurants as $r) : ?>
+                                            <option value="<?= $r['rest_id'] ?>" <?= isset($user['user_rest']) && $user['user_rest'] == $r['rest_id'] ? 'selected' : ''; ?>><?= $r['rest_name']; ?></option>
+                                        <?php endforeach; ?>
                                     </select>
                                 </div>
                                 <hr>

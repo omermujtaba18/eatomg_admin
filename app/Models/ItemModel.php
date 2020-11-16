@@ -16,6 +16,7 @@ class ItemModel extends Model
         'item_pic',
         'item_status',
         'category_id',
-        'item_slug'
+        'item_slug',
+        'rest_id'
     ];
 }

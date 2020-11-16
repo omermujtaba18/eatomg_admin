@@ -24,8 +24,9 @@ class Modifier extends Controller
         $data = [
             'title' => $this->title,
             'time' => $this->time,
-            'modifiers' => $this->modifierGroup->findAll(),
-            'modifierModel' => $this->modifier
+            'modifiers' => $this->modifierGroup->where('rest_id', $this->request->getGet('rest_id'))->findAll(),
+            'modifierModel' => $this->modifier,
+            'rest_id' => $this->request->getGet('rest_id')
         ];
 
         echo view('templates/header', $data);
@@ -41,6 +42,7 @@ class Modifier extends Controller
             $saveId = $this->modifierGroup->insert([
                 'modifier_group_name' => $this->request->getPost('name'),
                 'modifier_group_instruct' => trim($this->request->getPost('instruction')),
+                'rest_id' => $this->request->getGet('rest_id')
             ]);
 
             $items = $this->request->getPost("item");
@@ -53,8 +55,7 @@ class Modifier extends Controller
                     $fileName = $file->getRandomName();
                     $move = $file->move(ROOTPATH . 'public/assets/uploads/', $fileName);
                     if ($move) {
-                        // $path = base_url() . '/assets/uploads/' . $fileName;
-                        $path =  '/assets/uploads/' . $fileName;
+                        $path = base_url() . '/../assets/uploads/' . $fileName;
                     }
                 }
 
@@ -66,12 +67,13 @@ class Modifier extends Controller
                 ]);
             }
 
-            return redirect()->to('/modifier');
+            return redirect()->to('/modifier?rest_id=' . $this->request->getGet('rest_id'));
         }
 
         $data = [
             'title' => $this->title,
             'time' => $this->time,
+            'rest_id' => $this->request->getGet('rest_id')
         ];
 
         echo view('templates/header', $data);
@@ -92,15 +94,17 @@ class Modifier extends Controller
 
             $items = $this->request->getPost("item");
             $prices = $this->request->getPost("price");
-            $ids = $this->request->getPost("id");
+            $pics = $this->request->getPost("pic");
+
+            $this->modifier->where('modifier_group_id', $id)->delete();
 
             foreach ($items as $key => $value) {
 
-                $this->modifier->save([
-                    'modifier_id' => $ids[$key],
+                $saveId = $this->modifier->insert([
                     'modifier_item' => $items[$key],
                     'modifier_price' => $prices[$key],
                     'modifier_group_id' => $id,
+                    'modifier_pic' => $pics[$key]
                 ]);
 
                 $file = $this->request->getFile('image.' . $key);
@@ -109,23 +113,24 @@ class Modifier extends Controller
                     $fileName = $file->getRandomName();
                     $move = $file->move(ROOTPATH . 'public/assets/uploads/', $fileName);
                     if ($move) {
-                        $path = '/assets/uploads/' . $fileName;
+                        $path = base_url() . '/../assets/uploads/' . $fileName;
                         $this->modifier->save([
-                            'modifier_id' => $ids[$key],
+                            'modifier_id' => $saveId,
                             'modifier_pic' => $path
                         ]);
                     }
                 }
             }
 
-            return redirect()->to('/modifier');
+            return redirect()->to('/modifier?rest_id=' . $this->request->getGet('rest_id'));
         }
 
         $data = [
             'title' => $this->title,
             'time' => $this->time,
             'modifier' => $this->modifierGroup->find($id),
-            'modifierItems' => $this->modifier->where('modifier_group_id', $id)->findAll()
+            'modifierItems' => $this->modifier->where('modifier_group_id', $id)->findAll(),
+            'rest_id' => $this->request->getGet('rest_id')
         ];
 
         echo view('templates/header', $data);
@@ -138,7 +143,6 @@ class Modifier extends Controller
     {
         $this->modifierGroup->delete($id);
         $this->modifier->where('modifier_group_id', $id)->delete();
-
-        return redirect()->to('/modifier');
+        return redirect()->to('/modifier?rest_id=' . $this->request->getGet('rest_id'));
     }
 }

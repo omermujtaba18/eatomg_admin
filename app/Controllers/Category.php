@@ -21,8 +21,9 @@ class Category extends Controller
     {
         $data = [
             'title' => $this->title,
-            'categorys'  => $this->category->orderBy('category_id', 'asc')->findAll(),
-            'time' => $this->time
+            'categorys'  => $this->category->where('rest_id', $this->request->getGet('rest_id'))->orderBy('category_id', 'asc')->findAll(),
+            'time' => $this->time,
+            'rest_id' => $this->request->getGet('rest_id')
         ];
 
         echo view('templates/header', $data);
@@ -39,13 +40,15 @@ class Category extends Controller
                 'category_desc' => $this->request->getPost('desc'),
                 'category_slug' => str_replace(" ", "-", trim(strtolower($this->request->getPost('name')))),
                 'category_type' => $this->request->getPost('type'),
+                'rest_id' => $this->request->getGet('rest_id')
             ]);
-            return redirect()->to('/category');
+            return redirect()->to('/category?rest_id=' . $this->request->getGet('rest_id'));
         }
 
         $data = [
             'title' => $this->title,
-            'time' => $this->time
+            'time' => $this->time,
+            'rest_id' => $this->request->getGet('rest_id')
         ];
 
         echo view('templates/header', $data);
@@ -64,13 +67,14 @@ class Category extends Controller
             ];
             $this->category->update($id, $data);
 
-            return redirect()->to('/category');
+            return redirect()->to('/category?rest_id=' . $this->request->getGet('rest_id'));
         }
 
         $data = [
             'title' => $this->title,
             'time' => $this->time,
-            'category' => $this->category->find($id)
+            'category' => $this->category->find($id),
+            'rest_id' => $this->request->getGet('rest_id')
         ];
 
         echo view('templates/header', $data);
@@ -82,6 +86,6 @@ class Category extends Controller
     public function delete($id = null)
     {
         $this->category->delete($id);
-        return redirect()->to('/category');
+        return redirect()->to('/category?rest_id=' . $this->request->getGet('rest_id'));
     }
 }

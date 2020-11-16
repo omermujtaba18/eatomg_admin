@@ -11,7 +11,7 @@
                 <div class="col-lg-12">
                     <div class="card card-header-actions mb-4">
                         <div class="card-header"> <?= isset($item) ? 'Update item' : 'Create a new item' ?>
-                            <a class="btn btn-primary btn-sm" href="/item">Back</a>
+                            <a class="btn btn-primary btn-sm" href="/item?rest_id=<?= $rest_id; ?>">Back</a>
                         </div>
 
                         <div class="card-body">

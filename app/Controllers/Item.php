@@ -36,6 +36,7 @@ class Item extends Controller
         $builder = $this->db->table('items');
         $builder->select('*');
         $builder->join('category', 'category.category_id = items.category_id');
+        $builder->where('items.rest_id', $this->request->getGet('rest_id'));
         $query = $builder->get();
 
         $data = [
@@ -44,8 +45,9 @@ class Item extends Controller
             'time' => $this->time,
             'itemModifier' => $this->itemModifier,
             'itemAddon' => $this->itemAddon,
-            'modifierGroup' => $this->modifierGroup,
-            'addonGroup' => $this->addonGroup
+            'modifierGroup' => $this->modifierGroup->where('rest_id', $this->request->getGet('rest_id')),
+            'addonGroup' => $this->addonGroup->where('rest_id', $this->request->getGet('rest_id')),
+            'rest_id' => $this->request->getGet('rest_id')
         ];
 
         echo view('templates/header', $data);
@@ -63,15 +65,16 @@ class Item extends Controller
                 'item_price' => $this->request->getPost('price'),
                 'category_id' => '1',
                 'item_status' => $this->request->getPost('status'),
-                'item_slug' => str_replace(" ", "-", trim(strtolower($this->request->getPost('name'))))
+                'item_slug' => str_replace(" ", "-", trim(strtolower($this->request->getPost('name')))),
+                'rest_id' => $this->request->getGet('rest_id')
             ]);
 
             $file = $this->request->getFile('image');
-            if (!empty($file)) {
+            if ($file->isValid()) {
                 $fileName = $file->getRandomName();
                 $move = $file->move(ROOTPATH . 'public/assets/uploads/', $fileName);
                 if ($move) {
-                    $this->item->save(['item_id' => $saveId, 'item_pic' => base_url() . '/assets/uploads/' . $fileName]);
+                    $this->item->save(['item_id' => $saveId, 'item_pic' => base_url() . '/../assets/uploads/' . $fileName]);
                 }
             }
 
@@ -96,16 +99,17 @@ class Item extends Controller
                 }
             }
 
-            return redirect()->to('/item');
+            return redirect()->to('/item?rest_id=' . $this->request->getGet('rest_id'));
         }
 
 
         $data = [
             'title' => $this->title,
             'time' => $this->time,
-            'category' => $this->category->findAll(),
-            'modifiers' => $this->modifierGroup->findAll(),
-            'addons' => $this->addonGroup->findAll(),
+            'category' => $this->category->where('rest_id', $this->request->getGet('rest_id'))->findAll(),
+            'modifiers' => $this->modifierGroup->where('rest_id', $this->request->getGet('rest_id'))->findAll(),
+            'addons' => $this->addonGroup->where('rest_id', $this->request->getGet('rest_id'))->findAll(),
+            'rest_id' => $this->request->getGet('rest_id')
         ];
 
         echo view('templates/header', $data);
@@ -128,11 +132,11 @@ class Item extends Controller
             ]);
 
             $file = $this->request->getFile('image');
-            if (!empty($file)) {
+            if ($file->isValid()) {
                 $fileName = $file->getRandomName();
                 $move = $file->move(ROOTPATH . 'public/assets/uploads/', $fileName);
                 if ($move) {
-                    $this->item->save(['item_id' => $id, 'item_pic' => base_url() . '/assets/uploads/' . $fileName]);
+                    $this->item->save(['item_id' => $id, 'item_pic' => base_url() . '/../assets/uploads/' . $fileName]);
                 }
             }
 
@@ -159,18 +163,19 @@ class Item extends Controller
                     ]);
                 }
             }
-            return redirect()->to('/item');
+            return redirect()->to('/item?rest_id=' . $this->request->getGet('rest_id'));
         }
 
         $data = [
             'title' => $this->title,
             'time' => $this->time,
             'item' => $this->item->find($id),
-            'category' => $this->category->findAll(),
-            'modifiers' => $this->modifierGroup->findAll(),
-            'addons' => $this->addonGroup->findAll(),
+            'category' => $this->category->where('rest_id', $this->request->getGet('rest_id'))->findAll(),
+            'modifiers' => $this->modifierGroup->where('rest_id', $this->request->getGet('rest_id'))->findAll(),
+            'addons' => $this->addonGroup->where('rest_id', $this->request->getGet('rest_id'))->findAll(),
             'itemModifier' => $this->itemModifier,
-            'itemAddon' => $this->itemAddon
+            'itemAddon' => $this->itemAddon,
+            'rest_id' => $this->request->getGet('rest_id')
         ];
 
         echo view('templates/header', $data);
@@ -184,7 +189,7 @@ class Item extends Controller
         $this->item->delete($id);
         $this->itemModifier->where('item_id', $id)->delete();
         $this->itemAddon->where('item_id', $id)->delete();
-        return redirect()->to('/item');
+        return redirect()->to('/item?rest_id=' . $this->request->getGet('rest_id'));
     }
 
     public function getItemsByCategory($val)

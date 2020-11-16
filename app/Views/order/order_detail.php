@@ -10,6 +10,8 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div class="card mb-4">
+                        <div class="card-header text-dark">Order Information</div>
+
                         <div class="card-body">
                             <div class="row">
                                 <?php
@@ -47,16 +49,16 @@
                                 <?php foreach ($items as $item) : ?>
                                     <div class="mb-3">
                                         <div class="row font-weight-bolder">
-                                            <div class="col-1 text-right"><?= $item['order_item_quantity']; ?> X</div>
-                                            <div class="col-9"><?= $item['item_name']; ?></div>
+                                            <div class="col-2 text-right"><?= $item['order_item_quantity']; ?> X</div>
+                                            <div class="col-8"><?= $item['item_name']; ?></div>
                                             <div class="col-2"><?= '$' . $item['item_price']; ?></div>
                                         </div>
 
                                         <?php if (!empty($item['modifier'])) : ?>
                                             <?php foreach ($item['modifier'] as $modifier) : ?>
                                                 <div class="row">
-                                                    <div class="col-1"></div>
-                                                    <div class="col-9"> <?= '- ' . $modifier['modifier_item']; ?></div>
+                                                    <div class="col-2"></div>
+                                                    <div class="col-8"> <?= '- ' . $modifier['modifier_item']; ?></div>
                                                     <div class="col-2 float-right"><?= $modifier['modifier_price'] > 0 ? '+ $' . number_format($modifier['modifier_price'], "2", ".", "") : ''; ?></div>
                                                 </div>
                                             <?php endforeach; ?>
@@ -64,23 +66,29 @@
                                         <?php if (!empty($item['addon'])) : ?>
                                             <?php foreach ($item['addon'] as $addon) : ?>
                                                 <div class="row">
-                                                    <div class="col-1"></div>
-                                                    <div class="col-9"> <?= '+ ' . $addon['addon_item']; ?></div>
+                                                    <div class="col-2"></div>
+                                                    <div class="col-8"> <?= '+ ' . $addon['addon_item']; ?></div>
                                                     <div class="col-2 float-right"><?= '+ $' . number_format($addon['addon_price'], "2", ".", ""); ?></div>
                                                 </div>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
+
+                                        <?php if (!empty($item['order_item_note'])) : ?>
+                                            <div class="row mt-4">
+                                                <div class="col-2 text-right font-weight-bolder">Note</div>
+                                                <div class="col-8"><?= $item['order_item_note']; ?></div>
+                                            </div>
+                                        <?php endif; ?>
+
                                     </div>
+                                    <hr class="my-4">
+
                                 <?php endforeach; ?>
                             <?php endif ?>
 
-
-
-
-                            <hr class="my-4">
                             <div class="row">
-                                <div class="col-3 font-weight-bolder">Instructions</div>
-                                <div class="col-9 text-justify"><?= $order['order_instruct']; ?></div>
+                                <div class="col-3 font-weight-bolder">Special Instructions</div>
+                                <div class="col-8"><?= $order['order_instruct']; ?></div>
                             </div>
                             <hr class="my-4">
                             <div class="row pr-4">
@@ -112,21 +120,21 @@
                             <div class="row text-white">
                                 <div class="col text-left">
                                     <?php if (ucfirst($order['order_status']) == "Pending") : ?>
-                                        <a class="btn btn-secondary" href="../edit/<?= $order['order_id']; ?>?status=Confirmed&num=<?= $id; ?>">Confirm Order</a>
+                                        <a class="btn btn-secondary" href="../edit/<?= $order['order_id']; ?>?status=Confirmed&num=<?= $id; ?>&rest_id=<?= $rest_id; ?>">Confirm Order</a>
                                     <?php endif; ?>
 
 
                                     <?php if ($order['order_status'] == "Confirmed") : ?>
-                                        <a class="btn btn-primary " href="../edit/<?= $order['order_id']; ?>?status=Ready&num=<?= $id; ?>">Order is Ready</a>
+                                        <a class="btn btn-primary " href="../edit/<?= $order['order_id']; ?>?status=Ready&num=<?= $id; ?>&rest_id=<?= $rest_id; ?>">Order is Ready</a>
                                     <?php endif; ?>
 
 
                                     <?php if ($order['order_status'] == "Ready") : ?>
-                                        <a class="btn btn-success " href="../edit/<?= $order['order_id']; ?>?status=Delivered&num=<?= $id; ?>">Delivered</a>
+                                        <a class="btn btn-success " href="../edit/<?= $order['order_id']; ?>?status=Delivered&num=<?= $id; ?>&rest_id=<?= $rest_id; ?>">Delivered</a>
                                     <?php endif; ?>
                                 </div>
                                 <div class="col text-right">
-                                    <a class="btn btn-danger" href="../edit/<?= $order['order_id']; ?>?status=Cancelled&num=<?= $id; ?>">Cancel Order</a>
+                                    <a class="btn btn-danger" href="../edit/<?= $order['order_id']; ?>?status=Cancelled&num=<?= $id; ?>&rest_id=<?= $rest_id; ?>">Cancel Order</a>
                                 </div>
                             </div>
                         </div>

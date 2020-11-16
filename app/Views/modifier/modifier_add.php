@@ -37,7 +37,7 @@
                                             <div class="row my-5" id="item">
                                                 <div class="col-1">
                                                     <img src="<?= $value['modifier_pic']; ?>" width=60 />
-                                                    <input type="hidden" name="id[]" value="<?= $value['modifier_id']; ?>">
+                                                    <input type="hidden" name="pic[]" value="<?= isset($item['modifier_pic']) ? $item['modifier_pic'] : ''; ?>">
                                                 </div>
                                                 <div class="form-group col-3">
                                                     <input class="form-control form-control-solid" type="text" placeholder="" name="item[]" value="<?= isset($value['modifier_item']) ? $value['modifier_item'] : ''; ?>" required>
@@ -103,6 +103,7 @@
     function addItem(element) {
         new_item = document.querySelector("#item").cloneNode(true)
         item_group = element.previousElementSibling.appendChild(new_item)
+        item_group.children[0].children[1].value = ''
     }
     $('input[type="file"]').change(function(e) {
         var fileName = e.target.files[0].name;

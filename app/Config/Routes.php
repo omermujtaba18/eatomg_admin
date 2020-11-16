@@ -37,6 +37,11 @@ $routes->match(['get', 'post'], 'promotion/create', 'Promotion::create');
 $routes->get('promotion/(:num)', 'Promotion::view/$1');
 $routes->get('promotion', 'Promotion::index');
 
+$routes->add('restaurant/(:alpha)/(:num)', 'Restaurant::$1/$2');
+$routes->match(['get', 'post'], 'restaurant/create', 'Restaurant::create');
+$routes->get('restaurant/(:num)', 'Restaurant::view/$1');
+$routes->get('restaurant', 'Restaurant::index');
+
 $routes->add('modifier/(:alpha)/(:num)', 'Modifier::$1/$2');
 $routes->match(['get', 'post'], 'modifier/create', 'Modifier::create');
 $routes->get('modifier/(:num)', 'Modifier::view/$1');
@@ -100,6 +105,9 @@ $routes->add('inventory/recipe/(:alpha)/(:num)', 'Recipe::$1/$2');
 $routes->match(['get', 'post'], 'inventory/recipe/create', 'Recipe::create');
 $routes->get('inventory/recipe/(:num)', 'Recipe::view/$1');
 $routes->get('inventory/recipe/', 'Recipe::index');
+
+$routes->match(['get', 'post'], '/api/(:any)', 'Api::$1');
+
 
 $routes->get('/', 'User::login');
 

@@ -12,7 +12,7 @@
                 <div class="col-lg-12">
                     <div class="card card-header-actions mb-4">
                         <div class="card-header">Menu <?= esc(ucfirst($title)); ?>
-                            <a class="btn btn-primary btn-sm" href="item/create">Add a new item</a>
+                            <a class="btn btn-primary btn-sm" href="/item/create?rest_id=<?= $rest_id; ?>">Add a new item</a>
                         </div>
 
                         <div class="card-body">
@@ -20,7 +20,7 @@
                                 <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>Status</th>
+                                            <th>Image</th>
                                             <th>Name</th>
                                             <th>Category</th>
                                             <th>Type</th>
@@ -37,9 +37,8 @@
                                             <?php foreach ($items as $item) : ?>
 
                                                 <tr>
-                                                    <td>
-                                                        <?= esc($item->item_status) == '1' ? '<span class="badge badge-pill badge-success">Active</span>' : '<span class="badge p-2 badge-pill badge-warning">Disabled</span>' ?>
-                                                    </td>
+                                                    <td><img src="<?= $item->item_pic ?>" width="50" height="50" /></td>
+
                                                     <td><?= esc($item->item_name); ?></td>
                                                     <td><?= esc($item->category_name); ?></td>
                                                     <td><?= esc(ucfirst($item->category_type)); ?></td>
@@ -65,9 +64,9 @@
                                                     </td>
                                                     <td><?= esc('$' . $item->item_price); ?></td>
                                                     <td>
-                                                        <a class="btn btn-icon btn-sm btn-yellow ml-2 text-white" href="item/update/<?= esc($item->item_id); ?>">
+                                                        <a class="btn btn-icon btn-sm btn-yellow ml-2 text-white" href="/item/update/<?= esc($item->item_id); ?>?rest_id=<?= $rest_id; ?>">
                                                             <i data-feather="edit"></i></a>
-                                                        <a class="btn btn-icon btn-sm btn-red ml-2 text-white" href="item/delete/<?= esc($item->item_id); ?>" onclick="return confirm('Are you sure you want to delete this item?');">
+                                                        <a class="btn btn-icon btn-sm btn-red ml-2 text-white" href="/item/delete/<?= esc($item->item_id); ?>?rest_id=<?= $rest_id; ?>" onclick="return confirm('Are you sure you want to delete this item?');">
                                                             <i data-feather="trash-2"></i></a>
                                                     </td>
                                                 </tr>

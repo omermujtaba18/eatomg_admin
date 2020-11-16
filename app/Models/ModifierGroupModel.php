@@ -12,5 +12,6 @@ class ModifierGroupModel extends Model
     protected $allowedFields = [
         'modifier_group_name',
         'modifier_group_instruct',
+        'rest_id'
     ];
 }

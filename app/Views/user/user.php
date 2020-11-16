@@ -1,3 +1,6 @@
+<?php
+$roles = ['A' => 'Administrator', 'BM' => 'Branch Manager', 'E' => 'Employee'];
+?>
 <div id="layoutSidenav_content">
     <main>
         <div class="container-fluid mt-5">
@@ -12,7 +15,7 @@
                 <div class="col-lg-12">
                     <div class="card card-header-actions mb-4">
                         <div class="card-header">Users
-                            <a class="btn btn-primary btn-sm" href="user/create">Add a new user</a>
+                            <a class="btn btn-primary btn-sm" href="/user/create">Add a new user</a>
                         </div>
 
                         <div class="card-body">
@@ -20,7 +23,6 @@
                                 <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>User ID</th>
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>Role</th>
@@ -34,16 +36,15 @@
                                             <?php foreach ($users as $user) : ?>
 
                                                 <tr>
-                                                    <td><?= esc($user->user_id); ?></td>
                                                     <td><?= esc($user->user_name); ?></td>
                                                     <td><?= esc($user->user_email); ?></td>
-                                                    <td><?= esc($user->user_role); ?></td>
+                                                    <td><?= esc($roles[$user->user_role]); ?></td>
                                                     <td><?= esc($user->rest_name); ?></td>
                                                     <td>
 
-                                                        <a class="btn btn-icon btn-sm btn-yellow ml-2 text-white" href="user/update/<?= esc($user->user_id); ?>">
+                                                        <a class="btn btn-icon btn-sm btn-yellow ml-2 text-white" href="/user/update/<?= esc($user->user_id); ?>">
                                                             <i data-feather="edit"></i></a>
-                                                        <a class="btn btn-icon btn-sm btn-red ml-2 text-white" href="user/delete/<?= esc($user->user_id); ?>" onclick="return confirm('Are you sure you want to delete this item?');">
+                                                        <a class="btn btn-icon btn-sm btn-red ml-2 text-white" href="/user/delete/<?= esc($user->user_id); ?>" onclick="return confirm('Are you sure you want to delete this item?');">
                                                             <i data-feather="trash-2"></i></a>
                                                     </td>
                                                 </tr>

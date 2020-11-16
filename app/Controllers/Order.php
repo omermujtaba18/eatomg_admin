@@ -14,7 +14,7 @@ use CodeIgniter\I18n\Time;
 class Order extends Controller
 {
 
-    var $db, $order_item_modifier, $order_item_addon, $order = null;
+    var $db, $order_item_modifier, $order_item_addon, $order, $time, $session = null;
 
     public function __construct()
     {
@@ -22,6 +22,7 @@ class Order extends Controller
         $this->order_item_modifier = new OrderItemModifierModel();
         $this->order_item_addon = new OrderItemAddonModel();
         $this->order = new OrderModel();
+        $this->time = new Time('now', 'America/Chicago', 'en_US');
     }
 
 
@@ -29,14 +30,15 @@ class Order extends Controller
     {
         $builder = $this->db->table('orders');
         $builder->select('*');
-        $builder->join('restaurants', 'restaurants.rest_id = orders.rest_id');
         $builder->join('customers', 'customers.cus_id = orders.cus_id');
+        $builder->where('orders.rest_id', $this->request->getGet('rest_id'));
         $query = $builder->get();
 
         $data = [
             'title' => 'orders',
             'orders'  => $query->getResult(),
-            'time' => new Time('now', 'America/Chicago', 'en_US')
+            'time' => $this->time,
+            'rest_id' => $this->request->getGet('rest_id')
         ];
 
         echo view('templates/header', $data);
@@ -62,7 +64,7 @@ class Order extends Controller
 
 
         $items = $this->db->table('order_items');
-        $items = $items->select('order_items.order_item_id,order_items.order_item_quantity,items.item_name,items.item_price')
+        $items = $items->select('order_items.order_item_id,order_items.order_item_note,order_items.order_item_quantity,items.item_name,items.item_price')
             ->where('order_id', $order['order_id'])
             ->join('items', 'items.item_id = order_items.item_id')->get();
         $items = $items->getResult('array');
@@ -92,6 +94,7 @@ class Order extends Controller
         $data['title'] = 'orders';
         $data['time'] = new Time('now', 'America/Chicago', 'en_US');
         $data['id'] = $id;
+        $data['rest_id'] = $this->request->getGet('rest_id');
 
         echo view('templates/header', $data);
         echo view('templates/nav', $data);
@@ -113,9 +116,9 @@ class Order extends Controller
                 $data['is_complete'] = 1;
             }
             $this->order->save($data);
-            return redirect()->to('/order/view/' . $request['num']);
+            return redirect()->to('/order/view/' . $request['num'] . '?rest_id=' . $this->request->getGet('rest_id'));
         }
-        return redirect()->to('/order');
+        return redirect()->to('/order?rest_id=' . $this->request->getGet('rest_id'));
     }
 
     //Useless method

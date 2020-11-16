@@ -11,7 +11,7 @@
                 <div class="col-lg-12">
                     <div class="card card-header-actions mb-4">
                         <div class="card-header"><?= esc(ucfirst($title)); ?>
-                            <a class="btn btn-primary btn-sm" href="/customer/create">Add a new customer</a>
+                            <!-- <a class="btn btn-primary btn-sm" href="/customer/create">Add a new customer</a> -->
                         </div>
                         <div class="card-body">
                             <div class="datatable table-responsive">
@@ -25,7 +25,7 @@
                                             <th>City</th>
                                             <th>State</th>
                                             <th>Phone</th>
-                                            <th style="min-width: 5em;">Actions</th>
+                                            <!-- <th style="min-width: 5em;">Actions</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -42,10 +42,11 @@
                                                     <td><?= esc($customer['cus_city']); ?></td>
                                                     <td><?= esc($customer['cus_state']); ?></td>
                                                     <td><?= esc($customer['cus_phone']); ?></td>
-                                                    <td>
-                                                        <a class="btn btn-icon btn-sm btn-yellow ml-2 text-white" href="customer/edit/<?= esc($customer['cus_id']); ?>">
+                                                    <!-- <td>
+                                                        <a class="btn btn-icon btn-sm btn-yellow ml-2 text-white" href="customer/edit/<?php //esc($customer['cus_id']); 
+                                                                                                                                        ?>">
                                                             <i data-feather="edit"></i></a>
-                                                    </td>
+                                                    </td> -->
                                                 </tr>
 
                                             <?php endforeach; ?>

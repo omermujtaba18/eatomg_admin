@@ -12,7 +12,7 @@
                 <div class="col-lg-12">
                     <div class="card card-header-actions mb-4">
                         <div class="card-header"> <?= isset($addon) ? 'Update add-on' : 'Create a new add on' ?>
-                            <a class="btn btn-primary btn-sm" href="/addon">Back</a>
+                            <a class="btn btn-primary btn-sm" href="/addon?rest_id=<?= $rest_id; ?>">Back</a>
                         </div>
 
                         <div class="card-body">
@@ -38,8 +38,8 @@
                                         <div>
                                             <div class="row my-5" id="item">
                                                 <div class="col-1">
-                                                    <img src="<?= $value['addon_pic'] ?>" width=60 />
-                                                    <input type="hidden" name="id[]" value="<?= $value['addon_id']; ?>">
+                                                    <img src="<?= $value['addon_pic']; ?>" width=60 />
+                                                    <input type="hidden" name="pic[]" value="<?= isset($item['addon_pic']) ? $item['addon_pic'] : ''; ?>">
                                                 </div>
                                                 <div class="form-group col-3">
                                                     <input class="form-control form-control-solid" type="text" placeholder="" name="item[]" value="<?= isset($item['addon_item']) ? $item['addon_item'] : ''; ?>" required>
@@ -104,6 +104,7 @@
     function addItem(element) {
         new_item = document.querySelector("#item").cloneNode(true)
         item_group = element.previousElementSibling.appendChild(new_item)
+        item_group.children[0].children[1].value = ''
     }
 
     $('input[type="file"]').change(function(e) {

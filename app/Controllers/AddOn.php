@@ -24,8 +24,9 @@ class AddOn extends Controller
         $data = [
             'title' => $this->title,
             'time' => $this->time,
-            'addons' => $this->addonGroup->findAll(),
-            'addonModel' => $this->addon
+            'addons' => $this->addonGroup->where('rest_id', $this->request->getGet('rest_id'))->findAll(),
+            'addonModel' => $this->addon,
+            'rest_id' => $this->request->getGet('rest_id')
         ];
 
         echo view('templates/header', $data);
@@ -41,6 +42,7 @@ class AddOn extends Controller
             $saveId = $this->addonGroup->insert([
                 'addon_group_name' => $this->request->getPost('name'),
                 'addon_group_instruct' => trim($this->request->getPost('instruction')),
+                'rest_id' => $this->request->getGet('rest_id')
             ]);
 
             $items = $this->request->getPost("item");
@@ -53,7 +55,7 @@ class AddOn extends Controller
                     $fileName = $file->getRandomName();
                     $move = $file->move(ROOTPATH . 'public/assets/uploads/', $fileName);
                     if ($move) {
-                        $path = base_url() . '/assets/uploads/' . $fileName;
+                        $path = base_url() . '/../assets/uploads/' . $fileName;
                     }
                 }
 
@@ -65,13 +67,13 @@ class AddOn extends Controller
                 ]);
             }
 
-            return redirect()->to('/addon');
+            return redirect()->to('/addon?rest_id=' . $this->request->getGet('rest_id'));
         }
-
 
         $data = [
             'title' => $this->title,
-            'time' => $this->time
+            'time' => $this->time,
+            'rest_id' => $this->request->getGet('rest_id')
         ];
 
         echo view('templates/header', $data);
@@ -83,6 +85,7 @@ class AddOn extends Controller
     public function update($id = null)
     {
         if ($this->request->getPost()) {
+
             $this->addonGroup->save([
                 'addon_group_id' => $id,
                 'addon_group_name' => $this->request->getPost('name'),
@@ -91,15 +94,17 @@ class AddOn extends Controller
 
             $items = $this->request->getPost("item");
             $prices = $this->request->getPost("price");
-            $ids = $this->request->getPost("id");
+            $pics = $this->request->getPost("pic");
+
+            $this->addon->where('addon_group_id', $id)->delete();
 
             foreach ($items as $key => $value) {
 
-                $this->addon->save([
-                    'addon_id' => $ids[$key],
+                $saveId = $this->addon->insert([
                     'addon_item' => $items[$key],
                     'addon_price' => $prices[$key],
                     'addon_group_id' => $id,
+                    'addon_pic' => $pics[$key]
                 ]);
 
                 $file = $this->request->getFile('image.' . $key);
@@ -108,23 +113,24 @@ class AddOn extends Controller
                     $fileName = $file->getRandomName();
                     $move = $file->move(ROOTPATH . 'public/assets/uploads/', $fileName);
                     if ($move) {
-                        $path = base_url() . '/assets/uploads/' . $fileName;
+                        $path = base_url() . '/../assets/uploads/' . $fileName;
                         $this->addon->save([
-                            'addon_id' => $ids[$key],
+                            'addon_id' => $saveId,
                             'addon_pic' => $path
                         ]);
                     }
                 }
             }
 
-            return redirect()->to('/addon');
+            return redirect()->to('/addon?rest_id=' . $this->request->getGet('rest_id'));
         }
 
         $data = [
             'title' => $this->title,
             'time' => $this->time,
             'addon' => $this->addonGroup->find($id),
-            'addonItems' => $this->addon->where('addon_group_id', $id)->findAll()
+            'addonItems' => $this->addon->where('addon_group_id', $id)->findAll(),
+            'rest_id' => $this->request->getGet('rest_id')
         ];
 
         echo view('templates/header', $data);
@@ -135,8 +141,8 @@ class AddOn extends Controller
 
     public function delete($id = null)
     {
-        $addOnModel = new AddOnModel();
-        $addOnModel->delete($id);
-        return redirect()->to('/addon');
+        $this->addonGroup->delete($id);
+        $this->addon->where('addon_group_id', $id)->delete();
+        return redirect()->to('/addon?rest_id=' . $this->request->getGet('rest_id'));
     }
 }

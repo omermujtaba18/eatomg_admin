@@ -11,7 +11,7 @@
                 <div class="col-lg-12">
                     <div class="card card-header-actions mb-4">
                         <div class="card-header"><?= esc(ucfirst($title)); ?>
-                            <a class="btn btn-primary btn-sm" href="/addon/create">Add a new Add-On</a>
+                            <a class="btn btn-primary btn-sm" href="/addon/create?rest_id=<?= $rest_id; ?>">Add a new Add-On</a>
                         </div>
 
                         <div class="card-body">
@@ -44,9 +44,9 @@
                                                         <?php endforeach; ?>
                                                     </td>
                                                     <td>
-                                                        <a class="btn btn-icon btn-sm btn-yellow ml-2 text-white" href="/addon/update/<?= esc($addon['addon_group_id']); ?>">
+                                                        <a class="btn btn-icon btn-sm btn-yellow ml-2 text-white" href="/addon/update/<?= esc($addon['addon_group_id'] . '?rest_id=' . $rest_id); ?>">
                                                             <i data-feather="edit"></i></a>
-                                                        <a class="btn btn-icon btn-sm btn-red ml-2 text-white" href="/addon/delete/<?= esc($addon['addon_group_id']); ?>" onclick="return confirm('Are you sure you want to delete this item?');">
+                                                        <a class="btn btn-icon btn-sm btn-red ml-2 text-white" href="/addon/delete/<?= esc($addon['addon_group_id'] . '?rest_id=' . $rest_id); ?>" onclick="return confirm('Are you sure you want to delete this item?');">
                                                             <i data-feather="trash-2"></i></a>
                                                     </td>
                                                 </tr>

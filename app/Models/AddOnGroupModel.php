@@ -12,5 +12,6 @@ class AddOnGroupModel extends Model
     protected $allowedFields = [
         'addon_group_name',
         'addon_group_instruct',
+        'rest_id'
     ];
 }

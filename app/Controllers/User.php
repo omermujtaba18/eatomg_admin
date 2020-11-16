@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use App\Models\RestaurantModel;
 use CodeIgniter\Controller;
 use CodeIgniter\I18n\Time;
 
@@ -10,7 +11,7 @@ use CodeIgniter\I18n\Time;
 class User extends Controller
 {
 
-    var $db, $title, $time, $user, $session = null;
+    var $db, $title, $time, $user, $session, $restaurant = null;
 
     public function __construct()
     {
@@ -19,6 +20,7 @@ class User extends Controller
         $this->time = new Time('now', 'America/Chicago', 'en_US');
         $this->user = new UserModel();
         $this->session = session();
+        $this->restaurant = new RestaurantModel();
     }
 
     public function index()
@@ -26,6 +28,7 @@ class User extends Controller
         $builder = $this->db->table('users');
         $builder->select('*');
         $builder->join('restaurants', 'restaurants.rest_id = users.user_rest');
+        $builder->where('users.user_role !=', 'A');
         $query = $builder->get();
 
         $data = [
@@ -56,7 +59,8 @@ class User extends Controller
 
         $data = [
             'title' => $this->title,
-            'time' => $this->time
+            'time' => $this->time,
+            'restaurants' => $this->restaurant->findAll()
         ];
 
         echo view('templates/header', $data);
@@ -83,7 +87,8 @@ class User extends Controller
         $data = [
             'title' => $this->title,
             'time' => $this->time,
-            'user' => $this->user->find($id)
+            'user' => $this->user->find($id),
+            'restaurants' => $this->restaurant->findAll()
         ];
 
         echo view('templates/header', $data);
@@ -122,6 +127,11 @@ class User extends Controller
             }
 
             $this->session->set($user);
+
+            if ($user['user_role'] == 'E' || $user['user_role'] == 'BM') {
+                return redirect()->to('/order?rest_id=' . $user['user_rest']);
+            }
+
             return redirect()->to('/dashboard');
         }
         echo view('user/user_login');
