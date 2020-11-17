@@ -94,7 +94,7 @@ class Restaurant extends Controller
                 $fileName = $file->getRandomName();
                 $move = $file->move(ROOTPATH . 'public/assets/uploads/', $fileName);
                 if ($move) {
-                    $this->restaurant->save(['rest_id' => $$id, 'logo' => base_url() . '/../assets/uploads/' . $fileName]);
+                    $this->restaurant->save(['rest_id' => $id, 'logo' => base_url() . '/../assets/uploads/' . $fileName]);
                 }
             }
 
