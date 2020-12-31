@@ -90,7 +90,7 @@ $routes->get('dashboard/getMonthlyTotal/(:num)', 'Dashboard::getMonthlyTotal/$1'
 $routes->get('dashboard/getMonthlyTotal', 'Dashboard::getMonthlyTotal');
 $routes->get('dashboard/getTopSeller', 'Dashboard::getTopSeller');
 $routes->get('dashboard/getTimingData', 'Dashboard::getTimingData');
-$routes->get('dashboard/(:any)', 'Dashboard::view/$1');
+$routes->get('dashboard/(:any)', 'Dashboard::index/$1');
 $routes->get('dashboard', 'Dashboard::index');
 
 $routes->add('inventory/category/(:alpha)/(:num)', 'InventoryCategory::$1/$2');

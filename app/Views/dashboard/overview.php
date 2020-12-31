@@ -3,13 +3,17 @@
         <div class="container-fluid mt-5">
             <div class="d-flex justify-content-between align-items-sm-center flex-column flex-sm-row mb-4">
                 <div class="mr-4 mb-3 mb-sm-0">
-                    <h1 class="mb-0"><?= esc(ucfirst($title)); ?></h1>
+                    <h1 class="mb-0" id="title"><?= esc(ucfirst($title)); ?></h1>
                     <div class="small"><span class="font-weight-500 text-primary"><?= $time->toLocalizedString('EEEE') ?></span> &middot; <?= $time->toLocalizedString('MMMM d, yyyy') ?> &middot; <?= $time->toLocalizedString('hh:mm aaa') ?></div>
                 </div>
                 <!-- <div class="dropdown">
-                    <a class="btn btn-white btn-sm font-weight-500 line-height-normal p-3 dropdown-toggle" id="dropdownMenuLink" href="#" role="button" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false"><i class="text-primary mr-2" data-feather="calendar"></i>Jan - Feb 2020</a>
+                    <a class="btn btn-white btn-sm font-weight-500 line-height-normal p-3 dropdown-toggle" id="dropdownMenuLink" href="#" role="button" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+                    <i class="text-primary mr-2" data-feather="calendar"></i>Jan - Feb 2020</a>
                     <div class="dropdown-menu dropdown-menu-sm-right animated--fade-in" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="#!">Last 30 days</a><a class="dropdown-item" href="#!">Last week</a><a class="dropdown-item" href="#!">This year</a><a class="dropdown-item" href="#!">Yesterday</a>
+                        <a class="dropdown-item" href="#!">Last 30 days</a>
+                        <a class="dropdown-item" href="#!">Last week</a>
+                        <a class="dropdown-item" href="#!">This year</a>
+                        <a class="dropdown-item" href="#!">Yesterday</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#!">Custom</a>
                     </div>
@@ -73,58 +77,38 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-4 col-xl-3 mb-4">
-                    <div class="card mb-4">
-                        <div class="card-header">Sales Trend</div>
+            <div class="row mb-4">
+                <div class="col-lg-4 col-xl-3">
+                    <div class="card">
+                        <div class="card-header">Restaurants</div>
                         <div class="list-group list-group-flush small">
-                            <a class="list-group-item list-group-item-action border-top" href="#!" onclick="getDataOverview()">
+                            <a class="list-group-item list-group-item-action border-top" href="/dashboard">
                                 <i class="fas fa-dollar-sign fa-fw text-blue mr-2"></i>Overview</a>
-
-                            <a class="list-group-item list-group-item-action" href="#!" onclick="getDataByRestaurant(3,'OMG - North Ave')">
-                                <i class="fas fa-chart-line fa-fw text-yellow mr-2"></i>OMG - North Ave</a>
-
-<a class="list-group-item list-group-item-action" href="#!" onclick="getDataByRestaurant(4,'OMG - Van Buren')">
-                                <i class="fas fa-chart-line fa-fw text-pink mr-2"></i>OMG - Van Buren</a>
-                                <a class="list-group-item list-group-item-action" href="#!" onclick="getDataByRestaurant(5,'OMG - Catering')">
-                                <i class="fas fa-chart-line fa-fw text-yellow mr-2"></i>OMG - Catering</a>
-
-                            <a class="list-group-item list-group-item-action" href="#!" onclick="getDataByRestaurant(1,'Forklift')">
-                                <i class="fas fa-chart-line fa-fw text-purple mr-2"></i>Forklift</a>
-
-                            <a class="list-group-item list-group-item-action" href="#!" onclick="getDataByRestaurant(2,'Amedicano')">
-                                <i class="fas fa-chart-line fa-fw text-green mr-2"></i>Amedicano</a>
-
-
-
-                            
+                            <?php foreach ($restaurants as $restaurant) : ?>
+                                <a class="list-group-item list-group-item-action" href="/dashboard?rest_id=<?= $restaurant['rest_id']; ?>">
+                                    <i class="fas fa-chart-line fa-fw text-yellow mr-2"></i><?= $restaurant['rest_name']; ?></a>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-8 col-xl-9 mb-4">
-                    <div class="card mb-4">
-                        <div class="card-header" id="trend">Overview</div>
+                <div class="col-lg-8 col-xl-9">
+                    <div class="card">
+                        <div class="card-header">Sales Trend</div>
                         <div class="card-body">
-                            <div class="chart-area"><canvas id="myAreaChart" width="100%" height="30"></canvas></div>
+                            <div class="chart-area"><canvas id="myAreaChart"></canvas></div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class=" row">
                 <div class="col-lg-4 col-xl-3 mb-4">
                     <div class="card mb-4">
                         <div class="card-header">Reports</div>
                         <div class="list-group list-group-flush small">
-                            <a class="list-group-item list-group-item-action border-top" href="#!" onclick="getTopSeller()">
+                            <a class="list-group-item list-group-item-action border-top" href="" onclick="event.preventDefault();getTopSeller(event)">
                                 <i class="fas fa-dollar-sign fa-fw text-blue mr-2"></i>Top Seller Items </a>
-                            <a class="list-group-item list-group-item-action" href="#!" onclick="getTimingData()">
+                            <a class="list-group-item list-group-item-action" href="" onclick="event.preventDefault();getTimingData()">
                                 <i class="fas fa-tag fa-fw text-purple mr-2"></i>Order Timing Chart</a>
-                            <!-- <a class="list-group-item list-group-item-action" href="#!">
-                                <i class="fas fa-mouse-pointer fa-fw text-green mr-2"></i></a>
-                            <a class="list-group-item list-group-item-action" href="#!">
-                                <i class="fas fa-percentage fa-fw text-yellow mr-2"></i></a>
-                            <a class="list-group-item list-group-item-action" href="#!">
-                                <i class="fas fa-chart-pie fa-fw text-pink mr-2"></i></a> -->
                         </div>
                     </div>
                 </div>
@@ -133,7 +117,28 @@
                         <div id="topseller">
                             <div class="card-header">Top Seller Items (<?= $time->toLocalizedString('MMMM'); ?>)</div>
                             <div class="card-body">
-                                <div class="chart-area"><canvas id="myBarChart" width="100%" height="30"></canvas></div>
+                                <div class="datatable table-responsive">
+                                    <table class="table table-bordered table-hover" id="tableTopSeller" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Item</th>
+                                                <th>Sold</th>
+                                                <th>Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php if (!empty($topSellerItems)) : ?>
+                                                <?php foreach ($topSellerItems as $item) : ?>
+                                                    <tr>
+                                                        <td><?= esc($item['item_name'] . " (" . $item['category_name'] .  ")"); ?></td>
+                                                        <td><?= esc($item['total_sold']); ?></td>
+                                                        <td><?= esc("$" . round($item['total_value'], 2)); ?></td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            <?php endif ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                         <div id="timing">
@@ -147,3 +152,8 @@
             </div>
     </main>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+
+<script id="monthlyData" src="/assets/demo/chart-area-demo.js" data-monthly="<?= json_encode($monthlyData); ?>"></script>
+<script id="orderTiming" src="/assets/demo/chart-bar-demo.js" data-timing="<?= esc(json_encode($orderTiming)); ?>"></script>

@@ -21,3 +21,12 @@ $(document).ready(function () {
     });
 });
 
+$(document).ready(function () {
+    $('#tableTopSeller').DataTable({
+        "order": [[1, 'desc']],
+        "lengthChange": false,
+        "searching": false,
+        paging: false,
+        "info":false
+    });
+});
