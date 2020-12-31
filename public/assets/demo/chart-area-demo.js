@@ -146,32 +146,10 @@ var myLineChart = new Chart(ctx, {
     }
 });
 
-onload = getDataOverview();
+onload = getDataSales();
 
-function getDataOverview() {
-    $('#trend').text('Overview');
-    $.ajax({
-        url: "/dashboard/getMonthlyTotal",
-        success: function (result) {
-            var data = JSON.parse(result);
-            addData(myLineChart, data);
-        }
-    })
-}
-
-function getDataByRestaurant(id, name) {
-    $('#trend').text(name);
-    $.ajax({
-        url: "/dashboard/getMonthlyTotal/" + id,
-        success: function (result) {
-            var data = JSON.parse(result);
-            console.log(data);
-            addData(myLineChart, data);
-        }
-    });
-}
-
-function addData(chart, input) {
-    chart.data.datasets[0].data = input;
-    chart.update();
+function getDataSales() {
+    var data = JSON.parse($('#monthlyData').attr("data-monthly"));
+    myLineChart.data.datasets[0].data = data;
+    myLineChart.update();
 }
