@@ -20,11 +20,12 @@
                                         <tr>
                                             <th>Name</th>
                                             <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Has registered</th>
                                             <th>DOB</th>
                                             <th>Address</th>
                                             <th>City</th>
                                             <th>State</th>
-                                            <th>Phone</th>
                                             <!-- <th style="min-width: 5em;">Actions</th> -->
                                         </tr>
                                     </thead>
@@ -37,11 +38,12 @@
                                                 <tr>
                                                     <td><?= esc($customer['cus_name']); ?></td>
                                                     <td><?= esc($customer['cus_email']); ?></td>
-                                                    <td><?= !empty($customer['cus_dob']) ? (substr($customer['cus_dob'], -2) . "-" . substr($customer['cus_dob'], -5, 2) . "-" . substr($customer['cus_dob'], 0, 4)) : 'NULL'; ?></td>
-                                                    <td><?= esc($customer['cus_address']); ?></td>
-                                                    <td><?= esc($customer['cus_city']); ?></td>
-                                                    <td><?= esc($customer['cus_state']); ?></td>
-                                                    <td><?= esc($customer['cus_phone']); ?></td>
+                                                    <td><?= !empty($customer['cus_phone']) ? $customer['cus_phone'] : '-'; ?></td>
+                                                    <td><?= $customer['has_register'] == 1 ? 'Yes' : 'No'; ?></td>
+                                                    <td><?= !empty($customer['cus_dob']) ? $customer['cus_dob'] : '-'; ?></td>
+                                                    <td><?= !empty($customer['cus_address']) ? $customer['cus_address'] : '-'; ?></td>
+                                                    <td><?= !empty($customer['cus_city']) ? $customer['cus_city'] : '-'; ?></td>
+                                                    <td><?= !empty($customer['cus_state']) ? $customer['cus_state'] : '-'; ?></td>
                                                     <!-- <td>
                                                         <a class="btn btn-icon btn-sm btn-yellow ml-2 text-white" href="customer/edit/<?php //esc($customer['cus_id']); 
                                                                                                                                         ?>">

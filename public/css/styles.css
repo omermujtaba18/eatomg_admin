@@ -1887,8 +1887,8 @@ pre code {
 }
 .table th,
 .table td {
-  padding: 0.75rem;
-  vertical-align: top;
+  padding: 0.5rem 0.75rem;
+  vertical-align: middle;
   border-top: 1px solid #e3e6ec;
 }
 .table thead th {
@@ -2763,7 +2763,7 @@ pre code {
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #c5ccd6;
-  border-radius: 0.35rem;
+  /* border-radius: 0.35rem; */
   -webkit-transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -3217,7 +3217,7 @@ textarea.form-control {
   padding: 0.5rem 1rem;
   font-size: 1rem;
   line-height: 1.5;
-  border-radius: 0.35rem;
+  /* border-radius: 0.35rem; */
   -webkit-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -6739,7 +6739,7 @@ input[type=button].btn-block {
   background-color: #fff;
   background-clip: border-box;
   border: 1px solid rgba(31, 45, 65, 0.125);
-  border-radius: 0.35rem;
+  /* border-radius: 0.35rem; */
 }
 .card > hr {
   margin-right: 0;
@@ -6758,7 +6758,7 @@ input[type=button].btn-block {
   -webkit-box-flex: 1;
           flex: 1 1 auto;
   min-height: 1px;
-  padding: 1.35rem;
+  padding: 0.75rem;
 }
 
 .card-title {
@@ -17721,7 +17721,7 @@ body {
   z-index: 1039;
 }
 .nav-fixed #layoutSidenav #layoutSidenav_nav {
-  width: 14rem;
+  width: 16rem;
   height: 100vh;
   z-index: 1038;
 }
@@ -17768,7 +17768,7 @@ body {
   background-color: rgba(255, 255, 255, 0.1);
 }
 .nav-fixed #layoutSidenav #layoutSidenav_content {
-  padding-left: 14rem;
+  padding-left: 16rem;
   top: 3.625rem;
 }
 
@@ -19532,7 +19532,7 @@ body {
 }
 
 .card {
-  box-shadow: 0 0.15rem 1.75rem 0 rgba(31, 45, 65, 0.15);
+  /* box-shadow: 0 0.15rem 1.75rem 0 rgba(31, 45, 65, 0.15); */
   overflow: hidden;
 }
 .card .card-header {
@@ -19845,7 +19845,7 @@ body {
   font-weight: bold;
 }
 .topnav .navbar-brand img {
-  height: 0.8rem;
+  height: 2.5rem;
 }
 .topnav.navbar-dark #sidebarToggle {
   color: rgba(255, 255, 255, 0.5);
@@ -19892,6 +19892,7 @@ body {
 .sidenav .sidenav-menu {
   -webkit-box-flex: 1;
           flex-grow: 1;
+          padding-left: 10px;
 }
 .sidenav .sidenav-menu .nav {
   -webkit-box-orient: vertical;
@@ -20010,7 +20011,7 @@ body {
   color: #1f2d41;
 }
 .sidenav-light .sidenav-menu .sidenav-menu-heading {
-  color: #a2acba;
+  color: var(--red);
 }
 .sidenav-light .sidenav-menu .nav-link {
   color: #1f2d41;
@@ -20022,13 +20023,13 @@ body {
   color: #a2acba;
 }
 .sidenav-light .sidenav-menu .nav-link:hover {
-  color: #0061f2;
+  color: var(--red);
 }
 .sidenav-light .sidenav-menu .nav-link.active {
-  color: #0061f2;
+  color: var(--red);
 }
 .sidenav-light .sidenav-menu .nav-link.active .nav-link-icon {
-  color: #0061f2;
+  color: var(--red);
 }
 .sidenav-light .sidenav-menu-nested {
   border-left-color: #d7dce3;

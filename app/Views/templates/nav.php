@@ -3,7 +3,7 @@
 use App\Models\RestaurantModel;
 
 $restaurantModel = new RestaurantModel();
-$restaurant = $restaurantModel->findAll();
+$restaurant = $restaurantModel->orderBy('priority','ASC')->findAll();
 ?>
 
 
@@ -15,17 +15,11 @@ $restaurant = $restaurantModel->findAll();
 
                     <?php if ($_SESSION['user_role'] == 'A') : ?>
                         <div class="sidenav-menu-heading">Administrator</div>
-                        <a class="nav-link collapsed" href="javascript:void(0);" data-toggle="collapse" data-target="#collapseDashboards" aria-expanded="false" aria-controls="collapseDashboards">
+                    
+                        <a class="nav-link <?= $title == 'overview' ? 'active' : ''; ?>" href="/dashboard">
                             <div class="nav-link-icon"><i data-feather="activity"></i></div>
-                            Dashboards
-                            <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            Dashboard
                         </a>
-                        <div class="collapse" id="collapseDashboards" data-parent="#accordionSidenav">
-                            <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
-                                <a class="nav-link <?= $title == 'overview' ? 'active' : ''; ?>" href="/dashboard">Overview</a>
-                                <!-- <a class="nav-link <?= $title == 'north-eve' ? 'active' : ''; ?>" href="/dashboard/north-eve">North Ave</a>  -->
-                            </nav>
-                        </div>
                         <a class="nav-link <?= $title == 'users' ? 'active' : ''; ?>" href="/user">
                             <div class="nav-link-icon"><i data-feather="user-plus"></i></div>
                             Users
@@ -34,6 +28,14 @@ $restaurant = $restaurantModel->findAll();
                             <div class="nav-link-icon"><i data-feather="compass"></i></div>
                             Restaurant
                         </a>
+                        <a class="nav-link <?= $title == 'facebook' ? 'active' : ''; ?>" href="/facebook">
+                            <div class="nav-link-icon"><i data-feather="user-plus"></i></div>
+                            Facebook Auto Post
+                        </a>
+                         <a class="nav-link" href="/customer">
+                        <div class="nav-link-icon"><i data-feather="users"></i></div>
+                                Customers
+                        </a> 
                     <?php endif; ?>
 
 
@@ -61,11 +63,6 @@ $restaurant = $restaurantModel->findAll();
                                     <div class="nav-link-icon"><i data-feather="plus-square"></i></div>
                                     Addon
                                 </a>
-                                <!-- <a class="nav-link" href="/customer?rest_id=<?php // $r['rest_id']; 
-                                                                                    ?>">
-                                    <div class="nav-link-icon"><i data-feather="users"></i></div>
-                                    Customers
-                                </a> -->
                                 <a class="nav-link" href="/promotion?rest_id=<?= $r['rest_id']; ?>">
                                     <div class="nav-link-icon"><i data-feather="dollar-sign"></i></div>
                                     Promotion

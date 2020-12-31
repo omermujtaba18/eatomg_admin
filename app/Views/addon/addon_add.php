@@ -38,7 +38,7 @@
                                         <div>
                                             <div class="row my-5" id="item">
                                                 <div class="col-1">
-                                                    <img src="<?= $value['addon_pic']; ?>" width=60 />
+                                                    <!--<img src="<?php // $value['addon_pic']; ?>" width=60 />-->
                                                     <input type="hidden" name="pic[]" value="<?= isset($item['addon_pic']) ? $item['addon_pic'] : ''; ?>">
                                                 </div>
                                                 <div class="form-group col-3">

@@ -17,7 +17,7 @@
             </div>
             <div class="row">
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-top-0 border-bottom-0 border-right-0 border-left-lg border-blue h-100">
+                    <div class="card border-top-0 border-bottom-0 border-right-0 h-100">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1">
@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-top-0 border-bottom-0 border-right-0 border-left-lg border-purple h-100">
+                    <div class="card border-top-0 border-bottom-0 border-right-0 h-100">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1">
@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-top-0 border-bottom-0 border-right-0 border-left-lg border-green h-100">
+                    <div class="card border-top-0 border-bottom-0 border-right-0 h-100">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1">
@@ -59,7 +59,7 @@
                     </div>
                 </div>
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-top-0 border-bottom-0 border-right-0 border-left-lg border-yellow h-100">
+                    <div class="card border-top-0 border-bottom-0 border-right-0  h-100">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1">
@@ -81,17 +81,23 @@
                             <a class="list-group-item list-group-item-action border-top" href="#!" onclick="getDataOverview()">
                                 <i class="fas fa-dollar-sign fa-fw text-blue mr-2"></i>Overview</a>
 
-                            <a class="list-group-item list-group-item-action" href="#!" onclick="getDataByRestaurant(1,'North Eve')">
-                                <i class="fas fa-chart-line fa-fw text-purple mr-2"></i>North Eve.</a>
+                            <a class="list-group-item list-group-item-action" href="#!" onclick="getDataByRestaurant(3,'OMG - North Ave')">
+                                <i class="fas fa-chart-line fa-fw text-yellow mr-2"></i>OMG - North Ave</a>
 
-                            <a class="list-group-item list-group-item-action" href="#!" onclick="getDataByRestaurant(2,'Evanston')">
-                                <i class="fas fa-chart-line fa-fw text-green mr-2"></i>Evanston</a>
+<a class="list-group-item list-group-item-action" href="#!" onclick="getDataByRestaurant(4,'OMG - Van Buren')">
+                                <i class="fas fa-chart-line fa-fw text-pink mr-2"></i>OMG - Van Buren</a>
+                                <a class="list-group-item list-group-item-action" href="#!" onclick="getDataByRestaurant(5,'OMG - Catering')">
+                                <i class="fas fa-chart-line fa-fw text-yellow mr-2"></i>OMG - Catering</a>
 
-                            <a class="list-group-item list-group-item-action" href="#!" onclick="getDataByRestaurant(3,'West Illinois')">
-                                <i class="fas fa-chart-line fa-fw text-yellow mr-2"></i>West Illinois</a>
+                            <a class="list-group-item list-group-item-action" href="#!" onclick="getDataByRestaurant(1,'Forklift')">
+                                <i class="fas fa-chart-line fa-fw text-purple mr-2"></i>Forklift</a>
 
-                            <a class="list-group-item list-group-item-action" href="#!" onclick="getDataByRestaurant(4,'Van Buren')">
-                                <i class="fas fa-chart-line fa-fw text-pink mr-2"></i>Van Buren</a>
+                            <a class="list-group-item list-group-item-action" href="#!" onclick="getDataByRestaurant(2,'Amedicano')">
+                                <i class="fas fa-chart-line fa-fw text-green mr-2"></i>Amedicano</a>
+
+
+
+                            
                         </div>
                     </div>
                 </div>

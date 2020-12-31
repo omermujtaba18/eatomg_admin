@@ -35,7 +35,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="takeout_url">Website URL</label>
-                                    <input class="form-control form-control-solid" type="text" placeholder="" name="takeout_url" value="<?= isset($restaurant['url']) ? $restaurant['url'] : ''; ?>">
+                                    <input class="form-control form-control-solid" type="text" placeholder="" name="url" value="<?= isset($restaurant['url']) ? $restaurant['url'] : ''; ?>">
                                 </div>
                                 <div class="form-group">
                                     <label for="url_facebook">Facebook URL</label>

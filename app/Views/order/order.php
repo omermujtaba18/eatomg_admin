@@ -1,7 +1,7 @@
 <?php
 
 $status = [
-    'Pending' => '<div class="badge badge-warning p-2 badge-pill">Pending</div>',
+    'Pending' => '<div onload="sound()" class="badge badge-warning p-2 badge-pill">Pending</div>',
     'Confirmed' => '<div class="badge badge-secondary p-2 badge-pill">Confirmed</div>',
     'Ready' => '<div class="badge badge-primary p-2 badge-pill">Ready</div>',
     'Delivered' => '<div class="badge badge-success p-2 badge-pill">Delivered</div>',
@@ -9,6 +9,9 @@ $status = [
 ]
 
 ?>
+
+
+
 
 <div id="layoutSidenav_content">
     <main>
@@ -53,7 +56,19 @@ $status = [
                                                     <td><?= esc($deliver_at->format('h:i A')); ?></td>
                                                     <td><?= esc("$" . $order->order_total); ?></td>
                                                     <td>
+         
+         
                                                         <?= $status[$order->order_status]; ?>
+
+<?php if($order->order_status == 'Pending'): ?>
+
+        <div id="sound"></div> 
+
+
+<?php endif; ?>
+
+                                                                <!--<audio id="foobar" src="/assets/notification.mp3" preload="auto" autoplay> -->
+
                                                     </td>
                                                     <td>
 
@@ -74,3 +89,14 @@ $status = [
             </div>
     </main>
 </div>
+
+<script>
+   function play1() { 
+                  
+                /* Audio link for notification */ 
+                var mp3 = '<source src="/assets/notification_alert.mp3" type="audio/mpeg">'; 
+                document.getElementById("sound").innerHTML =  
+                '<audio autoplay="autoplay">' + mp3 + "</audio>"; 
+            } 
+            play1();
+</script>

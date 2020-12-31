@@ -42,6 +42,13 @@ $routes->match(['get', 'post'], 'restaurant/create', 'Restaurant::create');
 $routes->get('restaurant/(:num)', 'Restaurant::view/$1');
 $routes->get('restaurant', 'Restaurant::index');
 
+$routes->add('facebook/(:alpha)/(:num)', 'Facebook::$1/$2');
+$routes->match(['get', 'post'], 'facebook/create', 'Facebook::create');
+$routes->get('facebook/(:num)', 'Facebook::view/$1');
+$routes->get('facebook', 'Facebook::index');
+$routes->get('publish', 'Facebook::publish');
+
+
 $routes->add('modifier/(:alpha)/(:num)', 'Modifier::$1/$2');
 $routes->match(['get', 'post'], 'modifier/create', 'Modifier::create');
 $routes->get('modifier/(:num)', 'Modifier::view/$1');

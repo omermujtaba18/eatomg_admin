@@ -53,6 +53,29 @@ class Database extends \CodeIgniter\Database\Config
 		'port'     => 3306,
 	];
 
+	public $development = [
+		'DSN'      => '',
+		'hostname' => 'localhost',
+		'username' => 'root',
+		'password' => '12345678',
+		'database' => 'ninetofab',
+		'DBDriver' => 'MySQLi',
+		'DBPrefix' => '',
+		'pConnect' => false,
+		'DBDebug'  => (ENVIRONMENT !== 'production'),
+		'cacheOn'  => false,
+		'cacheDir' => '',
+		'charset'  => 'utf8',
+		'DBCollat' => 'utf8_general_ci',
+		'swapPre'  => '',
+		'encrypt'  => false,
+		'compress' => false,
+		'strictOn' => false,
+		'failover' => [],
+		'port'     => 3306,
+	];
+
+
 	/**
 	 * This database connection is used when
 	 * running PHPUnit database tests.
@@ -105,6 +128,11 @@ class Database extends \CodeIgniter\Database\Config
 				}
 			}
 		}
+
+		if (ENVIRONMENT === 'development') {
+			$this->defaultGroup = 'development';
+		}
+
 	}
 
 	//--------------------------------------------------------------------

@@ -38,7 +38,8 @@ class Order extends Controller
             'title' => 'orders',
             'orders'  => $query->getResult(),
             'time' => $this->time,
-            'rest_id' => $this->request->getGet('rest_id')
+            'rest_id' => $this->request->getGet('rest_id'),
+            'reload' => 'reload'
         ];
 
         echo view('templates/header', $data);

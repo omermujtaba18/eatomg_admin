@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use CodeIgniter\Controller;
 use CodeIgniter\I18n\Time;
+use App\Models\CustomerModel;
+
 
 class Dashboard extends Controller
 {
@@ -12,6 +14,7 @@ class Dashboard extends Controller
     public function __construct()
     {
         $this->db = db_connect();
+        $this->customer = new CustomerModel();
     }
 
     public function index()
@@ -51,6 +54,36 @@ class Dashboard extends Controller
     public function view($name = null)
     {
         echo "Dashboard: " . $name;
+        
+        
+            //  $email = \Config\Services::email();
+            // $email->setFrom('omgnorth@tasteolive.com','Olive Mediterranean Grill');
+            // $email->setTo('faisal@eatomg.com');
+            // $email->setSubject('Merry Christmas!');
+            // $email->setMessage(view('templates/email'));
+    
+            // if(!$email->send(false)){
+            //     $email->printDebugger();
+            // }
+    
+            // $email->clear();
+        
+        // $customers = $this->customer->findAll();
+        
+        // foreach($customers as $customer){
+        //     $email = \Config\Services::email();
+        //     $email->setFrom('omgnorth@tasteolive.com','Olive Mediterranean Grill');
+        //     $email->setTo($customer['cus_email']);
+        //     $email->setSubject('Merry Christmas!');
+        //     $email->setMessage(view('templates/email'));
+    
+        //     if(!$email->send(false)){
+        //         $email->printDebugger();
+        //     }
+    
+        //     $email->clear();
+                    
+        // }
     }
 
     public function getMonthlyTotal($val = NULL)
@@ -59,13 +92,13 @@ class Dashboard extends Controller
 
         if (!is_null($val)) {
             for ($i = 1; $i < 13; $i++) {
-                $query = $this->db->query('SELECT SUM(order_total) as s FROM eatomg.orders WHERE rest_id = ' . $val . ' AND YEAR(placed_at) = 2020 AND MONTH(placed_at) = ' . $i);
+                $query = $this->db->query('SELECT SUM(order_total) as s FROM ninetofab.orders WHERE rest_id = ' . $val . ' AND YEAR(placed_at) = 2020 AND MONTH(placed_at) = ' . $i);
                 $row = $query->getFirstRow();
                 array_push($monthlyDataArray, round($row->s, 2));
             }
         } else {
             for ($i = 1; $i < 13; $i++) {
-                $query = $this->db->query('SELECT SUM(order_total) as s FROM eatomg.orders WHERE YEAR(placed_at) = 2020 AND MONTH(placed_at) = ' . $i);
+                $query = $this->db->query('SELECT SUM(order_total) as s FROM ninetofab.orders WHERE YEAR(placed_at) = 2020 AND MONTH(placed_at) = ' . $i);
                 $row = $query->getFirstRow();
                 array_push($monthlyDataArray, round($row->s, 2));
             }
@@ -127,7 +160,7 @@ class Dashboard extends Controller
 
         $query = "SELECT 
         HOUR(placed_at) 'hr', COUNT(DISTINCT order_id) 'count'
-        FROM eatomg.orders
+        FROM ninetofab.orders
         WHERE placed_at BETWEEN '$today' AND '$tommorow'
         GROUP BY hr;";
 

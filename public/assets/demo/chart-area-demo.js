@@ -165,6 +165,7 @@ function getDataByRestaurant(id, name) {
         url: "/dashboard/getMonthlyTotal/" + id,
         success: function (result) {
             var data = JSON.parse(result);
+            console.log(data);
             addData(myLineChart, data);
         }
     });

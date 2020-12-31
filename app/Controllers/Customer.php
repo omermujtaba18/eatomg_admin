@@ -24,7 +24,7 @@ class Customer extends Controller
 
         $data = [
             'title' => 'customers',
-            'customers'  => $customer->where('rest_id', $this->request->getGet('rest_id'))->findAll(),
+            'customers'  => $customer->findAll(),
             'time' => new Time('now', 'America/Chicago', 'en_US')
         ];
 

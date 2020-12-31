@@ -63,7 +63,7 @@ class Item extends Controller
                 'item_name' => $this->request->getPost('name'),
                 'item_desc' => $this->request->getPost('desc'),
                 'item_price' => $this->request->getPost('price'),
-                'category_id' => '1',
+                'category_id' => $this->request->getPost('category'),
                 'item_status' => $this->request->getPost('status'),
                 'item_slug' => str_replace(" ", "-", trim(strtolower($this->request->getPost('name')))),
                 'rest_id' => $this->request->getGet('rest_id')

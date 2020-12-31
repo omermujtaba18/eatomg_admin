@@ -224,7 +224,7 @@ function getTimingData() {
         url: "/dashboard/getTimingData",
         success: function (result) {
             var data = JSON.parse(result);
-            // console.log(data[1]);
+            console.log(data);
             addDataTiming(orderTimingChart, data[0], data[1], data[2]);
         }
     })
