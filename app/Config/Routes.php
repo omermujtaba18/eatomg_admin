@@ -71,6 +71,7 @@ $routes->get('item/(:num)', 'Item::view/$1');
 $routes->get('item', 'Item::index');
 
 $routes->match(['get', 'post'], 'order/create', 'Order::create');
+$routes->add('order/cancel/(:num)', 'Order::cancelOrder/$1');
 $routes->add('order/(:alpha)/(:num)', 'Order::$1/$2');
 $routes->get('order/(:num)', 'Order::view/$1');
 $routes->get('order', 'Order::index');

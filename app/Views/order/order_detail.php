@@ -3,7 +3,7 @@
         <div class="container-fluid mt-5">
             <div class="d-flex justify-content-between align-items-sm-center flex-column flex-sm-row mb-4">
                 <div class="mr-4 mb-3 mb-sm-0">
-                    <h1 class="mb-0">Order# <?= $id . '  ('. ($order['order_payment_type'] == 'CASH' ? 'DUE' : 'PAID') . ")"; ?> </h1>
+                    <h1 class="mb-0">Order# <?= $id . '  (' . ($order['order_payment_type'] == 'CASH' ? 'DUE' : 'PAID') . ")"; ?> </h1>
                 </div>
             </div>
             <div class="row">
@@ -17,11 +17,11 @@
                                 $placed_at = new DateTime($order['placed_at']);
                                 $deliver_at = new DateTime($order['deliver_at']);
                                 ?>
-                                <div class="col-9">
+                                <div class="col-8">
                                     <span class="font-weight-bolder">Placed At: </span><?= $placed_at->format('h:i A'); ?></br>
                                     <span class="font-weight-bolder">Deliver At: </span><?= $deliver_at->format('h:i A'); ?></br>
                                 </div>
-                                <div class="col-3 text-right">
+                                <div class="col-4 text-right">
                                     <h2>
                                         <div class="badge badge-primary badge-pill" onclick="window.print();">Print</div>
                                         <?php if ($order['order_status'] == "Pending") : ?>
@@ -133,9 +133,13 @@
                                         <a class="btn btn-success " href="../edit/<?= $order['order_id']; ?>?status=Delivered&num=<?= $id; ?>&rest_id=<?= $rest_id; ?>">Delivered</a>
                                     <?php endif; ?>
                                 </div>
-                                <div class="col text-right">
-                                    <a class="btn btn-danger" href="../edit/<?= $order['order_id']; ?>?status=Cancelled&num=<?= $id; ?>&rest_id=<?= $rest_id; ?>">Cancel Order</a>
-                                </div>
+
+                                <?php if ($order['order_status'] != "Cancelled") : ?>
+                                    <div class="col text-right">
+                                        <a class="btn btn-danger" href="../cancel/<?= $order['order_id']; ?>?status=Cancelled&num=<?= $id; ?>&rest_id=<?= $rest_id; ?>">Cancel Order</a>
+                                    </div>
+                                <?php endif; ?>
+
                             </div>
                         </div>
                     </div>
@@ -158,14 +162,14 @@
 
 
 
-<script> 
-        function printDiv() { 
-            var divContents = document.getElementById("order").innerHTML; 
-            var a = window.open('', '', 'height=500, width=500'); 
-            a.document.write('<html><body>'); 
-            a.document.write(divContents); 
-            a.document.write('</body></html>'); 
-            a.document.close(); 
-            a.print(); 
-        } 
-</script> 
+<script>
+    function printDiv() {
+        var divContents = document.getElementById("order").innerHTML;
+        var a = window.open('', '', 'height=500, width=500');
+        a.document.write('<html><body>');
+        a.document.write(divContents);
+        a.document.write('</body></html>');
+        a.document.close();
+        a.print();
+    }
+</script>
