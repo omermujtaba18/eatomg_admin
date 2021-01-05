@@ -11,6 +11,13 @@ use App\Models\OrderItemAddonModel;
 use CodeIgniter\Controller;
 use CodeIgniter\I18n\Time;
 
+use \PayPalCheckoutSdk\Core\PayPalHttpClient;
+use \PayPalCheckoutSdk\Core\SandboxEnvironment;
+use \PayPalCheckoutSdk\Core\ProductionEnvironment;
+use \PayPalCheckoutSdk\Payments\CapturesRefundRequest;
+use \PayPalHttp\HttpException;
+
+
 class Order extends Controller
 {
 
@@ -125,19 +132,22 @@ class Order extends Controller
     {
         if ($this->request->getGet('status') == 'Cancelled') {
             $order = $this->order->where('order_id', $id)->first();
+            $cancel = false;
 
             switch ($order['order_payment_type']) {
                 case 'CARD':
-                    $refundCard = $this->cancelCardOrder($order['payment_id']);
+                    $responseCard = $this->cancelCardOrder($order['payment_id']);
+                    $cancel = $responseCard['status'] == 'succeeded' ? true :false;
                     break;
                 case 'PAYPAL':
-                    $this->cancelPaypalOrder($order['payment_id']);
+                    $responsePaypal = $this->cancelPaypalOrder($order['payment_id']);
+                    $cancel = $responsePaypal->statusCode == 201 ? true : false;
                     break;
                 default:
                     break;
             }
 
-            if ($refundCard['status'] == 'succeeded') {
+            if ($cancel) {
                 $this->order->save([
                     'order_id' => $id,
                     'order_status' => 'Cancelled',
@@ -164,8 +174,18 @@ class Order extends Controller
 
     public function cancelPaypalOrder($paymentId)
     {
-        var_dump($paymentId);
-        exit();
+        $environment = getEnv('CI_ENVIRONMENT') == 'development' ?
+            new SandboxEnvironment(getEnv('CLIENT_ID_D'), getEnv('CLIENT_SECRET_D')) : new ProductionEnvironment(getEnv('CLIENT_ID'), getEnv('CLIENT_SECRET'));
+        $client = new PayPalHttpClient($environment);
+        $request = new CapturesRefundRequest($paymentId);
+
+        try {
+            $response = $client->execute($request);
+            return $response;
+        } catch (HttpException $ex) {
+            echo $ex->statusCode;
+            print_r($ex->getMessage());
+        }
     }
 
     //Useless method

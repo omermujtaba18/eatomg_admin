@@ -85,6 +85,7 @@ phpunit
 #-------------------------
 vendor/*
 !vendor/stripe
+!vendor/paypal
 !vendor/autoload.php
 composer.lock
 
