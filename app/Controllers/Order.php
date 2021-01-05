@@ -58,8 +58,7 @@ class Order extends Controller
         unset($order['cus_email'], $order['cus_password'],
         $order['cus_dob'], $order['has_register'],
         $order['rest_location'], $order['rest_id'],
-        $order['is_complete'], $order['order_payment_type'],
-        $order['cus_country'], $order['cus_zip']);
+        $order['is_complete'], $order['cus_country'], $order['cus_zip']);
 
         $data['order'] = $order;
 
@@ -103,7 +102,6 @@ class Order extends Controller
         echo view('templates/footer');
     }
 
-
     public function edit($id = null)
     {
         $request = $this->request->getGet();
@@ -120,6 +118,54 @@ class Order extends Controller
             return redirect()->to('/order/view/' . $request['num'] . '?rest_id=' . $this->request->getGet('rest_id'));
         }
         return redirect()->to('/order?rest_id=' . $this->request->getGet('rest_id'));
+    }
+
+
+    public function cancelOrder($id)
+    {
+        if ($this->request->getGet('status') == 'Cancelled') {
+            $order = $this->order->where('order_id', $id)->first();
+
+            switch ($order['order_payment_type']) {
+                case 'CARD':
+                    $refundCard = $this->cancelCardOrder($order['payment_id']);
+                    break;
+                case 'PAYPAL':
+                    $this->cancelPaypalOrder($order['payment_id']);
+                    break;
+                default:
+                    break;
+            }
+
+            if ($refundCard['status'] == 'succeeded') {
+                $this->order->save([
+                    'order_id' => $id,
+                    'order_status' => 'Cancelled',
+                ]);
+            }
+
+            return redirect()->to('/order/view/' . $this->request->getGet('num') . '?rest_id=' . $this->request->getGet('rest_id'));
+        }
+    }
+
+
+    public function cancelCardOrder($paymentId)
+    {
+        \Stripe\Stripe::setApiKey(getEnv('STRIPE_SECRET_KEY'));
+        $intent = \Stripe\PaymentIntent::retrieve($paymentId);
+        $chargeId = $intent->charges->data[0]->id;
+        $refund = \Stripe\Refund::create([
+            'charge' => $chargeId,
+            'reverse_transfer' => true,
+        ]);
+
+        return $refund;
+    }
+
+    public function cancelPaypalOrder($paymentId)
+    {
+        var_dump($paymentId);
+        exit();
     }
 
     //Useless method

@@ -83,7 +83,9 @@ phpunit
 #-------------------------
 # Composer
 #-------------------------
-vendor/
+vendor/*
+!vendor/stripe
+!vendor/autoload.php
 composer.lock
 
 #-------------------------
