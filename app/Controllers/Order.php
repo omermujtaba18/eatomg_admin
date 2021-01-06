@@ -35,24 +35,37 @@ class Order extends Controller
 
     public function index()
     {
-        $restId= $this->request->getGet('rest_id');
+        $restId = $this->request->getGet('rest_id');
+
+        $start = !empty($this->request->getGet('start')) ? $this->request->getGet('start') : date("Y-m-d");
+        $endGet = !empty($this->request->getGet('end')) ? $this->request->getGet('end') : date("Y-m-d");
+
+        $end = !empty($this->request->getGet('end')) ?
+            date_format(date_add(date_create($this->request->getGet('end')), date_interval_create_from_date_string("1 days")), 'Y-m-d')
+            : date_format(date_add(date_create(), date_interval_create_from_date_string("1 days")), 'Y-m-d');
+
         $builder = $this->db->table('orders');
         $builder->select('*');
         $builder->join('customers', 'customers.cus_id = orders.cus_id');
         $builder->where('orders.rest_id', $restId);
+        $builder->where('placed_at >=', $start);
+        $builder->where('placed_at <=', $end);
         $query = $builder->get();
 
         $data = [
             'title' => 'orders',
             'orders'  => $query->getResult(),
+            'countOrders' => $this->order->where(['rest_id' => $restId, 'placed_at >=' => $start, 'placed_at <=' => $end])->countAllResults(),
             'time' => $this->time,
             'rest_id' => $this->request->getGet('rest_id'),
             'reload' => 'reload',
-            'pending' => $this->order->where(['order_status' => 'Pending','rest_id' => $restId])->countAllResults(),
-            'confirmed' => $this->order->where(['order_status' => 'Confirmed', 'rest_id' => $restId])->countAllResults(),
-            'ready' => $this->order->where(['order_status' => 'Ready', 'rest_id' => $restId])->countAllResults(),           
-            'delivered' => $this->order->where(['order_status' => 'Delivered', 'rest_id' => $restId])->countAllResults(),
-            'cancelled' => $this->order->where(['order_status' => 'Cancelled', 'rest_id' => $restId])->countAllResults()
+            'pending' => $this->order->where(['order_status' => 'Pending', 'rest_id' => $restId, 'placed_at >=' => $start, 'placed_at <=' => $end])->countAllResults(),
+            'confirmed' => $this->order->where(['order_status' => 'Confirmed', 'rest_id' => $restId, 'placed_at >=' => $start, 'placed_at <=' => $end])->countAllResults(),
+            'ready' => $this->order->where(['order_status' => 'Ready', 'rest_id' => $restId, 'placed_at >=' => $start, 'placed_at <=' => $end])->countAllResults(),
+            'delivered' => $this->order->where(['order_status' => 'Delivered', 'rest_id' => $restId, 'placed_at >=' => $start, 'placed_at <=' => $end])->countAllResults(),
+            'cancelled' => $this->order->where(['order_status' => 'Cancelled', 'rest_id' => $restId, 'placed_at >=' => $start, 'placed_at <=' => $end])->countAllResults(),
+            'start' => $start,
+            'end' => $endGet
         ];
 
         echo view('templates/header', $data);
