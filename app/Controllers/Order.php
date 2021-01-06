@@ -35,10 +35,11 @@ class Order extends Controller
 
     public function index()
     {
+        $restId= $this->request->getGet('rest_id');
         $builder = $this->db->table('orders');
         $builder->select('*');
         $builder->join('customers', 'customers.cus_id = orders.cus_id');
-        $builder->where('orders.rest_id', $this->request->getGet('rest_id'));
+        $builder->where('orders.rest_id', $restId);
         $query = $builder->get();
 
         $data = [
@@ -46,7 +47,12 @@ class Order extends Controller
             'orders'  => $query->getResult(),
             'time' => $this->time,
             'rest_id' => $this->request->getGet('rest_id'),
-            'reload' => 'reload'
+            'reload' => 'reload',
+            'pending' => $this->order->where(['order_status' => 'Pending','rest_id' => $restId])->countAllResults(),
+            'confirmed' => $this->order->where(['order_status' => 'Confirmed', 'rest_id' => $restId])->countAllResults(),
+            'ready' => $this->order->where(['order_status' => 'Ready', 'rest_id' => $restId])->countAllResults(),           
+            'delivered' => $this->order->where(['order_status' => 'Delivered', 'rest_id' => $restId])->countAllResults(),
+            'cancelled' => $this->order->where(['order_status' => 'Cancelled', 'rest_id' => $restId])->countAllResults()
         ];
 
         echo view('templates/header', $data);
@@ -137,7 +143,7 @@ class Order extends Controller
             switch ($order['order_payment_type']) {
                 case 'CARD':
                     $responseCard = $this->cancelCardOrder($order['payment_id']);
-                    $cancel = $responseCard['status'] == 'succeeded' ? true :false;
+                    $cancel = $responseCard['status'] == 'succeeded' ? true : false;
                     break;
                 case 'PAYPAL':
                     $responsePaypal = $this->cancelPaypalOrder($order['payment_id']);

@@ -22,6 +22,70 @@ $status = [
                     <div class="small"><span class="font-weight-500 text-primary text-right"><?= $time->toLocalizedString('EEEE') ?></span> &middot; <?= $time->toLocalizedString('MMMM d, yyyy') ?> &middot; <?= $time->toLocalizedString('hh:mm aaa') ?></div>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-xl-2 col-md-6 mb-4">
+                    <div class="card border-top-0 border-bottom-0 border-right-0 h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <div class="small font-weight-bold text-yellow mb-1">Pending</div>
+                                    <div class="h1"> <?= $pending; ?> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-md-6 mb-4">
+                    <div class="card border-top-0 border-bottom-0 border-right-0 h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <div class="small font-weight-bold text-purple mb-1">Confirmed</div>
+                                    <div class="h1"> <?= $confirmed; ?></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-md-6 mb-4">
+                    <div class="card border-top-0 border-bottom-0 border-right-0 h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <div class="small font-weight-bold text-blue mb-1">Ready</div>
+                                    <div class="h1"><?= $ready; ?></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-md-6 mb-4">
+                    <div class="card border-top-0 border-bottom-0 border-right-0 h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <div class="small font-weight-bold text-green mb-1">Delivered</div>
+                                    <div class="h1"><?= $delivered; ?></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-md-6 mb-4">
+                    <div class="card border-top-0 border-bottom-0 border-right-0  h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <div class="small font-weight-bold text-red mb-1">Cancelled</div>
+                                    <div class="h1"><?= $cancelled; ?></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card card-header-actions mb-4">
@@ -56,18 +120,18 @@ $status = [
                                                     <td><?= esc($deliver_at->format('h:i A')); ?></td>
                                                     <td><?= esc("$" . $order->order_total); ?></td>
                                                     <td>
-         
-         
+
+
                                                         <?= $status[$order->order_status]; ?>
 
-<?php if($order->order_status == 'Pending'): ?>
+                                                        <?php if ($order->order_status == 'Pending') : ?>
 
-        <div id="sound"></div> 
+                                                            <div id="sound"></div>
 
 
-<?php endif; ?>
+                                                        <?php endif; ?>
 
-                                                                <!--<audio id="foobar" src="/assets/notification.mp3" preload="auto" autoplay> -->
+                                                        <!--<audio id="foobar" src="/assets/notification.mp3" preload="auto" autoplay> -->
 
                                                     </td>
                                                     <td>
@@ -91,12 +155,12 @@ $status = [
 </div>
 
 <script>
-   function play1() { 
-                  
-                /* Audio link for notification */ 
-                var mp3 = '<source src="/assets/notification_alert.mp3" type="audio/mpeg">'; 
-                document.getElementById("sound").innerHTML =  
-                '<audio autoplay="autoplay">' + mp3 + "</audio>"; 
-            } 
-            play1();
+    function play1() {
+
+        /* Audio link for notification */
+        var mp3 = '<source src="/assets/notification_alert.mp3" type="audio/mpeg">';
+        document.getElementById("sound").innerHTML =
+            '<audio autoplay="autoplay">' + mp3 + "</audio>";
+    }
+    play1();
 </script>
