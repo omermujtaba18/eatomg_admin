@@ -7,6 +7,7 @@ use App\Models\CustomerModel;
 use App\Models\OrderModel;
 use App\Models\OrderItemModifierModel;
 use App\Models\OrderItemAddonModel;
+use App\Models\RestaurantModel;
 
 use CodeIgniter\Controller;
 use CodeIgniter\I18n\Time;
@@ -17,11 +18,14 @@ use \PayPalCheckoutSdk\Core\ProductionEnvironment;
 use \PayPalCheckoutSdk\Payments\CapturesRefundRequest;
 use \PayPalHttp\HttpException;
 
+use DateTime;
+
+use App\Helpers\TextMessage;
 
 class Order extends Controller
 {
 
-    var $db, $order_item_modifier, $order_item_addon, $order, $time, $session = null;
+    var $db, $order_item_modifier, $order_item_addon, $order, $customer, $restaurant, $time, $session = null;
 
     public function __construct()
     {
@@ -29,6 +33,8 @@ class Order extends Controller
         $this->order_item_modifier = new OrderItemModifierModel();
         $this->order_item_addon = new OrderItemAddonModel();
         $this->order = new OrderModel();
+        $this->customer = new CustomerModel();
+        $this->restaurant = new RestaurantModel();
         $this->time = new Time('now', 'America/Chicago', 'en_US');
     }
 
@@ -141,6 +147,13 @@ class Order extends Controller
                 $data['is_complete'] = 1;
             }
             $this->order->save($data);
+
+            $order = $this->order->find($id);
+            $customer = $this->customer->find($order['cus_id']);
+            $restaurant = $this->restaurant->find($order['rest_id']);
+
+            $this->sendMessage($customer, $order, $restaurant, $request['status']);
+
             return redirect()->to('/order/view/' . $request['num'] . '?rest_id=' . $this->request->getGet('rest_id'));
         }
         return redirect()->to('/order?rest_id=' . $this->request->getGet('rest_id'));
@@ -265,5 +278,34 @@ class Order extends Controller
         echo view('templates/nav', $data);
         echo view('order/order_add', $data);
         echo view('templates/footer');
+    }
+
+
+    public function sendMessage($customer, $order, $restaurant, $status)
+    {
+        $deliver_at = new DateTime($order['deliver_at']);
+
+        $msg['Confirmed'] = str_replace(
+            ['%customer_name%', '%order_num%', '%deliver_at%'],
+            [$customer['cus_name'], $order['order_num'], $deliver_at->format('h:i A')],
+            'Dear %customer_name%, Your order (#%order_num%) has been confirmed. Kindly pickup your order by %deliver_at%.'
+        );
+
+        $msg['Ready'] = str_replace(
+            ['%customer_name%', '%order_num%'],
+            [$customer['cus_name'], $order['order_num']],
+            'Dear %customer_name%, Your order (#%order_num%) is ready. Kindly pickup your order.'
+        );
+
+        $msg['Delivered'] = str_replace('%rest_name%', $restaurant['rest_name'], 'Thank you for ordering today at %rest_name%. Please let us know how was it');
+
+        $msg['Cancelled'] = str_replace(
+            ['%customer_name%', '%order_num%'],
+            [$customer['cus_name'], $order['order_num']],
+            'Dear %customer_name%, Your order (#%order_num%) has been cancelled.'
+        );
+
+        $textMessage = new TextMessage();
+        $textMessage->sendTextMessage('+1' . $customer['cus_phone'], $msg[$status]);
     }
 }
