@@ -147,12 +147,7 @@ class Order extends Controller
                 $data['is_complete'] = 1;
             }
             $this->order->save($data);
-
-            $order = $this->order->find($id);
-            $customer = $this->customer->find($order['cus_id']);
-            $restaurant = $this->restaurant->find($order['rest_id']);
-
-            $this->sendMessage($customer, $order, $restaurant, $request['status']);
+            $this->sendMessage($id, $request['status']);
 
             return redirect()->to('/order/view/' . $request['num'] . '?rest_id=' . $this->request->getGet('rest_id'));
         }
@@ -184,12 +179,12 @@ class Order extends Controller
                     'order_id' => $id,
                     'order_status' => 'Cancelled',
                 ]);
+                $this->sendMessage($id, 'Cancelled');
             }
 
             return redirect()->to('/order/view/' . $this->request->getGet('num') . '?rest_id=' . $this->request->getGet('rest_id'));
         }
     }
-
 
     public function cancelCardOrder($paymentId)
     {
@@ -281,8 +276,11 @@ class Order extends Controller
     }
 
 
-    public function sendMessage($customer, $order, $restaurant, $status)
+    public function sendMessage($id, $status)
     {
+        $order = $this->order->find($id);
+        $customer = $this->customer->find($order['cus_id']);
+        $restaurant = $this->restaurant->find($order['rest_id']);
         $deliver_at = new DateTime($order['deliver_at']);
 
         $msg['Confirmed'] = str_replace(
