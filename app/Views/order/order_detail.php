@@ -18,8 +18,8 @@
                                 $deliver_at = new DateTime($order['deliver_at']);
                                 ?>
                                 <div class="col-8">
-                                    <span class="font-weight-bolder">Placed At: </span><?= $placed_at->format('h:i A'); ?></br>
-                                    <span class="font-weight-bolder">Deliver At: </span><?= $deliver_at->format('h:i A'); ?></br>
+                                    <span class="font-weight-bolder">Placed on: </span><?= $placed_at->format('M d, Y @ h:i:s A'); ?></br>
+                                    <span class="font-weight-bolder">Deliver at: </span><?= $deliver_at->format('M d, Y @  h:i:s A'); ?></br>
                                 </div>
                                 <div class="col-4 text-right">
                                     <h2>
