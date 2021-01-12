@@ -17,7 +17,11 @@ class TextMessage
         $twilio = new Client(getEnv('TWILIO_SID'), getEnv('TWILIO_TOKEN'));
 
         try{
-            $message = $twilio->messages->create($to, array("from" => $from, "body" => $body));
+            $message = $twilio->messages->create($to, array(
+                "from" => $from,
+                "messagingServiceSid" => getEnv('MSG_SERVICE_ID'),      
+                "body" => $body
+            ));
         }catch(Exception $e){
 
         }
