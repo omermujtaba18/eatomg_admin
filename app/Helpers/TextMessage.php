@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use Exception;
 use \Twilio\Rest\Client;
 
 class TextMessage
@@ -11,10 +12,14 @@ class TextMessage
     {
     }
 
-    public function sendTextMessage($to, $body)
+    public function sendTextMessage($to, $from, $body)
     {
         $twilio = new Client(getEnv('TWILIO_SID'), getEnv('TWILIO_TOKEN'));
-        $message = $twilio->messages->create($to, array("from" => getEnv('TWILIO_NUMBER'), "body" => $body));
-        return ($message->sid);
+
+        try{
+            $message = $twilio->messages->create($to, array("from" => $from, "body" => $body));
+        }catch(Exception $e){
+
+        }
     }
 }

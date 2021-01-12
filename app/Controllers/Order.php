@@ -288,24 +288,28 @@ class Order extends Controller
         $msg['Confirmed'] = str_replace(
             ['%customer_name%', '%order_num%', '%deliver_at%'],
             [$customer['cus_name'], $order['order_num'], $deliver_at->format('h:i A')],
-            'Dear %customer_name%, Your order (#%order_num%) has been confirmed. Kindly pickup your order by %deliver_at%.'
+            "Dear %customer_name%, Your order (#%order_num%) has been confirmed. Your order will be ready for pickup by %deliver_at%. \n \n www.eatomg.com"
         );
 
         $msg['Ready'] = str_replace(
-            ['%customer_name%', '%order_num%'],
-            [$customer['cus_name'], $order['order_num']],
-            'Dear %customer_name%, Your order (#%order_num%) is ready. Kindly pickup your order.'
+            ['%customer_name%', '%order_num%', '%deliver_at%'],
+            [$customer['cus_name'], $order['order_num'], $deliver_at->format('h:i A')],
+            "Dear %customer_name%, Your order (#%order_num%) is ready for pickup. \n \n www.eatomg.com"
         );
 
-        $msg['Delivered'] = str_replace('%rest_name%', $restaurant['rest_name'], 'Thank you for ordering today at %rest_name%. Please let us know how was it');
+        $msg['Delivered'] = str_replace(
+            ['%rest_name%', '%customer_name%'],
+            [$restaurant['rest_name'], $customer['cus_name']],
+            "Dear Abrar, Thank you for ordering today at %rest_name%. We hope you enjoy your meal. Please let us know how it was. \n \n www.eatomg.com"
+        );
 
         $msg['Cancelled'] = str_replace(
             ['%customer_name%', '%order_num%'],
             [$customer['cus_name'], $order['order_num']],
-            'Dear %customer_name%, Your order (#%order_num%) has been cancelled.'
+            "Dear %customer_name%, Your order (#%order_num%) has been cancelled. We will refund the payment into your account. \n \n www.eatomg.com"
         );
 
         $textMessage = new TextMessage();
-        $textMessage->sendTextMessage('+1' . $customer['cus_phone'], $msg[$status]);
+        $textMessage->sendTextMessage('+1' . $customer['cus_phone'], $restaurant['rest_msg_num'], $msg[$status]);
     }
 }
