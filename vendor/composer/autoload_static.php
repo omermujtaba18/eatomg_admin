@@ -22,6 +22,10 @@ class ComposerStaticInit5f08c00c0db8fb7c3c844f956b84eef2
         array (
             'Webmozart\\Assert\\' => 17,
         ),
+        'T' => 
+        array (
+            'Twilio\\' => 7,
+        ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Ctype\\' => 23,
@@ -65,6 +69,10 @@ class ComposerStaticInit5f08c00c0db8fb7c3c844f956b84eef2
         'Webmozart\\Assert\\' => 
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
+        ),
+        'Twilio\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/twilio/sdk/src/Twilio',
         ),
         'Symfony\\Polyfill\\Ctype\\' => 
         array (

@@ -29,7 +29,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'd82ea950d8c03f346b7d419f96d5dc94ee406017',
+    'reference' => '5feb4ce42e7d785706cc26655e2bf9b91b39c5e4',
     'name' => 'codeigniter4/codeigniter4',
   ),
   'versions' => 
@@ -41,7 +41,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'd82ea950d8c03f346b7d419f96d5dc94ee406017',
+      'reference' => '5feb4ce42e7d785706cc26655e2bf9b91b39c5e4',
     ),
     'codeigniter4/codeigniter4-standard' => 
     array (
@@ -388,6 +388,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '75a63c33a8577608444246075ea0af0d052e452a',
+    ),
+    'twilio/sdk' => 
+    array (
+      'pretty_version' => '6.15.1',
+      'version' => '6.15.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '09e8cf28d1c53cb53472a917cddfdaeb4d8105f5',
     ),
     'webmozart/assert' => 
     array (
