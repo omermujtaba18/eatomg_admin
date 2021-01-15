@@ -1,3 +1,9 @@
+<script src="https://cdn.ckeditor.com/4.15.1/full/ckeditor.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
 <div id="layoutSidenav_content">
     <main>
         <div class="container-fluid mt-5">
@@ -11,81 +17,42 @@
             <div class="row mb-5">
                 <div class="col-lg-12">
                     <div class="card card-header-actions mb-4">
-                        <div class="card-header"> <?= isset($addon) ? 'Update add-on' : 'Create a new add on' ?>
-                            <a class="btn btn-primary btn-sm" href="/addon?rest_id=<?= $rest_id; ?>">Back</a>
+                        <div class="card-header"> <?= isset($email) ? 'Update email' : 'Create a new email' ?>
+                            <a class="btn btn-primary btn-sm" href="/addon">Back</a>
                         </div>
 
                         <div class="card-body">
-                            <form method="post" enctype="multipart/form-data">
+                            <form method="post" class="col" enctype="multipart/form-data">
                                 <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input class="form-control form-control-solid col-6" id="name" type="text" placeholder="addon-plate" name="name" value="<?= isset($addon['addon_group_name']) ? $addon['addon_group_name'] : ''; ?>" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Instruction</label>
-                                    <input class="form-control form-control-solid col-6" id="instruction" type="text" placeholder="Please select an addon" name="instruction" value="<?= isset($addon['addon_group_instruct']) ? $addon['addon_group_instruct'] : ''; ?>" required>
-                                </div>
-
-                                <div class="row mb-2 mt-5">
-                                    <div class="col-1"></div>
-                                    <div class="col-3">Item</div>
-                                    <div class="col-2">Price</div>
-                                    <div class="col-4">Choose new image</div>
-                                </div>
-
-                                <?php if (isset($addon)) {
-                                    foreach ($addonItems as $item) : ?>
-                                        <div>
-                                            <div class="row my-5" id="item">
-                                                <div class="col-1">
-                                                    <!--<img src="<?php // $value['addon_pic']; ?>" width=60 />-->
-                                                    <input type="hidden" name="pic[]" value="<?= isset($item['addon_pic']) ? $item['addon_pic'] : ''; ?>">
-                                                </div>
-                                                <div class="form-group col-3">
-                                                    <input class="form-control form-control-solid" type="text" placeholder="" name="item[]" value="<?= isset($item['addon_item']) ? $item['addon_item'] : ''; ?>" required>
-                                                </div>
-                                                <div class="form-group col-2">
-                                                    <input class="form-control form-control-solid" type="number" step="0.01" placeholder="" name="price[]" value="<?= isset($item['addon_price']) ? number_format($item['addon_price'], 2, '.', '') : ''; ?>" required>
-                                                </div>
-                                                <div class="form-group col-4">
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" name="image[]">
-                                                        <label class="custom-file-label form-control-solid">Choose file...</label>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group col-3">
-                                                    <a class="btn btn-danger text-white btn-sm mt-1" onclick="deleteItem(this)">Delete</a>
-                                                </div>
-                                            </div>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <label for="name">Name</label>
+                                            <input class="form-control form-control-solid" id="name" type="text" placeholder="" name="name" value="<?= isset($email['email_name']) ? $email['email_name'] : ''; ?>" required>
                                         </div>
-                                    <?php endforeach; ?>
-
-                                <?php } else { ?>
-                                    <div>
-                                        <div class="row" id="item">
-                                            <div class="form-group col-4">
-                                                <input class="form-control form-control-solid" type="text" placeholder="" name="item[]" required>
-                                            </div>
-                                            <div class="form-group col-2">
-                                                <input class="form-control form-control-solid" type="number" placeholder="" step="0.01" name="price[]" required>
-                                            </div>
-                                            <div class="form-group col-3">
-                                                <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" id="image" name="image[]">
-                                                    <label class="custom-file-label form-control-solid" for="image">Choose file...</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-3">
-                                                <a class="btn btn-danger text-white btn-sm mt-1" onclick="deleteItem(this)">Delete</a>
-                                            </div>
+                                        <div class="col-1"></div>
+                                        <div class="col-5">
+                                            <label for="subject">Subject</label>
+                                            <input class="form-control form-control-solid" id="subject" type="text" placeholder="" name="subject" value="<?= isset($email['email_subject']) ? $email['email_subject'] : ''; ?>" required>
                                         </div>
                                     </div>
-                                <?php } ?>
-                                <a class="btn btn-primary text-white btn-sm mt-5" onclick="addItem(this)" id="test">+ Add more</a>
-
-                                <hr>
+                                </div>
                                 <div class="form-group">
-                                    <button class="btn btn-primary" type="submit"><?= isset($addon) ? 'Update addon' : 'Create addon' ?></button>
+                                    <label for="editor">Body</label>
+                                    <textarea name="body" id="editor" rows="10" cols="80">
+                                        <?= isset($email['email_body']) ? $email['email_body'] : ''; ?>
+                                 </textarea>
+                                </div>
+                                <hr class="mb-5">
+
+                                <h2 class="border-bottom mb-5">Filters</h2>
+
+                                <div class="form-group">
+                                    <label for="datetime">Schedule (Date and Time)</label>
+                                    <input class="form-control form-control-solid col-4" type="text" placeholder="" name="datetime" value="<?= isset($email['email_subject']) ? $email['email_subject'] : ''; ?>" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <button class="btn btn-primary" type="submit"><?= isset($email) ? 'Update email' : 'Create email' ?></button>
                                 </div>
                             </form>
                         </div>
@@ -95,20 +62,26 @@
     </main>
 </div>
 
+
 <script>
-    function deleteItem(element) {
-        parent = element.parentElement.parentElement.parentElement;
-        parent.removeChild(element.parentElement.parentElement)
-    }
+    $(function() {
+        $('input[name="datetime"]').daterangepicker({
+            singleDatePicker: true,
+            timePicker: true,
+            startDate: moment().startOf('hour'),
+            endDate: moment().startOf('hour').add(32, 'hour'),
+            locale: {
+                format: 'YYYY-MM-DD hh:mm:ss'
+            },
+            "opens": "right",
+            "drops": "auto"
 
-    function addItem(element) {
-        new_item = document.querySelector("#item").cloneNode(true)
-        item_group = element.previousElementSibling.appendChild(new_item)
-        item_group.children[0].children[1].value = ''
-    }
-
-    $('input[type="file"]').change(function(e) {
-        var fileName = e.target.files[0].name;
-        e.target.parentElement.children[1].innerHTML = fileName;
+        });
     });
+    CKEDITOR.replace('editor');
+    CKEDITOR.config.height = 500;
+    CKEDITOR.config.allowedContent = true;
+    CKEDITOR.config.allowedExtraContent = true;
+    CKEDITOR.config.fullPage = true;
+    CKEDITOR.config.startupMode = 'source';
 </script>
