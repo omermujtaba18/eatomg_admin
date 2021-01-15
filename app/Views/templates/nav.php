@@ -3,7 +3,7 @@
 use App\Models\RestaurantModel;
 
 $restaurantModel = new RestaurantModel();
-$restaurant = $restaurantModel->orderBy('priority','ASC')->findAll();
+$restaurant = $restaurantModel->orderBy('priority', 'ASC')->findAll();
 ?>
 
 
@@ -15,7 +15,7 @@ $restaurant = $restaurantModel->orderBy('priority','ASC')->findAll();
 
                     <?php if ($_SESSION['user_role'] == 'A') : ?>
                         <div class="sidenav-menu-heading">Administrator</div>
-                    
+
                         <a class="nav-link <?= $title == 'overview' ? 'active' : ''; ?>" href="/dashboard">
                             <div class="nav-link-icon"><i data-feather="activity"></i></div>
                             Dashboard
@@ -32,10 +32,14 @@ $restaurant = $restaurantModel->orderBy('priority','ASC')->findAll();
                             <div class="nav-link-icon"><i data-feather="user-plus"></i></div>
                             Facebook Auto Post
                         </a>
-                         <a class="nav-link" href="/customer">
-                        <div class="nav-link-icon"><i data-feather="users"></i></div>
-                                Customers
-                        </a> 
+                        <a class="nav-link" href="/customer">
+                            <div class="nav-link-icon"><i data-feather="users"></i></div>
+                            Customers
+                        </a>
+                        <a class="nav-link <?= $title == 'emails' ? 'active' : ''; ?>" href="/email">
+                            <div class="nav-link-icon"><i data-feather="mail"></i></div>
+                            Emails
+                        </a>
                     <?php endif; ?>
 
 

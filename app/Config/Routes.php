@@ -48,6 +48,10 @@ $routes->get('facebook/(:num)', 'Facebook::view/$1');
 $routes->get('facebook', 'Facebook::index');
 $routes->get('publish', 'Facebook::publish');
 
+$routes->add('email/(:alpha)/(:num)', 'Email::$1/$2');
+$routes->match(['get', 'post'], 'email/create', 'Email::create');
+$routes->get('email/(:num)', 'Email::view/$1');
+$routes->get('email', 'Email::index');
 
 $routes->add('modifier/(:alpha)/(:num)', 'Modifier::$1/$2');
 $routes->match(['get', 'post'], 'modifier/create', 'Modifier::create');
