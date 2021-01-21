@@ -4,16 +4,13 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class EmailModel extends Model
+class EmailTemplateModel extends Model
 {
-    protected $table = 'emails';
+    protected $table = 'email_templates';
     protected $primaryKey = 'email_id';
     protected $returnType     = 'array';
     protected $allowedFields = [
-        'email_subject',
+        'email_name',
         'email_body',
-        'email_filters',
-        'schedule',
-        'status'
     ];
 }

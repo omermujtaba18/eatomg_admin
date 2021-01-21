@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\EmailModel;
+use App\Models\EmailTemplateModel;
 use CodeIgniter\Controller;
 use CodeIgniter\I18n\Time;
 
@@ -15,6 +16,7 @@ class Email extends Controller
         $this->time = new Time('now', 'America/Chicago', 'en_US');
         $this->title = 'email';
         $this->email = new EmailModel();
+        $this->emailTemplate = new EmailTemplateModel();
     }
 
     public function index()
@@ -22,6 +24,7 @@ class Email extends Controller
         $data = [
             'title' => $this->title,
             'time' => $this->time,
+            'emailTemplates' => $this->emailTemplate->findAll(),
             'emails' => $this->email->findAll(),
         ];
 
@@ -31,16 +34,16 @@ class Email extends Controller
         echo view('templates/footer');
     }
 
-    public function create()
+    public function create($id = null)
     {
         if ($this->request->getPost()) {
-            $result = $this->htmlminifiy($this->request->getPost('subject'));
+            $result = $this->htmlminifiy($this->request->getPost('body'));
 
             if ($result[1] == 200) {
                 $this->email->save([
-                    'email_name' => $this->request->getPost('name'),
                     'email_subject' => $this->request->getPost('subject'),
                     'email_body' => $result[0],
+                    'schedule' => $this->request->getPost('datetime')
                 ]);
                 return redirect()->to('/email');
             }
@@ -49,7 +52,9 @@ class Email extends Controller
         $data = [
             'title' => $this->title,
             'time' => $this->time,
+            'body' =>  $this->emailTemplate->find($id)['email_body']
         ];
+
         echo view('templates/header', $data);
         echo view('templates/nav', $data);
         echo view('email/email_add', $data);
@@ -64,13 +69,14 @@ class Email extends Controller
             if ($result[1] == 200) {
                 $this->email->save([
                     'email_id' => $id,
-                    'email_name' => $this->request->getPost('name'),
                     'email_subject' => $this->request->getPost('subject'),
                     'email_body' => $result[0],
+                    'schedule' => $this->request->getPost('datetime')
                 ]);
                 return redirect()->to('/email');
             }
         }
+
 
         $data = [
             'title' => $this->title,

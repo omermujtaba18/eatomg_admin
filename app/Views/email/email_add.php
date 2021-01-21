@@ -18,37 +18,79 @@
                 <div class="col-lg-12">
                     <div class="card card-header-actions mb-4">
                         <div class="card-header"> <?= isset($email) ? 'Update email' : 'Create a new email' ?>
-                            <a class="btn btn-primary btn-sm" href="/addon">Back</a>
+                            <a class="btn btn-primary btn-sm" href="/email">Back</a>
                         </div>
 
                         <div class="card-body">
                             <form method="post" class="col" enctype="multipart/form-data">
                                 <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-5">
-                                            <label for="name">Name</label>
-                                            <input class="form-control form-control-solid" id="name" type="text" placeholder="" name="name" value="<?= isset($email['email_name']) ? $email['email_name'] : ''; ?>" required>
-                                        </div>
-                                        <div class="col-1"></div>
-                                        <div class="col-5">
-                                            <label for="subject">Subject</label>
-                                            <input class="form-control form-control-solid" id="subject" type="text" placeholder="" name="subject" value="<?= isset($email['email_subject']) ? $email['email_subject'] : ''; ?>" required>
-                                        </div>
-                                    </div>
+                                    <label for="datetime">Schedule (Date and Time)</label>
+                                    <input class="form-control form-control-solid col-4" type="text" placeholder="" name="datetime" value="<?= isset($email['schedule']) ? $email['schedule'] : ''; ?>" required>
                                 </div>
+                                <div class="form-group">
+                                    <label for="subject">Subject</label>
+                                    <input class="form-control form-control-solid" id="subject" type="text" placeholder="" name="subject" value="<?= isset($email['email_subject']) ? $email['email_subject'] : ''; ?>" required>
+                                </div>
+
                                 <div class="form-group">
                                     <label for="editor">Body</label>
                                     <textarea name="body" id="editor" rows="10" cols="80">
                                         <?= isset($email['email_body']) ? $email['email_body'] : ''; ?>
+                                        <?= isset($body) ? $body : ''; ?>
                                  </textarea>
                                 </div>
-                                <hr class="mb-5">
+                                <hr class="mb-3">
 
-                                <h2 class="border-bottom mb-5">Filters</h2>
+                                <h2 class="border-bottom mt-4 mb-4">Filters</h2>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="form-group">
+                                            <label for="datetime">Restaurant</label>
+                                            <div class="custom-control custom-checkbox custom-control-solid">
+                                                <input class="custom-control-input" type="checkbox" value="" id="defaultCheck1">
+                                                <label class="custom-control-label" for="defaultCheck1">
+                                                    OMG - North Avenue
+                                                </label>
+                                            </div>
+                                            <div class="custom-control custom-checkbox custom-control-solid">
+                                                <input class="custom-control-input" type="checkbox" value="" id="defaultCheck1">
+                                                <label class="custom-control-label" for="defaultCheck1">
+                                                    OMG - Van Buren
+                                                </label>
+                                            </div>
+                                            <div class="custom-control custom-checkbox custom-control-solid">
+                                                <input class="custom-control-input" type="checkbox" value="" id="defaultCheck1">
+                                                <label class="custom-control-label" for="defaultCheck1">
+                                                    OMG - Catering
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-1"></div>
+                                    <div class="col-5">
+                                        <div class="form-group">
+                                            <label for="datetime">Customer Buy Type</label>
+                                            <div class="custom-control custom-checkbox custom-control-solid">
+                                                <input class="custom-control-input" type="checkbox" value="" id="defaultCheck1">
+                                                <label class="custom-control-label" for="defaultCheck1">
+                                                    Website
+                                                </label>
+                                            </div>
+                                            <div class="custom-control custom-checkbox custom-control-solid">
+                                                <input class="custom-control-input" type="checkbox" value="" id="defaultCheck1">
+                                                <label class="custom-control-label" for="defaultCheck1">
+                                                    App
+                                                </label>
+                                            </div>
+                                            <div class="custom-control custom-checkbox custom-control-solid">
+                                                <input class="custom-control-input" type="checkbox" value="" id="defaultCheck1">
+                                                <label class="custom-control-label" for="defaultCheck1">
+                                                    Walk-ins
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                <div class="form-group">
-                                    <label for="datetime">Schedule (Date and Time)</label>
-                                    <input class="form-control form-control-solid col-4" type="text" placeholder="" name="datetime" value="<?= isset($email['email_subject']) ? $email['email_subject'] : ''; ?>" required>
                                 </div>
 
                                 <div class="form-group">
@@ -83,5 +125,4 @@
     CKEDITOR.config.allowedContent = true;
     CKEDITOR.config.allowedExtraContent = true;
     CKEDITOR.config.fullPage = true;
-    CKEDITOR.config.startupMode = 'source';
 </script>

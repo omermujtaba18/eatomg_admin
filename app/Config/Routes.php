@@ -32,6 +32,8 @@ $routes->setAutoRoute(false);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 
+$routes->get('cron/every10minute', 'Cron::every10minute');
+
 $routes->add('promotion/(:alpha)/(:num)', 'Promotion::$1/$2');
 $routes->match(['get', 'post'], 'promotion/create', 'Promotion::create');
 $routes->get('promotion/(:num)', 'Promotion::view/$1');
@@ -49,7 +51,6 @@ $routes->get('facebook', 'Facebook::index');
 $routes->get('publish', 'Facebook::publish');
 
 $routes->add('email/(:alpha)/(:num)', 'Email::$1/$2');
-$routes->match(['get', 'post'], 'email/create', 'Email::create');
 $routes->get('email/(:num)', 'Email::view/$1');
 $routes->get('email', 'Email::index');
 
