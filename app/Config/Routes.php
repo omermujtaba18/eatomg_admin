@@ -32,7 +32,7 @@ $routes->setAutoRoute(false);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 
-$routes->get('cron/every10minute', 'Cron::every10minute');
+$routes->get('cron/every30minute', 'Cron::every30minute');
 
 $routes->add('promotion/(:alpha)/(:num)', 'Promotion::$1/$2');
 $routes->match(['get', 'post'], 'promotion/create', 'Promotion::create');

@@ -18,7 +18,7 @@ class Filters extends BaseConfig
 	// Always applied before every request
 	public $globals = [
 		'before' => [
-			'sessionCheck' => ['except' => ['user/login', '/api/*','/publish']]
+			'sessionCheck' => ['except' => ['user/login', '/publish', 'cron/every30minute']]
 			//'honeypot'
 			// 'csrf',
 		],

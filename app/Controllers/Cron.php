@@ -4,8 +4,8 @@ namespace App\Controllers;
 
 use App\Models\EmailModel;
 use CodeIgniter\Controller;
-use CodeIgniter\Email;
-use CodeIgniter\I18n\Time;
+use App\Helpers\EmailHelper;
+use App\Models\CustomerModel;
 use DateTime;
 
 class Cron extends Controller
@@ -15,23 +15,35 @@ class Cron extends Controller
     public function __construct()
     {
         $this->email = new EmailModel();
+        $this->customer = new CustomerModel();
     }
 
-    public function every10minute()
+    public function every30minute()
     {
-        $datetime = new DateTime();
+        $current = new DateTime();
+        $time1 = $current->format('Y-m-d h:i:s');
+        $currentPlus10 = new DateTime('+30 minute');
+        $time2 = $currentPlus10->format('Y-m-d h:i:s');
 
-        $to_time = strtotime($datetime->format('Y-m-d h:i:s'));
-        $emails = $this->email->where('status', 0)->findAll();
+        $emails = $this->email->where([
+            'schedule >=' => $time1,
+            'schedule <' => $time2,
+            'status' => 0
+        ])->findAll();
 
         foreach ($emails as $email) {
-            $target = new DateTime($email['schedule']);
-            $from_time = strtotime($target->format('Y-m-d h:i:s'));
-            $diff = round(($to_time - $from_time) / 60, 2);
-
-            if ($diff > 0 && $diff < 10) {
-                // Use send grid to send emails
+            $customers = $this->customer->findAll();
+            foreach ($customers as $customer) {
+                $emailHelper = new EmailHelper();
+                $emailHelper->sendEmail(
+                    $customer['cus_name'],
+                    $customer['cus_email'],
+                    getenv('EMAIL'),
+                    $email['email_subject'],
+                    $email['email_body']
+                );
             }
+            $this->email->save(['email_id' => $email['email_id'], 'status' => 1]);
         }
     }
 }
