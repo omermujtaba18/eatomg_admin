@@ -125,10 +125,66 @@
         });
     });
     var editor = CKEDITOR.replace('editor', {
-        height: '500',
+        height: '700',
         allowedContent: true,
         allowedExtraContent: true,
-        fullPage: true
+        fullPage: true,
+        toolbarGroups: [{
+                name: 'document',
+                groups: ['mode', 'document', 'doctools']
+            },
+            {
+                name: 'clipboard',
+                groups: ['clipboard', 'undo']
+            },
+            {
+                name: 'editing',
+                groups: ['find', 'selection', 'spellchecker', 'editing']
+            },
+            {
+                name: 'forms',
+                groups: ['forms']
+            },
+            '/',
+            {
+                name: 'basicstyles',
+                groups: ['basicstyles', 'cleanup']
+            },
+            {
+                name: 'paragraph',
+                groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph']
+            },
+            {
+                name: 'links',
+                groups: ['links']
+            },
+            {
+                name: 'insert',
+                groups: ['insert']
+            },
+            '/',
+            {
+                name: 'styles',
+                groups: ['styles']
+            },
+            {
+                name: 'colors',
+                groups: ['colors']
+            },
+            {
+                name: 'tools',
+                groups: ['tools']
+            },
+            {
+                name: 'others',
+                groups: ['others']
+            },
+            {
+                name: 'about',
+                groups: ['about']
+            }
+        ],
+        removeButtons: 'Save,NewPage,ExportPdf,Print,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Flash,SpecialChar,Iframe,About,Scayt,Language'
     });
 
     CKFinder.setupCKEditor(editor);
