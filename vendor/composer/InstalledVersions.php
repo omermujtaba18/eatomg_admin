@@ -29,7 +29,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '5feb4ce42e7d785706cc26655e2bf9b91b39c5e4',
+    'reference' => '2b7dbbdd2909cc907e0b012d9292ba915dbfa8c0',
     'name' => 'codeigniter4/codeigniter4',
   ),
   'versions' => 
@@ -41,7 +41,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '5feb4ce42e7d785706cc26655e2bf9b91b39c5e4',
+      'reference' => '2b7dbbdd2909cc907e0b012d9292ba915dbfa8c0',
     ),
     'codeigniter4/codeigniter4-standard' => 
     array (
@@ -353,6 +353,31 @@ private static $installed = array (
       ),
       'reference' => '99732be0ddb3361e16ad77b68ba41efc8e979019',
     ),
+    'sendgrid/php-http-client' => 
+    array (
+      'pretty_version' => '3.13.0',
+      'version' => '3.13.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '35862113b879274c7014e09681ac279a186665f1',
+    ),
+    'sendgrid/sendgrid' => 
+    array (
+      'pretty_version' => '7.9.1',
+      'version' => '7.9.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'c3b76df9d2374b469474ab209fbd4e4ef1a16986',
+    ),
+    'sendgrid/sendgrid-php' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
     'squizlabs/php_codesniffer' => 
     array (
       'pretty_version' => '3.5.8',
@@ -361,6 +386,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '9d583721a7157ee997f235f327de038e7ea6dac4',
+    ),
+    'starkbank/ecdsa' => 
+    array (
+      'pretty_version' => '0.0.4',
+      'version' => '0.0.4.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '9369d35ed9019321adb4eb9fd3be21357d527c74',
     ),
     'stripe/stripe-php' => 
     array (
