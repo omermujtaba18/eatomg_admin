@@ -38,7 +38,7 @@ $restaurant = $restaurantModel->orderBy('priority', 'ASC')->findAll();
                         </a>
                         <a class="nav-link <?= $title == 'emails' ? 'active' : ''; ?>" href="/email">
                             <div class="nav-link-icon"><i data-feather="mail"></i></div>
-                            Emails
+                            CRM (Emails)
                         </a>
                     <?php endif; ?>
 

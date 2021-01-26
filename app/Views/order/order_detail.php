@@ -75,7 +75,7 @@
 
                                         <?php if (!empty($item['order_item_note'])) : ?>
                                             <div class="row mt-4">
-                                                <div class="col-2 text-right font-weight-bolder">Note</div>
+                                                <div class="col-2 text-right font-weight-bolder">Instruction: </div>
                                                 <div class="col-8"><?= $item['order_item_note']; ?></div>
                                             </div>
                                         <?php endif; ?>

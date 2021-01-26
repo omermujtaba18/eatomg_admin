@@ -1,4 +1,8 @@
-<script src="https://cdn.ckeditor.com/4.15.1/full/ckeditor.js"></script>
+<!-- <script src="https://cdn.ckeditor.com/4.15.1/full/ckeditor.js"></script> -->
+
+<script src="<?= base_url(); ?>/plugins/ckeditor/ckeditor.js"></script>
+<script src="<?= base_url(); ?>/plugins/ckfinder/ckfinder.js"></script>
+
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
@@ -94,7 +98,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <button class="btn btn-primary" type="submit"><?= isset($email) ? 'Update email' : 'Create email' ?></button>
+                                    <button class="btn btn-primary" type="submit"><?= isset($email) ? 'Update email' : 'Schedule email' ?></button>
                                 </div>
                             </form>
                         </div>
@@ -120,9 +124,12 @@
 
         });
     });
-    CKEDITOR.replace('editor');
-    CKEDITOR.config.height = 500;
-    CKEDITOR.config.allowedContent = true;
-    CKEDITOR.config.allowedExtraContent = true;
-    CKEDITOR.config.fullPage = true;
+    var editor = CKEDITOR.replace('editor', {
+        height: '500',
+        allowedContent: true,
+        allowedExtraContent: true,
+        fullPage: true
+    });
+
+    CKFinder.setupCKEditor(editor);
 </script>
