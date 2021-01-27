@@ -10,12 +10,12 @@
 // https://ckeditor.com/docs/ckfinder/ckfinder3-php/debugging.html
 
 // Production
-// error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
-// ini_set('display_errors', 0);
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
+ini_set('display_errors', 0);
 
 // Development
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 
 /*============================ General Settings =======================================*/
 // https://ckeditor.com/docs/ckfinder/ckfinder3-php/configuration.html
@@ -66,7 +66,7 @@ $config['images'] = array(
 $config['backends'][] = array(
     'name'         => 'default',
     'adapter'      => 'local',
-    'baseUrl'      => '/images',
+    'baseUrl'      => '/images/',
     //  'root'         => '', // Can be used to explicitly set the CKFinder user files directory.
     'chmodFiles'   => 0777,
     'chmodFolders' => 0755,
@@ -76,7 +76,7 @@ $config['backends'][] = array(
 /*================================ Resource Types =====================================*/
 // https://ckeditor.com/docs/ckfinder/ckfinder3-php/configuration.html#configuration_options_resourceTypes
 
-$config['defaultResourceTypes'] = 'Images';
+$config['defaultResourceTypes'] = '';
 
 $config['resourceTypes'][] = array(
     'name'              => 'Images',
@@ -128,7 +128,8 @@ $config['forceAscii'] = false;
 $config['xSendfile'] = false;
 
 // https://ckeditor.com/docs/ckfinder/ckfinder3-php/configuration.html#configuration_options_debug
-$config['debug'] = false;
+$config['debug'] = true;
+$config['debugLoggers'] =  array('ckfinder_log', 'error_log', 'firephp');
 
 /*==================================== Plugins ========================================*/
 // https://ckeditor.com/docs/ckfinder/ckfinder3-php/configuration.html#configuration_options_plugins
