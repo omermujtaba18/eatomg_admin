@@ -54,6 +54,11 @@ $routes->add('email/(:alpha)/(:num)', 'Email::$1/$2');
 $routes->get('email/(:num)', 'Email::view/$1');
 $routes->get('email', 'Email::index');
 
+$routes->add('sms/(:alpha)/(:num)', 'SMS::$1/$2');
+$routes->match(['get', 'post'], 'sms/create', 'SMS::create');
+$routes->get('sms/(:num)', 'SMS::view/$1');
+$routes->get('sms', 'SMS::index');
+
 $routes->add('modifier/(:alpha)/(:num)', 'Modifier::$1/$2');
 $routes->match(['get', 'post'], 'modifier/create', 'Modifier::create');
 $routes->get('modifier/(:num)', 'Modifier::view/$1');

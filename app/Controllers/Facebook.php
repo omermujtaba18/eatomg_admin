@@ -103,42 +103,39 @@ class Facebook extends Controller
         $this->facebook->delete($id);
         return redirect()->to('/facebook');
     }
-    
-    
+
+
     public function publish()
     {
         $builder = $this->facebook->builder();
-        
+
         $post = $this->facebook->where('is_published', 0)
-                   ->orderBy('fb_post_id', 'asc')
-                   ->first();
-        
-        if(is_null($post)){
+            ->orderBy('fb_post_id', 'asc')
+            ->first();
+
+        if (is_null($post)) {
             $posts = $this->facebook->findAll();
-            foreach($posts as $post){
-                $this->facebook->save([ 'fb_post_id' => $post['fb_post_id'] ,'is_published' => 0]);
+            foreach ($posts as $post) {
+                $this->facebook->save(['fb_post_id' => $post['fb_post_id'], 'is_published' => 0]);
             }
             return redirect()->to('/publish');
         }
-        
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_FRESH_CONNECT, TRUE);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_POST, TRUE);
-        
-        if(empty($post['fb_post_image'])){
-            curl_setopt($ch, CURLOPT_URL, 'https://graph.facebook.com/' . getEnv('PAGE_ID') . '/feed?message='.urlencode($post['fb_post_description']).'&access_token='.getEnv('FB_TOKEN'));
-        }else{
-            curl_setopt($ch, CURLOPT_URL, 'https://graph.facebook.com/' . getEnv('PAGE_ID') . '/photos?url='.urlencode($post['fb_post_image']).'&access_token='.getEnv('FB_TOKEN').'&message='.urlencode($post['fb_post_description']));
+
+        if (empty($post['fb_post_image'])) {
+            curl_setopt($ch, CURLOPT_URL, 'https://graph.facebook.com/' . getEnv('PAGE_ID') . '/feed?message=' . urlencode($post['fb_post_description']) . '&access_token=' . getEnv('FB_TOKEN'));
+        } else {
+            curl_setopt($ch, CURLOPT_URL, 'https://graph.facebook.com/' . getEnv('PAGE_ID') . '/photos?url=' . urlencode($post['fb_post_image']) . '&access_token=' . getEnv('FB_TOKEN') . '&message=' . urlencode($post['fb_post_description']));
         }
-        
-        $result = curl_exec($ch);        
-        
-        var_dump($result);   
 
-        $this->facebook->save([ 'fb_post_id' => $post['fb_post_id'] ,'is_published' => 1]);
+        $result = curl_exec($ch);
 
-  
-        
+        var_dump($result);
+
+        $this->facebook->save(['fb_post_id' => $post['fb_post_id'], 'is_published' => 1]);
     }
 }

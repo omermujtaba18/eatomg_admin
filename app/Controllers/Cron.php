@@ -3,8 +3,10 @@
 namespace App\Controllers;
 
 use App\Models\EmailModel;
+use App\Models\SMSModel;
 use CodeIgniter\Controller;
 use App\Helpers\EmailHelper;
+use App\Helpers\TextMessage;
 use App\Models\CustomerModel;
 use DateTime;
 
@@ -15,6 +17,7 @@ class Cron extends Controller
     public function __construct()
     {
         $this->email = new EmailModel();
+        $this->sms = new SMSModel();
         $this->customer = new CustomerModel();
     }
 
@@ -44,6 +47,21 @@ class Cron extends Controller
                 );
             }
             $this->email->save(['email_id' => $email['email_id'], 'status' => 1]);
+        }
+
+        $messages = $this->sms->where([
+            'schedule >=' => $time1,
+            'schedule <' => $time2,
+            'status' => 0
+        ])->findAll();
+
+        foreach ($messages as $message) {
+            $customers = $this->customer->findAll();
+            foreach ($customers as $customer) {
+                $textMessage = new TextMessage();
+                $textMessage->sendTextMessage('+1' . $customer['cus_phone'], '', $message['sms_body']);
+            }
+            $this->sms->save(['sms_id' => $message['sms_id'], 'status' => 1]);
         }
     }
 }

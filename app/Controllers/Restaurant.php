@@ -15,7 +15,7 @@ class Restaurant extends Controller
     public function __construct()
     {
         $this->db = db_connect();
-        $this->title = 'Restaurants';
+        $this->title = 'restaurants';
         $this->time = new Time('now', 'America/Chicago', 'en_US');
         $this->restaurant = new RestaurantModel();
         $this->session = session();
