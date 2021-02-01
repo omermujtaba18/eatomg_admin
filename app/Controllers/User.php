@@ -16,7 +16,7 @@ class User extends Controller
     public function __construct()
     {
         $this->db = db_connect();
-        $this->title = 'Users';
+        $this->title = 'users';
         $this->time = new Time('now', 'America/Chicago', 'en_US');
         $this->user = new UserModel();
         $this->session = session();

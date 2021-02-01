@@ -24,21 +24,25 @@ $restaurant = $restaurantModel->orderBy('priority', 'ASC')->findAll();
                             <div class="nav-link-icon"><i data-feather="user-plus"></i></div>
                             Users
                         </a>
-                        <a class="nav-link <?= $title == 'restaurant' ? 'active' : ''; ?>" href="/restaurant">
+                        <a class="nav-link <?= $title == 'restaurants' ? 'active' : ''; ?>" href="/restaurant">
                             <div class="nav-link-icon"><i data-feather="compass"></i></div>
                             Restaurant
                         </a>
-                        <a class="nav-link <?= $title == 'facebook' ? 'active' : ''; ?>" href="/facebook">
+                        <a class="nav-link <?= $title == 'Facebook Auto Post'  ? 'active' : ''; ?>" href="/facebook">
                             <div class="nav-link-icon"><i data-feather="user-plus"></i></div>
                             Facebook Auto Post
                         </a>
-                        <a class="nav-link" href="/customer">
+                        <a class="nav-link <?= $title == 'customers' ? 'active' : ''; ?>" href="/customer">
                             <div class="nav-link-icon"><i data-feather="users"></i></div>
                             Customers
                         </a>
-                        <a class="nav-link <?= $title == 'emails' ? 'active' : ''; ?>" href="/email">
+                        <a class="nav-link <?= $title == 'email' ? 'active' : ''; ?>" href="/email">
                             <div class="nav-link-icon"><i data-feather="mail"></i></div>
                             CRM (Emails)
+                        </a>
+                        <a class="nav-link <?= $title == 'sms' ? 'active' : ''; ?>" href="/sms">
+                            <div class="nav-link-icon"><i data-feather="mail"></i></div>
+                            CRM (SMS)
                         </a>
                     <?php endif; ?>
 
