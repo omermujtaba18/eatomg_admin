@@ -3,7 +3,7 @@
 use App\Models\RestaurantModel;
 
 $restaurantModel = new RestaurantModel();
-$restaurant = $restaurantModel->orderBy('priority', 'ASC')->findAll();
+$restaurant = $restaurantModel->where(['business_id' => $_SESSION['user_business']])->orderBy('priority', 'ASC')->findAll();
 ?>
 
 

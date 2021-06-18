@@ -22,11 +22,12 @@ class Dashboard extends Controller
     public function index()
     {
         $params = $this->request->getGet();
+        $params['business_id'] = $_SESSION['user_business'];
 
         $order = $this->db->table('orders');
         $total = $order->where($params)->selectSum('order_total')->get();
         $average = $order->where($params)->selectAvg('order_total')->get();
-        $topRest = $this->db->query('SELECT count(rest_id), rest_id FROM orders GROUP BY rest_id ORDER BY count(rest_id) DESC');
+        $topRest = $this->db->query('SELECT count(rest_id), rest_id FROM orders WHERE business_id = ' . $_SESSION['user_business'] . ' GROUP BY rest_id ORDER BY count(rest_id) DESC');
         $topRest = $topRest->getFirstRow();
 
         if (!empty($topRest)) {
@@ -41,7 +42,7 @@ class Dashboard extends Controller
             'average' => round($average->getResult()[0]->order_total, 2),
             'totalOrders' => $order->where($params)->countAllResults(),
             'topRest' => !empty($topRest) ? $topRest : NULL,
-            'restaurants' => $this->restaurant->orderBy('priority', 'ASC')->findAll(),
+            'restaurants' => $this->restaurant->where(['business_id' => $_SESSION['user_business']])->orderBy('priority', 'ASC')->findAll(),
             'monthlyData' => !empty($params['rest_id']) ? $this->getMonthlyTotal($params['rest_id']) : $this->getMonthlyTotal(),
             'topSellerItems' => !empty($params['rest_id']) ? $this->getTopSeller($params['rest_id']) : $this->getTopSeller(),
             'orderTiming' => !empty($params['rest_id']) ? $this->getTimingData($params['rest_id']) : $this->getTimingData()
@@ -51,39 +52,6 @@ class Dashboard extends Controller
         echo view('templates/nav', $data);
         echo view('dashboard/overview', $data);
         echo view('templates/footer');
-    }
-
-    public function view($name = null)
-    {
-        echo "Dashboard: " . $name;
-        //  $email = \Config\Services::email();
-        // $email->setFrom('omgnorth@tasteolive.com','Olive Mediterranean Grill');
-        // $email->setTo('faisal@eatomg.com');
-        // $email->setSubject('Merry Christmas!');
-        // $email->setMessage(view('templates/email'));
-
-        // if(!$email->send(false)){
-        //     $email->printDebugger();
-        // }
-
-        // $email->clear();
-
-        // $customers = $this->customer->findAll();
-
-        // foreach($customers as $customer){
-        //     $email = \Config\Services::email();
-        //     $email->setFrom('omgnorth@tasteolive.com','Olive Mediterranean Grill');
-        //     $email->setTo($customer['cus_email']);
-        //     $email->setSubject('Merry Christmas!');
-        //     $email->setMessage(view('templates/email'));
-
-        //     if(!$email->send(false)){
-        //         $email->printDebugger();
-        //     }
-
-        //     $email->clear();
-
-        // }
     }
 
     public function getMonthlyTotal($restId = NULL)
@@ -100,14 +68,14 @@ class Dashboard extends Controller
     }
 
     public function getTopSeller($restId = NULL)
-    {        
+    {
         $items = [];
         $orderItemsJoinItems = "SELECT order_items.item_id, items.item_name, items.rest_id, items.category_id
         FROM ninetofab.order_items
         JOIN ninetofab.items
         ON order_items.item_id = items.item_id";
 
-        if($restId){
+        if ($restId) {
             $orderItemsJoinItems = $orderItemsJoinItems . " where rest_id=" . $restId;
         }
 
@@ -153,7 +121,7 @@ class Dashboard extends Controller
         $tommorow = new Time('now +1 day', 'America/Chicago', 'en_US');
         $tommorow = $tommorow->setTime(0, 0, 0);
 
-        $condition = $restId ? "AND rest_id = $restId" : "" ;
+        $condition = $restId ? "AND rest_id = $restId" : "";
 
         $ordersByHour = "SELECT 
         HOUR(placed_at) 'hr', COUNT(DISTINCT order_id) 'count'
