@@ -22,6 +22,9 @@ class Dashboard extends Controller
     public function index()
     {
         $params = $this->request->getGet();
+        unset($params['start']);
+        unset($params['end']);
+
         $params['business_id'] = $_SESSION['user_business'];
 
         $order = $this->db->table('orders');
@@ -29,6 +32,8 @@ class Dashboard extends Controller
         $average = $order->where($params)->selectAvg('order_total')->get();
         $topRest = $this->db->query('SELECT count(rest_id), rest_id FROM orders WHERE business_id = ' . $_SESSION['user_business'] . ' GROUP BY rest_id ORDER BY count(rest_id) DESC');
         $topRest = $topRest->getFirstRow();
+        $start = !empty($this->request->getGet('start')) ? $this->request->getGet('start') : date("Y-m-d", strtotime("2019-01-01"));
+        $end = !empty($this->request->getGet('end')) ? $this->request->getGet('end') : date("Y-m-d");
 
         if (!empty($topRest)) {
             $topRest = $this->restaurant->where('rest_id', $topRest->rest_id)->first();
@@ -43,9 +48,11 @@ class Dashboard extends Controller
             'totalOrders' => $order->where($params)->countAllResults(),
             'topRest' => !empty($topRest) ? $topRest : NULL,
             'restaurants' => $this->restaurant->where(['business_id' => $_SESSION['user_business']])->orderBy('priority', 'ASC')->findAll(),
-            'monthlyData' => !empty($params['rest_id']) ? $this->getMonthlyTotal($params['rest_id']) : $this->getMonthlyTotal(),
+            'monthlyData' => !empty($params['rest_id']) ? $this->getMonthlyTotal($params['rest_id'], date('Y')) : $this->getMonthlyTotal(NULL, date('Y')),
             'topSellerItems' => !empty($params['rest_id']) ? $this->getTopSeller($params['rest_id']) : $this->getTopSeller(),
-            'orderTiming' => !empty($params['rest_id']) ? $this->getTimingData($params['rest_id']) : $this->getTimingData()
+            'orderTiming' => !empty($params['rest_id']) ? $this->getTimingData($params['rest_id']) : $this->getTimingData(),
+            'start' => $start,
+            'end' => $end,
         ];
 
         echo view('templates/header', $data);
@@ -54,16 +61,48 @@ class Dashboard extends Controller
         echo view('templates/footer');
     }
 
-    public function getMonthlyTotal($restId = NULL)
+    public function getStats()
     {
+        $params = $this->request->getGet();
+        $params['placed_at >='] = $params['start'];
+        $params['placed_at <='] = $params['end'];
+        unset($params['start']);
+        unset($params['end']);
+
+        $order = $this->db->table('orders');
+        $earnings = $order->where($params)->selectSum('order_total')->get();
+        $averageOrder = $order->where($params)->selectAvg('order_total')->get();
+        $topRest = $this->db->query('SELECT count(rest_id), rest_id FROM orders WHERE business_id = ' . $_SESSION['user_business'] . ' GROUP BY rest_id ORDER BY count(rest_id) DESC');
+        $topRest = $topRest->getFirstRow();
+        if (!empty($topRest)) {
+            $topRest = $this->restaurant->where('rest_id', $topRest->rest_id)->first();
+            $topRest = $topRest['rest_name'];
+        }
+
+        $data = [
+            'total' => round($earnings->getResult()[0]->order_total, 2),
+            'average' => round($averageOrder->getResult()[0]->order_total, 2),
+            'totalOrders' => $order->where($params)->countAllResults(),
+            'topRest' => !empty($topRest) ? $topRest : NULL,
+        ];
+
+        echo json_encode($data);
+    }
+
+    public function getMonthlyTotal($restId = NULL, $year = NULL)
+    {
+        $year = $this->request->getGet('year') ? $this->request->getGet('year') : $year;
+        $restId = $this->request->getGet('restId') ? $this->request->getGet('restId') : $restId;
+
         $monthlyDataArray = [];
         for ($i = 1; $i < 13; $i++) {
             $query = ($restId) ?
-                $this->db->query('SELECT SUM(order_total) as s FROM ninetofab.orders WHERE rest_id = ' . $restId . ' AND YEAR(placed_at) = 2020 AND MONTH(placed_at) = ' . $i) :
-                $this->db->query('SELECT SUM(order_total) as s FROM ninetofab.orders WHERE YEAR(placed_at) = 2020 AND MONTH(placed_at) = ' . $i);
+                $this->db->query('SELECT SUM(order_total) as s FROM ninetofab.orders WHERE rest_id = ' . $restId . ' AND YEAR(placed_at) = ' . $year . ' AND MONTH(placed_at) = ' . $i) :
+                $this->db->query('SELECT SUM(order_total) as s FROM ninetofab.orders WHERE YEAR(placed_at) = ' . $year . ' AND MONTH(placed_at) = ' . $i);
             $row = $query->getFirstRow();
             array_push($monthlyDataArray, round($row->s, 2));
         }
+        echo json_encode($monthlyDataArray);
         return $monthlyDataArray;
     }
 

@@ -87,10 +87,17 @@ class Order extends Controller
             ->join('restaurants', 'restaurants.rest_id = orders.rest_id')
             ->join('customers', 'customers.cus_id = orders.cus_id')->get();
         $order = $order->getResult('array')[0];
-        unset($order['cus_email'], $order['cus_password'],
-        $order['cus_dob'], $order['has_register'],
-        $order['rest_location'], $order['rest_id'],
-        $order['is_complete'], $order['cus_country'], $order['cus_zip']);
+        unset(
+            $order['cus_email'],
+            $order['cus_password'],
+            $order['cus_dob'],
+            $order['has_register'],
+            $order['rest_location'],
+            $order['rest_id'],
+            $order['is_complete'],
+            $order['cus_country'],
+            $order['cus_zip']
+        );
 
         $data['order'] = $order;
 

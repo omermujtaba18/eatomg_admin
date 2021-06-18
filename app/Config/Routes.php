@@ -97,6 +97,7 @@ $routes->match(['get', 'post'], 'user/login', 'User::login');
 $routes->get('user/(:num)', 'User::view/$1');
 $routes->get('user', 'User::index');
 
+$routes->get('dashboard/getStats', 'Dashboard::getStats');
 $routes->get('dashboard/getMonthlyTotal/(:num)', 'Dashboard::getMonthlyTotal/$1');
 $routes->get('dashboard/getMonthlyTotal', 'Dashboard::getMonthlyTotal');
 $routes->get('dashboard/getTopSeller', 'Dashboard::getTopSeller');
