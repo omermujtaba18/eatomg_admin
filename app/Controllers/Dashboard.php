@@ -69,6 +69,8 @@ class Dashboard extends Controller
         unset($params['start']);
         unset($params['end']);
 
+        $params['business_id'] = $_SESSION['user_business'];
+
         $order = $this->db->table('orders');
         $earnings = $order->where($params)->selectSum('order_total')->get();
         $averageOrder = $order->where($params)->selectAvg('order_total')->get();
@@ -97,8 +99,8 @@ class Dashboard extends Controller
         $monthlyDataArray = [];
         for ($i = 1; $i < 13; $i++) {
             $query = ($restId) ?
-                $this->db->query('SELECT SUM(order_total) as s FROM ninetofab.orders WHERE rest_id = ' . $restId . ' AND YEAR(placed_at) = ' . $year . ' AND MONTH(placed_at) = ' . $i) :
-                $this->db->query('SELECT SUM(order_total) as s FROM ninetofab.orders WHERE YEAR(placed_at) = ' . $year . ' AND MONTH(placed_at) = ' . $i);
+                $this->db->query('SELECT SUM(order_total) as s FROM ninetofab.orders WHERE business_id = ' . $_SESSION['user_business'] . ' AND rest_id = ' . $restId . ' AND YEAR(placed_at) = ' . $year . ' AND MONTH(placed_at) = ' . $i) :
+                $this->db->query('SELECT SUM(order_total) as s FROM ninetofab.orders WHERE business_id = ' . $_SESSION['user_business'] . ' AND YEAR(placed_at) = ' . $year . ' AND MONTH(placed_at) = ' . $i);
             $row = $query->getFirstRow();
             array_push($monthlyDataArray, round($row->s, 2));
         }
@@ -109,10 +111,11 @@ class Dashboard extends Controller
     public function getTopSeller($restId = NULL)
     {
         $items = [];
-        $orderItemsJoinItems = "SELECT order_items.item_id, items.item_name, items.rest_id, items.category_id
+        $orderItemsJoinItems = "SELECT order_items.item_id, items.item_name, items.rest_id, items.category_id, items.business_id
         FROM ninetofab.order_items
         JOIN ninetofab.items
-        ON order_items.item_id = items.item_id";
+        ON order_items.item_id = items.item_id 
+        WHERE business_id = " . $_SESSION['user_business'];
 
         if ($restId) {
             $orderItemsJoinItems = $orderItemsJoinItems . " where rest_id=" . $restId;
@@ -166,6 +169,7 @@ class Dashboard extends Controller
         HOUR(placed_at) 'hr', COUNT(DISTINCT order_id) 'count'
         FROM ninetofab.orders
         WHERE (placed_at BETWEEN '$today' AND '$tommorow' " . $condition . ")
+        AND  business_id = " . $_SESSION['user_business'] . "
         GROUP BY hr;";
         $ordersByHour = $this->db->query($ordersByHour);
         $ordersByHour = $ordersByHour->getResult();

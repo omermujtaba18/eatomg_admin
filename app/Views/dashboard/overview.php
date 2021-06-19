@@ -58,7 +58,7 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1">
-                                    <div class="small font-weight-bold text-green mb-1">Total Orders (<?= $time->toLocalizedString('MMMM') ?>)</div>
+                                    <div class="small font-weight-bold text-green mb-1">Total Orders</div>
                                     <div class="h5" id="totalOrders"><?= $totalOrders; ?></div>
                                     <!-- <div class="text-xs font-weight-bold text-success d-inline-flex align-items-center"><i class="mr-1" data-feather="trending-up"></i>12%</div> -->
                                 </div>
@@ -127,7 +127,7 @@
                 <div class="col-lg-8 col-xl-9 mb-4">
                     <div class="card">
                         <div id="topseller">
-                            <div class="card-header">Top Seller Items (<?= $time->toLocalizedString('MMMM'); ?>)</div>
+                            <div class="card-header">Top Seller Items</div>
                             <div class="card-body">
                                 <div class="datatable table-responsive">
                                     <table class="table table-bordered table-hover" id="tableTopSeller" width="100%" cellspacing="0">
