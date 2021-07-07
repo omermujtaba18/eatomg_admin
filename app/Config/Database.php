@@ -129,10 +129,6 @@ class Database extends \CodeIgniter\Database\Config
 			}
 		}
 
-		if (ENVIRONMENT === 'development') {
-			$this->defaultGroup = 'development';
-		}
-
 	}
 
 	//--------------------------------------------------------------------
