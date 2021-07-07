@@ -28,7 +28,7 @@ class User extends Controller
         $builder = $this->db->table('users');
         $builder->select('*');
         $builder->join('restaurants', 'restaurants.rest_id = users.user_rest');
-        $builder->where('users.user_role !=', 'A');
+        $builder->where(['users.user_role !=' => 'A', 'users.user_business' => $_SESSION['user_business']]);
         $query = $builder->get();
 
         $data = [
@@ -51,7 +51,8 @@ class User extends Controller
                 'user_email' => $this->request->getPost('email'),
                 'user_password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
                 'user_role' => $this->request->getPost('role'),
-                'user_rest' => $this->request->getPost('branch')
+                'user_rest' => $this->request->getPost('branch'),
+                'user_business' => $_SESSION['user_business']
             ]);
 
             return redirect()->to('/user');
@@ -127,6 +128,13 @@ class User extends Controller
             }
 
             $this->session->set($user);
+
+            $username = $user['user_name'];
+            $businessId = $user['user_business'];
+            $datetime = date('Y-m-d h:i:s');
+            $agent = $_SERVER['HTTP_USER_AGENT'];
+            $this->db->query("INSERT INTO `ninetofab`.`login_history` (`username`, `datetime`, `agent`,`business_id`) 
+            VALUES ('$username','$datetime','$agent','$businessId')");
 
             if ($user['user_role'] == 'E' || $user['user_role'] == 'BM') {
                 return redirect()->to('/order?rest_id=' . $user['user_rest']);
