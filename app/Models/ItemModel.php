@@ -18,6 +18,7 @@ class ItemModel extends Model
         'category_id',
         'item_slug',
         'rest_id',
-        'business_id'
+        'business_id',
+        'push_item'
     ];
 }

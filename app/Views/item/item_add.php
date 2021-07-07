@@ -39,10 +39,17 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="category">Status</label>
-                                    <select class="form-control form-control-solid col-6" id="category" name="status">
+                                    <label for="status">Status</label>
+                                    <select class="form-control form-control-solid col-6" id="status" name="status">
                                         <option value="1" <?= isset($item['item_status']) && $item['item_status'] == "1" ? 'selected' : ''; ?>>Active</option>
                                         <option value="0" <?= isset($item['item_status']) && $item['item_status'] == "0" ? 'selected' : ''; ?>>Disable</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="push_item">Push Item</label>
+                                    <select class="form-control form-control-solid col-6" id="push_item" name="push_item">
+                                        <option value="1" <?= isset($item['push_item']) && $item['push_item'] == "1" ? 'selected' : ''; ?>>Active</option>
+                                        <option value="0" <?= isset($item['push_item']) && $item['push_item'] == "0" ? 'selected' : ''; ?>>Disable</option>
                                     </select>
                                 </div>
                                 <div class="form-group mb-0">

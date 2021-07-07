@@ -65,6 +65,7 @@ class Item extends Controller
                 'item_price' => $this->request->getPost('price'),
                 'category_id' => $this->request->getPost('category'),
                 'item_status' => $this->request->getPost('status'),
+                'push_item' => $this->request->getPost('push_item'),
                 'item_slug' => str_replace(" ", "-", trim(strtolower($this->request->getPost('name')))),
                 'rest_id' => $this->request->getGet('rest_id')
             ]);
@@ -128,6 +129,7 @@ class Item extends Controller
                 'item_price' => $this->request->getPost('price'),
                 'category_id' => $this->request->getPost('category'),
                 'item_status' => $this->request->getPost('status'),
+                'push_item' => $this->request->getPost('push_item'),
                 'item_slug' => str_replace(" ", "-", trim(strtolower($this->request->getPost('name'))))
             ]);
 
