@@ -90,6 +90,9 @@ $routes->add('customer/(:alpha)/(:num)', 'Customer::$1/$2');
 $routes->get('customer/(:num)', 'Customer::view/$1');
 $routes->get('customer', 'Customer::index');
 
+$routes->match(['get', 'post'], 'business', 'Business::index');
+$routes->get('history', 'History::index');
+
 $routes->add('user/(:alpha)/(:num)', 'User::$1/$2');
 $routes->match(['get', 'post'], 'user/create', 'User::create');
 $routes->get('user/(:alpha)', 'User::$1');
