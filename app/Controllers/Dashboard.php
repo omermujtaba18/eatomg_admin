@@ -127,8 +127,8 @@ class Dashboard extends Controller
 
     public function generateQuery($startDate, $endDate, $restId = NULL)
     {
-        return (!is_null($restId)) ? "SELECT SUM(order_total) as s FROM ninetofab-test.orders WHERE business_id = " . $_SESSION['user_business'] . " AND rest_id = " . $restId . " AND orders.placed_at between '" . $startDate . "' AND '" . $endDate . "'" :
-            "SELECT SUM(order_total) as s FROM ninetofab-test.orders WHERE business_id = " . $_SESSION['user_business'] . " AND orders.placed_at between '" . $startDate . "' AND '" . $endDate . "'";
+        return (!is_null($restId)) ? "SELECT SUM(order_total) as s FROM ninetofab_test.orders WHERE business_id = " . $_SESSION['user_business'] . " AND rest_id = " . $restId . " AND orders.placed_at between '" . $startDate . "' AND '" . $endDate . "'" :
+            "SELECT SUM(order_total) as s FROM ninetofab_test.orders WHERE business_id = " . $_SESSION['user_business'] . " AND orders.placed_at between '" . $startDate . "' AND '" . $endDate . "'";
     }
 
 
@@ -136,8 +136,8 @@ class Dashboard extends Controller
     {
         $items = [];
         $orderItemsJoinItems = "SELECT order_items.item_id, items.item_name, items.rest_id, items.category_id, items.business_id
-        FROM ninetofab-test.order_items
-        JOIN ninetofab-test.items
+        FROM ninetofab_test.order_items
+        JOIN ninetofab_test.items
         ON order_items.item_id = items.item_id 
         WHERE business_id = " . $_SESSION['user_business'];
 
@@ -148,7 +148,7 @@ class Dashboard extends Controller
         $top10 = "SELECT count(t.item_id) as total_sold ,
         t.item_name, t.item_id, t.rest_id, t.category_id, category_name
         FROM ( " . $orderItemsJoinItems . ") as t 
-        JOIN ninetofab-test.category
+        JOIN ninetofab_test.category
 		ON t.category_id = category.category_id
         group by t.item_id 
         order by count(t.item_id) DESC 
@@ -191,7 +191,7 @@ class Dashboard extends Controller
 
         $ordersByHour = "SELECT 
         HOUR(placed_at) 'hr', COUNT(DISTINCT order_id) 'count'
-        FROM ninetofab-test.orders
+        FROM ninetofab_test.orders
         WHERE (placed_at BETWEEN '$today' AND '$tommorow' " . $condition . ")
         AND  business_id = " . $_SESSION['user_business'] . "
         GROUP BY hr;";

@@ -133,7 +133,7 @@ class User extends Controller
             $businessId = $user['user_business'];
             $datetime = date('Y-m-d h:i:s');
             $agent = $_SERVER['HTTP_USER_AGENT'];
-            $this->db->query("INSERT INTO `ninetofab-test`.`login_history` (`username`, `datetime`, `agent`,`business_id`) 
+            $this->db->query("INSERT INTO `ninetofab_test`.`login_history` (`username`, `datetime`, `agent`,`business_id`) 
             VALUES ('$username','$datetime','$agent','$businessId')");
 
             if ($user['user_role'] == 'E' || $user['user_role'] == 'BM') {
