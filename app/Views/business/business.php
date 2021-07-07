@@ -12,7 +12,16 @@
                 <div class="col-lg-12">
                     <div class="card card-header-actions mb-4">
                         <div class="card-header"> Update Business Information</div>
-
+                        <?php if (isset($msg) && !empty($msg)) : ?>
+                            <div class="col-md-6 pt-3">
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    <?= $msg ?>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                         <div class="card-body">
                             <form method="post" enctype="multipart/form-data">
                                 <div class="form-row">
@@ -28,9 +37,14 @@
                                 </div>
                                 <div class="form-row">
 
-                                    <div class="form-group col-md-12">
+                                    <div class="form-group col-md-6">
                                         <label for="name">Business Address</label>
                                         <input class="form-control form-control-solid" type="text" name="business_address" value="<?= isset($business['business_address']) ? $business['business_address'] : ''; ?>">
+                                    </div>
+                                    <div class="col-1"></div>
+                                    <div class="form-group col-md-5">
+                                        <label for="name">Push Sales Title</label>
+                                        <input class="form-control form-control-solid" type="text" name="push_title" value="<?= isset($business['push_title']) ? $business['push_title'] : ''; ?>">
                                     </div>
                                 </div>
                                 <div class="form-row">

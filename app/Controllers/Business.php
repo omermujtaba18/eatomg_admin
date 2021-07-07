@@ -25,6 +25,8 @@ class Business extends Controller
 
     public function index()
     {
+        $msg = '';
+        
         if ($this->request->getPost()) {
             $this->business->save([
                 'business_id' => $_SESSION['user_business'],
@@ -34,7 +36,8 @@ class Business extends Controller
                 'business_website' => $this->request->getPost('business_website'),
                 'business_url_facebook' => $this->request->getPost('business_url_facebook'),
                 'business_url_instagram' => $this->request->getPost('business_url_instagram'),
-                'business_url_twitter' => $this->request->getPost('business_url_twitter')
+                'business_url_twitter' => $this->request->getPost('business_url_twitter'),
+                'push_title' => $this->request->getPost('push_title')
             ]);
 
             $file = $this->request->getFile('logo');
@@ -45,12 +48,15 @@ class Business extends Controller
                     $this->business->save(['business_id' => $_SESSION['user_business'], 'business_logo' => base_url() . '/../assets/uploads/' . $fileName]);
                 }
             }
+
+            $msg = 'Business details saved';
         }
 
         $data = [
             'title' => 'business details',
             'business'  => $this->business->where(['business_id' => $_SESSION['user_business']])->first(),
-            'time' => new Time('now', 'America/Chicago', 'en_US')
+            'time' => new Time('now', 'America/Chicago', 'en_US'),
+            'msg' => $msg
         ];
 
         echo view('templates/header', $data);

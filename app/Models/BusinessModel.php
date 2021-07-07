@@ -19,5 +19,6 @@ class BusinessModel extends Model
         'business_url_facebook',
         'business_url_instagram',
         'business_url_twitter',
+        'push_title'
     ];
 }
