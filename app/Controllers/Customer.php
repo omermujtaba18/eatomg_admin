@@ -22,9 +22,12 @@ class Customer extends Controller
 
         $customer = new CustomerModel();
 
+        $params = $this->request->getGet();
+        $params['business_id'] = $_SESSION['user_business'];
+
         $data = [
             'title' => 'customers',
-            'customers'  => $customer->findAll(),
+            'customers'  => $customer->where($params)->findAll(),
             'time' => new Time('now', 'America/Chicago', 'en_US')
         ];
 
