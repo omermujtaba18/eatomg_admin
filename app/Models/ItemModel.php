@@ -17,6 +17,7 @@ class ItemModel extends Model
         'item_status',
         'category_id',
         'item_slug',
-        'rest_id'
+        'rest_id',
+        'business_id'
     ];
 }

@@ -15,6 +15,7 @@ class PromotionModel extends Model
         'promo_type',
         'promo_amount',
         'is_active',
-        'rest_id'
+        'rest_id',
+        'business_id'
     ];
 }

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
+use function PHPSTORM_META\map;
+
 class OrderModel extends Model
 {
     protected $table = 'orders';
@@ -24,6 +26,7 @@ class OrderModel extends Model
         'rest_id',
         'is_complete',
         'order_payment_type',
-        'payment_id'
+        'payment_id',
+        'business_id'
     ];
 }

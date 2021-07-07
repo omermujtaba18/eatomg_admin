@@ -14,6 +14,7 @@ class CategoryModel extends Model
         'category_desc',
         'category_slug',
         'category_type',
-        'rest_id'
+        'rest_id',
+        'business_id'
     ];
 }

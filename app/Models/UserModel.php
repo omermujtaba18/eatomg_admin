@@ -14,6 +14,7 @@ class UserModel extends Model
         'user_email',
         'user_password',
         'user_role',
-        'user_rest'
+        'user_rest',
+        'user_business'
     ];
 }
