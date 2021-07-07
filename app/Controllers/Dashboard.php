@@ -98,15 +98,39 @@ class Dashboard extends Controller
 
         $monthlyDataArray = [];
         for ($i = 1; $i < 13; $i++) {
-            $query = ($restId) ?
-                $this->db->query('SELECT SUM(order_total) as s FROM ninetofab.orders WHERE business_id = ' . $_SESSION['user_business'] . ' AND rest_id = ' . $restId . ' AND YEAR(placed_at) = ' . $year . ' AND MONTH(placed_at) = ' . $i) :
-                $this->db->query('SELECT SUM(order_total) as s FROM ninetofab.orders WHERE business_id = ' . $_SESSION['user_business'] . ' AND YEAR(placed_at) = ' . $year . ' AND MONTH(placed_at) = ' . $i);
-            $row = $query->getFirstRow();
-            array_push($monthlyDataArray, round($row->s, 2));
+            $firstHalf = true;
+            for ($j = 1; $j < 3; $j++) {
+
+                $startDate = $year . '-' . str_pad($i, 2, "0", STR_PAD_LEFT) . '-' . '01';
+                $midDate = $year . '-' . str_pad($i, 2, "0", STR_PAD_LEFT) . '-' . '15';
+                $endDate = $year . '-' . str_pad($i, 2, "0", STR_PAD_LEFT) . '-' . '31';
+
+                if ($firstHalf) {
+                    $query = ($restId) ?
+                        $this->db->query($this->generateQuery($startDate,$midDate,$restId)) :
+                        $this->db->query($this->generateQuery($startDate,$midDate));
+                    $firstHalf = false;
+                } else {
+                    $query = ($restId) ?
+                        $this->db->query($this->generateQuery($midDate, $endDate, $restId)) :
+                        $this->db->query($this->generateQuery($midDate, $endDate));
+                    $firstHalf = true;
+                }
+
+                $row = $query->getFirstRow();
+                array_push($monthlyDataArray, round($row->s, 2));
+            }
         }
         echo json_encode($monthlyDataArray);
         return $monthlyDataArray;
     }
+
+    public function generateQuery($startDate, $endDate, $restId = NULL)
+    {
+        return (!is_null($restId)) ? "SELECT SUM(order_total) as s FROM ninetofab.orders WHERE business_id = " . $_SESSION['user_business'] . " AND rest_id = " . $restId . " AND orders.placed_at between '" . $startDate . "' AND '" . $endDate . "'" :
+            "SELECT SUM(order_total) as s FROM ninetofab.orders WHERE business_id = " . $_SESSION['user_business'] . " AND orders.placed_at between '" . $startDate . "' AND '" . $endDate . "'";
+    }
+
 
     public function getTopSeller($restId = NULL)
     {
@@ -118,7 +142,7 @@ class Dashboard extends Controller
         WHERE business_id = " . $_SESSION['user_business'];
 
         if ($restId) {
-            $orderItemsJoinItems = $orderItemsJoinItems . " where rest_id=" . $restId;
+            $orderItemsJoinItems = $orderItemsJoinItems . " AND rest_id=" . $restId;
         }
 
         $top10 = "SELECT count(t.item_id) as total_sold ,
