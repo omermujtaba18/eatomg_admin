@@ -12,7 +12,6 @@ $restaurant = $restaurantModel->where(['business_id' => $_SESSION['user_business
         <nav class="sidenav shadow-right sidenav-light">
             <div class="sidenav-menu mb-5">
                 <div class="nav accordion" id="accordionSidenav">
-
                     <?php if ($_SESSION['user_role'] == 'A') : ?>
                         <div class="sidenav-menu-heading">Administrator</div>
 
@@ -44,8 +43,15 @@ $restaurant = $restaurantModel->where(['business_id' => $_SESSION['user_business
                             <div class="nav-link-icon"><i data-feather="mail"></i></div>
                             CRM (SMS)
                         </a>
+                        <a class="nav-link <?= $title == 'business details' ? 'active' : ''; ?>" href="/business">
+                            <div class="nav-link-icon"><i data-feather="home"></i></div>
+                            Business Details
+                        </a>
+                        <a class="nav-link <?= $title == 'login history' ? 'active' : ''; ?>" href="/history">
+                            <div class="nav-link-icon"><i data-feather="clock"></i></div>
+                            Login History
+                        </a>
                     <?php endif; ?>
-
 
                     <?php foreach ($restaurant as $r) :
                         if ($_SESSION['user_role'] == 'A' || $_SESSION['user_rest'] == $r['rest_id']) : ?>
@@ -75,21 +81,25 @@ $restaurant = $restaurantModel->where(['business_id' => $_SESSION['user_business
                                     <div class="nav-link-icon"><i data-feather="dollar-sign"></i></div>
                                     Promotion
                                 </a>
-                                <!-- <a class="nav-link collapsed" href="javascript:void(0);" data-toggle="collapse" data-target="#collapseInventory" aria-expanded="false" aria-controls="collapseInventory">
+                                <a class="nav-link" href="/customer?rest_id=<?= $r['rest_id']; ?>">
+                                    <div class="nav-link-icon"><i data-feather="user-plus"></i></div>
+                                    Customer
+                                </a>
+                                <a class="nav-link collapsed" href="javascript:void(0);" data-toggle="collapse" data-target="#collapseInventory" aria-expanded="false" aria-controls="collapseInventory">
                                     <div class="nav-link-icon"><i data-feather="package"></i></div>
                                     Inventory
                                     <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a> -->
-                                <!-- <div class="collapse" id="collapseInventory" data-parent="#accordionSidenav">
-                                    <nav class="sidenav-menu-nested nav"><a class="nav-link" href="/inventory?rest_id=<?php // $r['rest_id']; 
+                                </a>
+                                <div class="collapse" id="collapseInventory" data-parent="#accordionSidenav">
+                                    <nav class="sidenav-menu-nested nav"><a class="nav-link" href="/inventory?rest_id=<?php $r['rest_id'];
                                                                                                                         ?>">Item</a></nav>
-                                    <nav class="sidenav-menu-nested nav"><a class="nav-link" href="/inventory/category?rest_id=<?php // $r['rest_id']; 
+                                    <nav class="sidenav-menu-nested nav"><a class="nav-link" href="/inventory/category?rest_id=<?php $r['rest_id'];
                                                                                                                                 ?>">Category</a></nav>
-                                    <nav class="sidenav-menu-nested nav"><a class="nav-link" href="/inventory/distributor?rest_id=<?php // $r['rest_id']; 
+                                    <nav class="sidenav-menu-nested nav"><a class="nav-link" href="/inventory/distributor?rest_id=<?php $r['rest_id'];
                                                                                                                                     ?>">Distributor</a></nav>
-                                    <nav class="sidenav-menu-nested nav"><a class="nav-link" href="/inventory/recipe?rest_id=<?php // $r['rest_id']; 
+                                    <nav class="sidenav-menu-nested nav"><a class="nav-link" href="/inventory/recipe?rest_id=<?php $r['rest_id'];
                                                                                                                                 ?>">Recipe</a></nav>
-                                </div> -->
+                                </div>
                             <?php endif; ?>
                         <?php endif; ?>
                     <?php endforeach; ?>

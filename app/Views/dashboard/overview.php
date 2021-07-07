@@ -11,7 +11,7 @@
 
 <div id="layoutSidenav_content">
     <main>
-        <div class="container-fluid mt-5">
+        <div class="container-fluid mt-4">
             <div class="d-flex justify-content-between align-items-sm-center flex-column flex-sm-row mb-4">
                 <div class="mr-4 mb-3 mb-sm-0">
                     <h1 class="mb-0" id="title"><?= esc(ucfirst($title)); ?></h1>
@@ -82,6 +82,7 @@
                     </div>
                 </div>
             </div>
+            <hr class="pb-4">
             <div class="row mb-4">
                 <div class="col-lg-4 col-xl-3">
                     <div class="card">

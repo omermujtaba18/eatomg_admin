@@ -16,6 +16,7 @@
     <?php endif; ?>
     <title>ninetofab</title>
     <link href="/css/styles.css" rel="stylesheet" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <link href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
     <link rel="icon" type="image/x-icon" href="/assets/img/ninetofab_logo_4.png" />
