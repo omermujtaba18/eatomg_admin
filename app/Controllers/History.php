@@ -21,7 +21,7 @@ class History extends Controller
 
         $data = [
             'title' => 'login history',
-            'history'  => $this->db->query("SELECT * FROM ninetofab.login_history WHERE business_id=" . $_SESSION['user_business']),
+            'history'  => $this->db->query("SELECT * FROM ninetofab-test.login_history WHERE business_id=" . $_SESSION['user_business']),
             'time' => new Time('now', 'America/Chicago', 'en_US')
         ];
 
