@@ -19,6 +19,7 @@ class RestaurantModel extends Model
         'url_facebook',
         'url_twitter',
         'url_instagram',
-        'logo'
+        'business_id',
+        'priority'
     ];
 }

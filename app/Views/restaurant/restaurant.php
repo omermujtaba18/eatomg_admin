@@ -23,12 +23,11 @@ $roles = ['A' => 'Administrator', 'BM' => 'Branch Manager', 'E' => 'Employee'];
                                 <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th style="max-width: 2em;">ID</th>
+                                            <th>Priority</th>
                                             <th>Name</th>
                                             <th>Address</th>
                                             <th>Phone</th>
                                             <th>URL</th>
-                                            <th>Type</th>
                                             <th style="min-width: 5em;">Actions</th>
                                         </tr>
                                     </thead>
@@ -38,14 +37,12 @@ $roles = ['A' => 'Administrator', 'BM' => 'Branch Manager', 'E' => 'Employee'];
                                             <?php foreach ($restaurants as $r) : ?>
 
                                                 <tr>
-                                                    <td><?= esc($r['rest_id']); ?></td>
+                                                    <td><?= esc($r['priority']); ?></td>
                                                     <td><?= esc($r['rest_name']); ?></td>
                                                     <td><?= esc($r['rest_address']); ?></td>
                                                     <td><?= esc($r['rest_phone']); ?></td>
                                                     <td><?= esc($r['url']); ?></td>
-                                                    <td><?= esc($r['type']); ?></td>
                                                     <td>
-
                                                         <a class="btn btn-icon btn-sm btn-yellow ml-2 text-white" href="/restaurant/update/<?= esc($r['rest_id']); ?>">
                                                             <i data-feather="edit"></i></a>
                                                         <a class="btn btn-icon btn-sm btn-red ml-2 text-white" href="/restaurant/delete/<?= esc($r['rest_id']); ?>" onclick="return confirm('Are you sure you want to delete this item?');">

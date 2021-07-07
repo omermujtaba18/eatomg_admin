@@ -25,7 +25,7 @@ class Restaurant extends Controller
     {
         $data = [
             'title' => $this->title,
-            'restaurants'  => $this->restaurant->findAll(),
+            'restaurants'  => $this->restaurant->where(['business_id' => $_SESSION['user_business']])->findAll(),
             'time' => $this->time
         ];
 
@@ -44,20 +44,8 @@ class Restaurant extends Controller
                 'rest_phone' => $this->request->getPost('phone'),
                 'rest_description' => $this->request->getPost('description'),
                 'url' => $this->request->getPost('url'),
-                'url_facebook' => $this->request->getPost('url_facebook'),
-                'url_twitter' => $this->request->getPost('url_twitter'),
-                'url_instagram' => $this->request->getPost('url_instagram'),
-                'type' => $this->request->getPost('type')
+                'priority' => $this->request->getPost('priority')
             ]);
-
-            $file = $this->request->getFile('logo');
-            if ($file->isValid()) {
-                $fileName = $file->getRandomName();
-                $move = $file->move(ROOTPATH . 'public/assets/uploads/', $fileName);
-                if ($move) {
-                    $this->restaurant->save(['rest_id' => $saveId, 'logo' => base_url() . '/../assets/uploads/' . $fileName]);
-                }
-            }
 
             return redirect()->to('/restaurant');
         }
@@ -82,21 +70,9 @@ class Restaurant extends Controller
                 'rest_phone' => $this->request->getPost('phone'),
                 'rest_description' => $this->request->getPost('description'),
                 'url' => $this->request->getPost('url'),
-                'url_facebook' => $this->request->getPost('url_facebook'),
-                'url_twitter' => $this->request->getPost('url_twitter'),
-                'url_instagram' => $this->request->getPost('url_instagram'),
-                'type' => $this->request->getPost('type')
+                'priority' => $this->request->getPost('priority')
             ];
             $this->restaurant->update($id, $data);
-
-            $file = $this->request->getFile('logo');
-            if ($file->isValid()) {
-                $fileName = $file->getRandomName();
-                $move = $file->move(ROOTPATH . 'public/assets/uploads/', $fileName);
-                if ($move) {
-                    $this->restaurant->save(['rest_id' => $id, 'logo' => base_url() . '/../assets/uploads/' . $fileName]);
-                }
-            }
 
             return redirect()->to('/restaurant');
         }

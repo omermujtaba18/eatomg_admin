@@ -34,36 +34,12 @@
                                     <input class="form-control form-control-solid" type="text" placeholder="" name="phone" value="<?= isset($restaurant['rest_phone']) ? $restaurant['rest_phone'] : ''; ?>">
                                 </div>
                                 <div class="form-group">
-                                    <label for="takeout_url">Website URL</label>
+                                    <label for="takeout_url">Store URL</label>
                                     <input class="form-control form-control-solid" type="text" placeholder="" name="url" value="<?= isset($restaurant['url']) ? $restaurant['url'] : ''; ?>">
                                 </div>
                                 <div class="form-group">
-                                    <label for="url_facebook">Facebook URL</label>
-                                    <input class="form-control form-control-solid" type="text" placeholder="" name="url_facebook" value="<?= isset($restaurant['url_facebook']) ? $restaurant['url_facebook'] : ''; ?>">
-                                </div>
-                                <div class="form-group">
-                                    <label for="url_instagram">Instagram URL</label>
-                                    <input class="form-control form-control-solid" type="text" placeholder="" name="url_instagram" value="<?= isset($restaurant['url_instagram']) ? $restaurant['url_instagram'] : ''; ?>">
-                                </div>
-                                <div class="form-group">
-                                    <label for="url_twitter">Twitter URL</label>
-                                    <input class="form-control form-control-solid" type="text" placeholder="" name="url_twitter" value="<?= isset($restaurant['url_twitter']) ? $restaurant['url_twitter'] : ''; ?>">
-                                </div>
-                                <div class="form-group">
-                                    <label for="type">Type</label>
-                                    <select class="form-control form-control-solid" id="type" name="type">
-                                        <option value="takeout" <?= isset($restaurant['type']) && $restaurant['type'] == "takeout" ? 'selected' : ''; ?>>Takeout</option>
-                                        <option value="catering" <?= isset($restaurant['type'])  && $restaurant['type'] == "catering"  ? 'selected' : ''; ?>>Catering</option>
-                                    </select>
-                                </div>
-                                <div class="form-group mb-0">
-                                    <label>Logo</label>
-                                </div>
-                                <div class="form-group">
-                                    <div class="custom-file mb-3">
-                                        <input type="file" class="custom-file-input" id="logo" name="logo">
-                                        <label class="custom-file-label form-control-solid" for="logo">Choose file...</label>
-                                    </div>
+                                    <label for="takeout_url">Priority</label>
+                                    <input class="form-control form-control-solid" type="number" placeholder="" name="priority" value="<?= isset($restaurant['priority']) ? $restaurant['priority'] : 1; ?>">
                                 </div>
                                 <hr>
                                 <div class="form-group">
