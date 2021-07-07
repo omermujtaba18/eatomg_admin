@@ -195,7 +195,8 @@ class Order extends Controller
 
     public function cancelCardOrder($paymentId)
     {
-        \Stripe\Stripe::setApiKey(getEnv('STRIPE_SECRET_KEY'));
+        $stripeSecretKey = getEnv('CI_ENVIRONMENT') == 'development' ? getEnv('STRIPE_SECRET_KEY_DEV') : getEnv('STRIPE_SECRET_KEY');
+        \Stripe\Stripe::setApiKey($stripeSecretKey);
         $intent = \Stripe\PaymentIntent::retrieve($paymentId);
         $chargeId = $intent->charges->data[0]->id;
         $refund = \Stripe\Refund::create([
@@ -209,7 +210,7 @@ class Order extends Controller
     public function cancelPaypalOrder($paymentId)
     {
         $environment = getEnv('CI_ENVIRONMENT') == 'development' ?
-            new SandboxEnvironment(getEnv('CLIENT_ID_D'), getEnv('CLIENT_SECRET_D')) : new ProductionEnvironment(getEnv('CLIENT_ID'), getEnv('CLIENT_SECRET'));
+            new SandboxEnvironment(getEnv('CLIENT_ID_DEV'), getEnv('CLIENT_SECRET_DEV')) : new ProductionEnvironment(getEnv('CLIENT_ID'), getEnv('CLIENT_SECRET'));
         $client = new PayPalHttpClient($environment);
         $request = new CapturesRefundRequest($paymentId);
 
