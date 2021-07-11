@@ -18,11 +18,11 @@
                             <form method="post">
                                 <div class="form-group">
                                     <label for="name">Name</label>
-                                    <input class="form-control form-control-solid col-6" type="text" placeholder="January Promo" name="name" value="<?= isset($promotion['promo_name']) ? $promotion['promo_name'] : ''; ?>" required>
+                                    <input class="form-control form-control-solid col-6" type="text" placeholder="" name="name" value="<?= isset($promotion['promo_name']) ? $promotion['promo_name'] : ''; ?>" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="name">Code</label>
-                                    <input class="form-control form-control-solid col-6" type="text" placeholder="#JanFoodLove" name="code" value="<?= isset($promotion['promo_code']) ? $promotion['promo_code'] : ''; ?>" required>
+                                    <input class="form-control form-control-solid col-6" type="text" placeholder="" name="code" value="<?= isset($promotion['promo_code']) ? $promotion['promo_code'] : ''; ?>" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Type</label>
