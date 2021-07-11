@@ -47,51 +47,16 @@
                                     <div class="col-5">
                                         <div class="form-group">
                                             <label for="datetime">Restaurant</label>
-                                            <div class="custom-control custom-checkbox custom-control-solid">
-                                                <input class="custom-control-input" id="restaurant[1]" name="restaurant[]" type="checkbox" value="OMG - North Avenue">
-                                                <label class="custom-control-label" for="restaurant[1]">
-                                                    OMG - North Avenue
-                                                </label>
-                                            </div>
-                                            <div class="custom-control custom-checkbox custom-control-solid">
-                                                <input class="custom-control-input" id="restaurant[2]" name="restaurant[]" type="checkbox" value="OMG - Van Buren">
-                                                <label class="custom-control-label" for="restaurant[2]">
-                                                    OMG - Van Buren
-                                                </label>
-                                            </div>
-                                            <div class="custom-control custom-checkbox custom-control-solid">
-                                                <input class="custom-control-input" id="restaurant[3]" name="restaurant[]" type="checkbox" value="OMG - Catering">
-                                                <label class="custom-control-label" for="restaurant[3]">
-                                                    OMG - Catering
-                                                </label>
-                                            </div>
+                                            <?php foreach ($restaurants as $r) : ?>
+                                                <div class="custom-control custom-checkbox custom-control-solid">
+                                                    <input class="custom-control-input" id="restaurant[1]" name="restaurant[]" type="checkbox" value="OMG - North Avenue">
+                                                    <label class="custom-control-label" for="restaurant[1]">
+                                                        <?= $r['rest_name']; ?>
+                                                    </label>
+                                                </div>
+                                            <?php endforeach; ?>
                                         </div>
                                     </div>
-                                    <div class="col-1"></div>
-                                    <div class="col-5">
-                                        <div class="form-group">
-                                            <label for="datetime">Customer Buy Type</label>
-                                            <div class="custom-control custom-checkbox custom-control-solid">
-                                                <input class="custom-control-input" id="buyType[1]" name="buyType[]" type="checkbox" value="Website">
-                                                <label class="custom-control-label" for="buyType[1]">
-                                                    Website
-                                                </label>
-                                            </div>
-                                            <div class="custom-control custom-checkbox custom-control-solid">
-                                                <input class="custom-control-input" id="buyType[2]" name="buyType[]" type="checkbox" value="App">
-                                                <label class="custom-control-label" for="buyType[2]">
-                                                    App
-                                                </label>
-                                            </div>
-                                            <div class="custom-control custom-checkbox custom-control-solid">
-                                                <input class="custom-control-input" id="buyType[3]" name="buyType[]" type="checkbox" value="Walk-ins">
-                                                <label class="custom-control-label" for="buyType[3]">
-                                                    Walk-ins
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
 
                                 <div class="form-group">

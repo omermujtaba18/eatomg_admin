@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\SMSModel;
 use CodeIgniter\Controller;
 use CodeIgniter\I18n\Time;
+use App\Models\RestaurantModel;
 
 class SMS extends Controller
 {
@@ -15,6 +16,7 @@ class SMS extends Controller
         $this->time = new Time('now', 'America/Chicago', 'en_US');
         $this->title = 'sms';
         $this->sms = new SMSModel();
+        $this->restaurant = new RestaurantModel();
     }
 
     public function index()
@@ -44,6 +46,8 @@ class SMS extends Controller
         $data = [
             'title' => $this->title,
             'time' => $this->time,
+            'restaurants' => $this->restaurant->where(['business_id' => $_SESSION['user_business']])->findAll()
+
         ];
 
         echo view('templates/header', $data);
@@ -69,6 +73,8 @@ class SMS extends Controller
             'title' => $this->title,
             'time' => $this->time,
             'sms' => $this->sms->find($id),
+            'restaurants' => $this->restaurant->where(['business_id' => $_SESSION['user_business']])->findAll()
+
         ];
 
         echo view('templates/header', $data);

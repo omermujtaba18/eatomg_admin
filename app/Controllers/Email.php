@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\EmailModel;
 use App\Models\EmailTemplateModel;
+use App\Models\RestaurantModel;
 use CodeIgniter\Controller;
 use CodeIgniter\I18n\Time;
 
@@ -17,6 +18,7 @@ class Email extends Controller
         $this->title = 'email';
         $this->email = new EmailModel();
         $this->emailTemplate = new EmailTemplateModel();
+        $this->restaurant = new RestaurantModel();
     }
 
     public function index()
@@ -52,7 +54,8 @@ class Email extends Controller
         $data = [
             'title' => $this->title,
             'time' => $this->time,
-            'body' =>  $this->emailTemplate->find($id)['email_body']
+            'body' =>  $this->emailTemplate->find($id)['email_body'],
+            'restaurants' => $this->restaurant->where(['business_id' => $_SESSION['user_business']])->findAll()
         ];
 
         echo view('templates/header', $data);
@@ -82,6 +85,7 @@ class Email extends Controller
             'title' => $this->title,
             'time' => $this->time,
             'email' => $this->email->find($id),
+            'restaurants' => $this->restaurant->where(['business_id' => $_SESSION['user_business']])->findAll()
         ];
 
         echo view('templates/header', $data);
