@@ -37,7 +37,7 @@
                                             <?php foreach ($items as $item) : ?>
 
                                                 <tr>
-                                                    <td><img src="<?= isset($item->item_pic) && !empty($item->item_pic) ? $item->item_pic : "https://test-admin.ninetofab.com/assets/uploads/1625656550_2f2b4b4f89071d90478d.jpg" ?>" width="50" height="50" /></td>
+                                                    <td><img src="<?= isset($item->item_pic) && !empty($item->item_pic) ? $item->item_pic : "https://img.icons8.com/material-outlined/96/000000/image.png" ?>" width="50" height="50" /></td>
 
                                                     <td><?= esc($item->item_name); ?></td>
                                                     <td><?= esc($item->category_name); ?></td>

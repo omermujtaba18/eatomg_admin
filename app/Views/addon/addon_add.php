@@ -53,7 +53,7 @@
                                                         <label class="custom-file-label form-control-solid">Choose file...</label>
                                                     </div>
                                                 </div>
-                                                <div class="form-group col-3">
+                                                <div class="form-group col-2">
                                                     <a class="btn btn-danger text-white btn-sm mt-1" onclick="deleteItem(this)">Delete</a>
                                                 </div>
                                             </div>
