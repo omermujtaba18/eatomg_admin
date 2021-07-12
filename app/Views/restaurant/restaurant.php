@@ -15,7 +15,6 @@ $roles = ['A' => 'Administrator', 'BM' => 'Branch Manager', 'E' => 'Employee'];
                 <div class="col-lg-12">
                     <div class="card card-header-actions mb-4">
                         <div class="card-header"><?= esc(ucfirst($title)); ?>
-                            <a class="btn btn-primary btn-sm" href="/restaurant/create">Add a new restaurant</a>
                         </div>
 
                         <div class="card-body">

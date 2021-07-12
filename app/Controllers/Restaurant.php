@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\RestaurantModel;
+use App\Models\RestaurantTimeModel;
 use CodeIgniter\Controller;
 use CodeIgniter\I18n\Time;
 
@@ -19,6 +20,7 @@ class Restaurant extends Controller
         $this->time = new Time('now', 'America/Chicago', 'en_US');
         $this->restaurant = new RestaurantModel();
         $this->session = session();
+        $this->restaurant_time = new RestaurantTimeModel();
     }
 
     public function index()
@@ -74,13 +76,29 @@ class Restaurant extends Controller
             ];
             $this->restaurant->update($id, $data);
 
+            $ids = $this->request->getPost('ids');
+            $startTimes = $this->request->getPost('start');
+            $endTimes = $this->request->getPost('end');
+            $closed = $this->request->getPost('closed');
+            $open24h = $this->request->getPost('24h');
+
+            foreach($ids as $id){
+                $data = [
+                    'start_time' => $startTimes[$id],
+                    'end_time' => $endTimes[$id],
+                    'is_closed' => isset($closed[$id])? 1 : 0,
+                    'is_24h_open' => isset($open24h[$id]) ? 1 :0
+                ];
+                $this->restaurant_time->update($id,$data);
+            }
             return redirect()->to('/restaurant');
         }
 
         $data = [
             'title' => $this->title,
             'time' => $this->time,
-            'restaurant' => $this->restaurant->find($id)
+            'restaurant' => $this->restaurant->find($id),
+            'times' => $this->restaurant_time->where('rest_id',$id)->findAll()
         ];
 
         echo view('templates/header', $data);

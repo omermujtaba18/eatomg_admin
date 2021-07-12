@@ -16,31 +16,78 @@
                         </div>
 
                         <div class="card-body">
-                            <form class="col-6" method="post" enctype="multipart/form-data">
-                                <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input class="form-control form-control-solid" type="text" placeholder="" name="name" value="<?= isset($restaurant['rest_name']) ? $restaurant['rest_name'] : ''; ?>" required>
+                            <form class="col-12" method="post" enctype="multipart/form-data">
+                                <div class="form-row">
+                                    <div class="form-group col-6">
+                                        <label for="name">Name</label>
+                                        <input class="form-control form-control-solid" type="text" placeholder="" name="name" value="<?= isset($restaurant['rest_name']) ? $restaurant['rest_name'] : ''; ?>" required>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="description">Description</label>
+                                        <input class="form-control form-control-solid" type="text" placeholder="" name="description" value="<?= isset($restaurant['rest_description']) ? $restaurant['rest_description'] : ''; ?>">
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="description">Description</label>
-                                    <input class="form-control form-control-solid" type="text" placeholder="" name="description" value="<?= isset($restaurant['rest_description']) ? $restaurant['rest_description'] : ''; ?>">
+                                <div class="form-row">
+                                    <div class="form-group col-6">
+                                        <label for="address">Address</label>
+                                        <input class="form-control form-control-solid" type="text" placeholder="" name="address" value="<?= isset($restaurant['rest_address']) ? $restaurant['rest_address'] : ''; ?>">
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="phone">Phone</label>
+                                        <input class="form-control form-control-solid" type="text" placeholder="" name="phone" value="<?= isset($restaurant['rest_phone']) ? $restaurant['rest_phone'] : ''; ?>">
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="address">Address</label>
-                                    <input class="form-control form-control-solid" type="text" placeholder="" name="address" value="<?= isset($restaurant['rest_address']) ? $restaurant['rest_address'] : ''; ?>">
+                                <div class="form-row">
+                                    <div class="form-group col-6">
+                                        <label for="takeout_url">Store URL</label>
+                                        <input class="form-control form-control-solid" type="text" placeholder="" name="url" value="<?= isset($restaurant['url']) ? $restaurant['url'] : ''; ?>">
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="takeout_url">Priority</label>
+                                        <input class="form-control form-control-solid" type="number" placeholder="" name="priority" value="<?= isset($restaurant['priority']) ? $restaurant['priority'] : 1; ?>">
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="phone">Phone</label>
-                                    <input class="form-control form-control-solid" type="text" placeholder="" name="phone" value="<?= isset($restaurant['rest_phone']) ? $restaurant['rest_phone'] : ''; ?>">
-                                </div>
-                                <div class="form-group">
-                                    <label for="takeout_url">Store URL</label>
-                                    <input class="form-control form-control-solid" type="text" placeholder="" name="url" value="<?= isset($restaurant['url']) ? $restaurant['url'] : ''; ?>">
-                                </div>
-                                <div class="form-group">
-                                    <label for="takeout_url">Priority</label>
-                                    <input class="form-control form-control-solid" type="number" placeholder="" name="priority" value="<?= isset($restaurant['priority']) ? $restaurant['priority'] : 1; ?>">
-                                </div>
+                                <hr>
+                                <h5>Hours of Operation</h5>
+                                <hr>
+
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Day</th>
+                                            <th scope="col">Start Time</th>
+                                            <th scope="col">End Time</th>
+                                            <th scope="col">Closed</th>
+                                            <th scope="col">24hour open</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($times as $time) : ?>
+                                            <tr>
+                                                <th><?= $time['day']; ?></th>
+                                                <td>
+                                                    <input type="hidden" name="ids[]" value="<?= $time['restaurant_time_id']; ?>">
+                                                    <input class="form-control form-control-solid" type="time" name="start[<?= $time['restaurant_time_id']; ?>]" value="<?= isset($time['start_time']) ? $time['start_time'] : '00:00:00'; ?>">
+                                                </td>
+                                                <td>
+                                                    <input class="form-control form-control-solid" type="time" name="end[<?= $time['restaurant_time_id']; ?>]" value="<?= isset($time['end_time']) ? $time['end_time'] : '00:00:00'; ?>">
+                                                </td>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="form-check-input" name="closed[<?= $time['restaurant_time_id']; ?>]" <?= isset($time['is_closed']) && $time['is_closed'] ? 'checked' : ''; ?>>
+                                                        <label class="form-check-label">Closed</label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="form-check-input" name="24h[<?= $time['restaurant_time_id']; ?>]" <?= isset($time['is_24h_open']) && $time['is_24h_open'] ? 'checked' : ''; ?>>
+                                                        <label class="form-check-label">Open 24hours</label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
                                 <hr>
                                 <div class="form-group">
                                     <button class="btn btn-primary" type="submit"><?= isset($restaurant) ? 'Update restaurant account' : 'Create restaurant account' ?></button>
