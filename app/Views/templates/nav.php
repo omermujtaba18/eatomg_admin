@@ -6,7 +6,11 @@ $restaurantModel = new RestaurantModel();
 $restaurant = $restaurantModel->where(['business_id' => $_SESSION['user_business']])->orderBy('priority', 'ASC')->findAll();
 ?>
 
-
+<style>
+    a:focus {
+        outline: none;
+    }
+</style>
 <div id="layoutSidenav">
     <div id="layoutSidenav_nav">
         <nav class="sidenav shadow-right sidenav-light">
@@ -108,3 +112,8 @@ $restaurant = $restaurantModel->where(['business_id' => $_SESSION['user_business
             </div>
         </nav>
     </div>
+    <script>
+        var els = document.querySelector("a[href='" + window.location.pathname + window.location.search + "']");
+        els.classList.add('active');
+        els.focus();
+    </script>
